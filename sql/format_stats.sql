@@ -25,4 +25,4 @@ stat_sums AS (
     FROM public.player_match_stats pms
     JOIN public.matches m ON pms.match_id = m.id
 )
-SELECT * FROM match_counts, stat_sums;
+SELECT * FROM match_counts, stat_sums; 
