@@ -25,6 +25,9 @@ def load_sql_query(filename):
 def index():
     format_stats = None
     team_stats = None
+    rank_overall = []
+    rank_9side = []
+    rank_7side = []
     
     try:
         conn = get_db_connection()
@@ -39,6 +42,16 @@ def index():
         sql_team = load_sql_query('team_color_stats.sql')
         cur.execute(sql_team)
         team_stats = cur.fetchone() # 取得一筆加總結果
+
+        # 2. 讀取並執行 Rank Top 20 (Most Wins) 的 SQL
+        cur.execute(load_sql_query('rank_win_overall.sql'))
+        rank_overall = cur.fetchall()
+
+        cur.execute(load_sql_query('rank_win_9aside.sql'))
+        rank_9side = cur.fetchall()
+
+        cur.execute(load_sql_query('rank_win_7aside.sql'))
+        rank_7side = cur.fetchall()
         
         cur.close()
         conn.close()
@@ -46,7 +59,14 @@ def index():
         print(f"資料庫查詢錯誤: {e}")
 
     # 渲染首頁並傳入兩個統計資料物件
-    return render_template('index.html', format_stats=format_stats, team_stats=team_stats)
+    return render_template(
+        'index.html', 
+        format_stats=format_stats, 
+        team_stats=team_stats,
+        rank_overall=rank_overall,
+        rank_9side=rank_9side,
+        rank_7side=rank_7side
+    )
 
 
 if __name__ == '__main__':
