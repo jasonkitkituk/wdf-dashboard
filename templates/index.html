@@ -77,7 +77,7 @@
         <!-- 右側主內容區域 (~85%) -->
         <main class="main-content">
             
-            <!-- 0) 起始 Welcome 頁面 (包含 Club Logo) -->
+            <!-- 0) 起始 Welcome 頁面 (預設顯示 active) -->
             <section id="welcome" class="content-section active">
                 <div class="hero-welcome">
                     <div class="club-badge-large">
@@ -121,7 +121,7 @@
                 </div>
             </section>
 
-            <!-- 1) Match Stat. -->
+            <!-- 1) Match Stat. (獨立模組，預設不帶 active 隱藏) -->
             {% include 'components/match_stat.html' %}
 
             <!-- 2) RANK TOP20 -->
