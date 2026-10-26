@@ -17,8 +17,8 @@
                 <!-- 指向 static/image/logo.png -->
                 <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo">
                 <div class="logo-text">
-                    <h2>WDF FC</h2>
-                    <span>Match Dashboard</span>
+                    <h2>得閒踢波</h2>
+                    <span>Dashboard</span>
                 </div>
             </div>
 
@@ -125,25 +125,7 @@
             {% include 'components/match_stat.html' %}
 
             <!-- 2) RANK TOP20 -->
-            <section id="rank-top20" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fa-solid fa-trophy"></i> RANK TOP 20 排行榜</h2>
-                </div>
-                <div class="three-column-grid">
-                    <div class="rank-col">
-                        <h3><i class="fa-solid fa-globe"></i> Overall Rank</h3>
-                        <div class="rank-list-placeholder">Top 20 數據載入中...</div>
-                    </div>
-                    <div class="rank-col">
-                        <h3><i class="fa-solid fa-users"></i> 9-a-side Rank</h3>
-                        <div class="rank-list-placeholder">Top 20 數據載入中...</div>
-                    </div>
-                    <div class="rank-col">
-                        <h3><i class="fa-solid fa-user-group"></i> 7-a-side Rank</h3>
-                        <div class="rank-list-placeholder">Top 20 數據載入中...</div>
-                    </div>
-                </div>
-            </section>
+            {% include 'components/rank_top20.html' %}
 
             <!-- 3) WLD -->
             <section id="wld" class="content-section">
