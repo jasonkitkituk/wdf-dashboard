@@ -1,285 +1,338 @@
 :root {
-    --sidebar-width: 240px; /* 約 15% - 18% 畫面寬度 */
-    --bg-dark: #0f172a;
-    --bg-card: #1e293b;
-    --accent-color: #0284c7;
-    --accent-hover: #0369a1;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --border-color: #334155;
-    --active-green: #10b981;
+--sidebar-width: 240px; /* 約 15% - 18% 畫面寬度 */
+--bg-dark: #0f172a;
+--bg-card: #1e293b;
+--accent-color: #0284c7;
+--accent-hover: #0369a1;
+--text-primary: #f8fafc;
+--text-secondary: #94a3b8;
+--border-color: #334155;
+--active-green: #10b981;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
 body {
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    overflow-x: hidden;
+font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+background-color: var(--bg-dark);
+color: var(--text-primary);
+overflow-x: hidden;
 }
 
 .dashboard-wrapper {
-    display: flex;
-    min-height: 100vh;
+display: flex;
+min-height: 100vh;
 }
 
 /* ================= 1. 左側 Navigation (15%) ================= */
 .sidebar {
-    width: var(--sidebar-width);
-    background-color: #020617;
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100vh;
-    z-index: 100;
+width: var(--sidebar-width);
+background-color: #020617;
+border-right: 1px solid var(--border-color);
+display: flex;
+flex-direction: column;
+position: fixed;
+height: 100vh;
+z-index: 100;
 }
 
 .logo-container {
-    padding: 24px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid var(--border-color);
+padding: 24px 16px;
+display: flex;
+align-items: center;
+gap: 12px;
+border-bottom: 1px solid var(--border-color);
 }
 
 .logo-icon {
-    font-size: 2rem;
-    color: var(--accent-color);
+font-size: 2rem;
+color: var(--accent-color);
 }
 
 .logo-text h2 {
-    font-size: 1.1rem;
-    font-weight: 800;
-    letter-spacing: 1px;
+font-size: 1.1rem;
+font-weight: 800;
+letter-spacing: 1px;
 }
 
 .logo-text span {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
+font-size: 0.75rem;
+color: var(--text-secondary);
 }
 
 .nav-menu {
-    flex: 1;
-    padding: 16px 0;
-    overflow-y: auto;
+flex: 1;
+padding: 16px 0;
+overflow-y: auto;
 }
 
 .nav-menu ul {
-    list-style: none;
+list-style: none;
 }
 
 .nav-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    border-left: 4px solid transparent;
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 14px 20px;
+color: var(--text-secondary);
+text-decoration: none;
+font-size: 0.9rem;
+font-weight: 600;
+transition: all 0.2s ease;
+border-left: 4px solid transparent;
 }
 
 .nav-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: var(--text-primary);
+background-color: rgba(255, 255, 255, 0.05);
+color: var(--text-primary);
 }
 
 .nav-btn.active {
-    background-color: rgba(2, 132, 199, 0.15);
-    color: var(--accent-color);
-    border-left-color: var(--accent-color);
+background-color: rgba(2, 132, 199, 0.15);
+color: var(--accent-color);
+border-left-color: var(--accent-color);
 }
 
 .sidebar-footer {
-    padding: 16px;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    border-top: 1px solid var(--border-color);
-    text-align: center;
+padding: 16px;
+font-size: 0.75rem;
+color: var(--text-secondary);
+border-top: 1px solid var(--border-color);
+text-align: center;
 }
 
 /* ================= 2. 右側 Content Area (~85%) ================= */
 .main-content {
-    margin-left: var(--sidebar-width);
-    flex: 1;
-    padding: 32px;
-    background-color: var(--bg-dark);
+margin-left: var(--sidebar-width);
+flex: 1;
+padding: 32px;
+background-color: var(--bg-dark);
 }
 
 .content-section {
-    display: none;
+display: none;
 }
 
 .content-section.active {
-    display: block;
-    animation: fadeIn 0.3s ease-in-out;
+display: block;
+animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
 }
 
 .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-color);
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 24px;
+padding-bottom: 12px;
+border-bottom: 1px solid var(--border-color);
 }
 
 /* Home Welcome Layout */
 .hero-welcome {
-    text-align: center;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, rgba(2,132,199,0.1) 0%, rgba(15,23,42,1) 100%);
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 32px;
+text-align: center;
+padding: 40px 20px;
+background: linear-gradient(135deg, rgba(2,132,199,0.1) 0%, rgba(15,23,42,1) 100%);
+border-radius: 16px;
+border: 1px solid var(--border-color);
+margin-bottom: 32px;
 }
 
 .club-badge-large {
-    font-size: 4rem;
-    color: var(--accent-color);
-    margin-bottom: 16px;
+font-size: 4rem;
+color: var(--accent-color);
+margin-bottom: 16px;
 }
 
 .hero-welcome h1 {
-    font-size: 2rem;
-    margin-bottom: 8px;
+font-size: 2rem;
+margin-bottom: 8px;
 }
 
 .hero-welcome .subtitle {
-    color: var(--text-secondary);
+color: var(--text-secondary);
 }
 
 .quick-access-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 20px;
 }
 
 .card {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 24px;
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 12px;
+padding: 24px;
+cursor: pointer;
+transition: transform 0.2s, border-color 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    border-color: var(--accent-color);
+transform: translateY(-4px);
+border-color: var(--accent-color);
 }
 
 .card-icon {
-    font-size: 2rem;
-    color: var(--accent-color);
-    margin-bottom: 12px;
+font-size: 2rem;
+color: var(--accent-color);
+margin-bottom: 12px;
 }
 
 /* 三欄式 Top 20 Layout */
 .three-column-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 20px;
 }
 
 .rank-col {
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 12px;
+padding: 20px;
 }
 
 /* 下拉選單與卡片設計 */
 .selector-box, .pvp-selector-container {
-    background-color: var(--bg-card);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 20px;
+background-color: var(--bg-card);
+padding: 20px;
+border-radius: 12px;
+border: 1px solid var(--border-color);
+margin-bottom: 20px;
 }
 
 .dropdown {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    padding: 10px 16px;
-    border-radius: 8px;
-    font-size: 1rem;
-    margin-left: 10px;
+background-color: var(--bg-dark);
+color: var(--text-primary);
+border: 1px solid var(--border-color);
+padding: 10px 16px;
+border-radius: 8px;
+font-size: 1rem;
+margin-left: 10px;
 }
 
 .pvp-selector-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+display: flex;
+align-items: center;
+justify-content: space-around;
 }
 
 .vs-badge {
-    font-weight: 800;
-    color: var(--accent-color);
-    padding: 8px 16px;
-    background-color: rgba(2, 132, 199, 0.1);
-    border-radius: 20px;
+font-weight: 800;
+color: var(--accent-color);
+padding: 8px 16px;
+background-color: rgba(2, 132, 199, 0.1);
+border-radius: 20px;
 }
-
 
 /* 側邊欄小 LOGO 尺寸 */
 .club-logo {
-    width: 38px;
-    height: 38px;
-    object-fit: contain;
+width: 38px;
+height: 38px;
+object-fit: contain;
 }
 
 /* 主頁大徽章尺寸 */
 .club-logo-large {
-    width: 88px;
-    height: 88px;
-    object-fit: contain;
+width: 88px;
+height: 88px;
+object-fit: contain;
 }
 
-
-/* ================= 表格框線與排版美化 ================= */
+/* ================= 表格框線與排版美化 ================= /
 .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--bg-card);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--border-color); /* 外框線 */
+width: 100%;
+border-collapse: collapse;
+background-color: var(--bg-card);
+border-radius: 8px;
+overflow: hidden;
+border: 1px solid var(--border-color); / 外框線 */
 }
 
-.data-table th, 
+.data-table th,
 .data-table td {
-    padding: 12px 16px;
-    text-align: left;
-    border: 1px solid var(--border-color); /* 每個儲存格加上格線 */
+padding: 12px 16px;
+text-align: left;
+border: 1px solid var(--border-color); /* 每個儲存格加上格線 */
 }
 
 .data-table th {
-    background-color: #0f172a; /* 表頭背景色 */
-    color: var(--accent-color);
-    font-weight: 600;
-}
-
-/* 針對第二個表格（Team Color WLD）的第一列 (Win Row 或標題列) 加上醒目背景色 */
-.team-color-table tr:nth-child(1) {
-    background-color: rgba(16, 185, 129, 0.1); /* 柔和的綠色點綴，可自行調整 */
+background-color: #0f172a; /* 表頭背景色 */
+color: var(--accent-color);
+font-weight: 600;
 }
 
 /* 滑鼠懸停效果 */
 .data-table tr:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* 縮小表格 1 的容器寬度至 2/3 (66.6%) */
+.narrow-table {
+width: 66.6%;
+max-width: 800px;
+}
+
+@media (max-width: 768px) {
+.narrow-table {
+width: 100%;
+}
+}
+
+/* ================= Team Color Table 專屬顏色設定 ================= */
+
+/* Row 1 (Win 這一列) 各個顏色 Cell 的獨立配色 /
+.team-color-table tbody tr:nth-child(1) td:nth-child(2) {
+background-color: #000000; / Black /
+color: #ffffff;            / 文字白色 */
+}
+
+.team-color-table tbody tr:nth-child(1) td:nth-child(3) {
+background-color: #ffffff; /* White /
+color: #000000;            / 文字黑色 */
+}
+
+.team-color-table tbody tr:nth-child(1) td:nth-child(4) {
+background-color: #1e3a8a; /* Blue (深藍色) /
+color: #ffffff;            / 文字白色 */
+}
+
+.team-color-table tbody tr:nth-child(1) td:nth-child(5) {
+background-color: #dc2626; /* Red (紅色) /
+color: #facc15;            / 文字深黃色/金黃色 */
+}
+
+.team-color-table tbody tr:nth-child(1) td:nth-child(6) {
+background-color: #16a34a; /* Green (綠色) /
+color: #000000;            / 文字黑色 */
+}
+
+/* Row 2 (Draw) 與 Row 3 (Lose)：淺黃色背景 /
+.team-color-table tbody tr:nth-child(2),
+.team-color-table tbody tr:nth-child(3) {
+background-color: #fef9c3; / 柔和淺黃色 /
+color: #0f172a;            / 深色文字確保清晰易讀 */
+}
+
+/* Row 4 (Total)：較深的黃色 /
+.team-color-table tbody tr:nth-child(4) {
+background-color: #fde047; / 稍深的黃色 /
+color: #0f172a;            / 深色文字 /
+font-weight: bold;         / 加粗 Total 數值 */
+}
+
+/* 確保彩色表格格線維持清晰 */
+.team-color-table th,
+.team-color-table td {
+border: 1px solid #cbd5e1;
 }
