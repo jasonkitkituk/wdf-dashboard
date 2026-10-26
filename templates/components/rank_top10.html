@@ -1,16 +1,18 @@
-<!-- templates/components/rank_top20.html -->
-<section id="rank-top20" class="content-section">
+<!-- templates/components/rank_top10.html -->
+<section id="rank-top10" class="content-section">
     <div class="section-header">
-        <h2><i class="fa-solid fa-trophy"></i> RANK TOP 20 (Most Wins)</h2>
+        <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10 (Most Wins)</h2>
     </div>
 
     <!-- 三欄式排版 -->
     <div class="three-column-grid">
         
-        <!-- 1. 左側：Overall Rank -->
+        <!-- 1. 左側大主題：Overall (總體勝場排行榜) -->
         <div class="rank-col">
-            <h3 style="margin-bottom: 12px; color: var(--accent-color);"><i class="fa-solid fa-globe"></i> Overall Rank</h3>
-            <table class="data-table rank-table">
+            <div class="rank-topic-header" style="background: var(--surface-card, #1e293b); padding: 12px 16px; border-radius: 8px 8px 0 0; border-bottom: 2px solid var(--accent-color); margin-bottom: 0;">
+                <h3 style="margin: 0; color: var(--accent-color); font-size: 1.1rem;"><i class="fa-solid fa-globe"></i> OVERALL (Overall Wins)</h3>
+            </div>
+            <table class="data-table rank-table" style="border-radius: 0 0 8px 8px;">
                 <thead>
                     <tr>
                         <th style="width: 15%;">Rank</th>
@@ -38,10 +40,12 @@
             </table>
         </div>
 
-        <!-- 2. 中間：9-a-side Rank -->
+        <!-- 2. 中間大主題：9-a-side (9人制勝場排行榜) -->
         <div class="rank-col">
-            <h3 style="margin-bottom: 12px; color: var(--accent-color);"><i class="fa-solid fa-users"></i> 9-a-side Rank</h3>
-            <table class="data-table rank-table">
+            <div class="rank-topic-header" style="background: var(--surface-card, #1e293b); padding: 12px 16px; border-radius: 8px 8px 0 0; border-bottom: 2px solid var(--accent-color); margin-bottom: 0;">
+                <h3 style="margin: 0; color: var(--accent-color); font-size: 1.1rem;"><i class="fa-solid fa-users"></i> 9-A-SIDE (9人制勝場)</h3>
+            </div>
+            <table class="data-table rank-table" style="border-radius: 0 0 8px 8px;">
                 <thead>
                     <tr>
                         <th style="width: 15%;">Rank</th>
@@ -69,10 +73,12 @@
             </table>
         </div>
 
-        <!-- 3. 右邊：7-a-side Rank -->
+        <!-- 3. 右邊大主題：7-a-side (7人制勝場排行榜) -->
         <div class="rank-col">
-            <h3 style="margin-bottom: 12px; color: var(--accent-color);"><i class="fa-solid fa-user-group"></i> 7-a-side Rank</h3>
-            <table class="data-table rank-table">
+            <div class="rank-topic-header" style="background: var(--surface-card, #1e293b); padding: 12px 16px; border-radius: 8px 8px 0 0; border-bottom: 2px solid var(--accent-color); margin-bottom: 0;">
+                <h3 style="margin: 0; color: var(--accent-color); font-size: 1.1rem;"><i class="fa-solid fa-user-group"></i> 7-A-SIDE (7人制勝場)</h3>
+            </div>
+            <table class="data-table rank-table" style="border-radius: 0 0 8px 8px;">
                 <thead>
                     <tr>
                         <th style="width: 15%;">Rank</th>

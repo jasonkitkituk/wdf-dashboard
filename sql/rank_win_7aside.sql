@@ -10,4 +10,4 @@ JOIN public.matches m ON pms.match_id = m.id
 WHERE m.pitch_aside = 7
 GROUP BY p.id, p.name
 ORDER BY rank
-LIMIT 20;
+LIMIT 10;
