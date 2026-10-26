@@ -1,12 +1,12 @@
 :root {
---sidebar-width: 240px; /* 約 15% - 18% 畫面寬度 /
+--sidebar-width: 240px; /* 約 15% - 18% 畫面寬度 */
 --bg-dark: #0f172a;
 --bg-card: #1e293b;
 --accent-color: #0284c7;
 --accent-hover: #0369a1;
 --text-primary: #f8fafc;
 --text-secondary: #94a3b8;
---border-color: #475569; / 加深邊框顏色，讓邊框更清晰 */
+--border-color: #64748b;
 --active-green: #10b981;
 }
 
@@ -235,108 +235,103 @@ background-color: rgba(2, 132, 199, 0.1);
 border-radius: 20px;
 }
 
-/* 側邊欄小 LOGO 尺寸 */
+/* LOGO 尺寸 */
 .club-logo {
 width: 38px;
 height: 38px;
 object-fit: contain;
 }
 
-/* 主頁大徽章尺寸 */
 .club-logo-large {
 width: 88px;
 height: 88px;
 object-fit: contain;
 }
 
-/* ================= 表格框線與排版美化 ================= /
-.data-table {
-width: 100%;
-border-collapse: collapse;
-background-color: var(--bg-card);
-border-radius: 8px;
-overflow: hidden;
-border: 2px solid #64748b; / 加厚加深外框線 */
-}
-
-.data-table th,
-.data-table td {
-padding: 16px 32px; /* 水平內距增加一倍 (16px -> 32px)，讓寬度大幅提升 /
-text-align: center; / 居中對齊讓大 Cell 更美觀 /
-min-width: 100px; / 確保每個 Cell 有基礎寬度 /
-border: 1.5px solid #64748b !important; / 強制加上清晰明顯的網格線 */
-}
-
-.data-table th {
-background-color: #0f172a; /* 表頭背景色 */
-color: var(--accent-color);
-font-weight: 700;
-font-size: 1.05rem;
-}
-
-/* 滑鼠懸停效果 */
-.data-table tr:hover {
-background-color: rgba(255, 255, 255, 0.05);
-}
-
-/* 表格 1 容器調整 */
-.narrow-table {
-width: auto;
-max-width: 100%;
-display: inline-block;
+/* ================= 表格框線與排版美化 (超清晰邊框與加寬) ================= */
+.stat-container {
 overflow-x: auto;
 }
 
-@media (max-width: 768px) {
+.data-table {
+border-collapse: collapse !important;
+background-color: #1e293b;
+border: 2px solid #94a3b8 !important; /* 強制外框線 */
+margin-bottom: 10px;
+}
+
+/* 所有 CELL 大幅加寬 + 顯眼白/灰邊框 /
+.data-table th,
+.data-table td {
+padding: 20px 60px !important; / 再加寬一倍 (原本 32px -> 60px) /
+text-align: center !important;
+min-width: 140px !important;
+border: 2px solid #94a3b8 !important; / 強制清晰格子實線 border */
+font-size: 1.05rem;
+}
+
+.data-table th {
+background-color: #0f172a !important;
+color: #38bdf8 !important;
+font-weight: 700;
+}
+
 .narrow-table {
-width: 100%;
-}
+width: auto;
+display: inline-block;
 }
 
-/* ================= Team Color Table 專屬顏色設定 ================= */
+/* ================= Team Color Table (配色修正與高權重) ================= */
 
-/* Row 1 (Win 這一列) 各個顏色 Cell 的獨立配色 /
+/* Row 1 (Win 這一列) 各個顏色 Cell 的獨立配色 */
+.team-color-table tbody tr:nth-child(1) td:nth-child(1) {
+background-color: #0f172a !important;
+color: #ffffff !important;
+}
+
 .team-color-table tbody tr:nth-child(1) td:nth-child(2) {
-background-color: #000000; / Black /
-color: #ffffff;            / 文字白色 */
+background-color: #000000 !important; /* Black */
+color: #ffffff !important;
 }
 
 .team-color-table tbody tr:nth-child(1) td:nth-child(3) {
-background-color: #ffffff; /* White /
-color: #000000;            / 文字黑色 */
+background-color: #ffffff !important; /* White */
+color: #000000 !important;
 }
 
 .team-color-table tbody tr:nth-child(1) td:nth-child(4) {
-background-color: #1e3a8a; /* Blue (深藍色) /
-color: #ffffff;            / 文字白色 */
+background-color: #1e3a8a !important; /* Blue (深藍色) */
+color: #ffffff !important;
 }
 
 .team-color-table tbody tr:nth-child(1) td:nth-child(5) {
-background-color: #dc2626; /* Red (紅色) /
-color: #facc15;            / 文字深黃色/金黃色 */
+background-color: #dc2626 !important; /* Red (紅色) /
+color: #facc15 !important;            / 文字深黃色 */
 }
 
 .team-color-table tbody tr:nth-child(1) td:nth-child(6) {
-background-color: #16a34a; /* Green (綠色) /
-color: #000000;            / 文字黑色 */
+background-color: #16a34a !important; /* Green (綠色) */
+color: #000000 !important;
 }
 
-/* Row 2 (Draw) 與 Row 3 (Lose)：淺黃色背景 /
-.team-color-table tbody tr:nth-child(2),
-.team-color-table tbody tr:nth-child(3) {
-background-color: #fef9c3; / 柔和淺黃色 /
-color: #0f172a;            / 深色文字確保清晰易讀 */
+/* Row 2 (Draw) 與 Row 3 (Lose)：淺黃色背景 + 黑色文字 /
+.team-color-table tbody tr:nth-child(2) td,
+.team-color-table tbody tr:nth-child(3) td {
+background-color: #fef08a !important; / 鮮明淺黃色 /
+color: #0f172a !important;            / 深色文字 */
+font-weight: 600;
 }
 
-/* Row 4 (Total)：較深的黃色 /
-.team-color-table tbody tr:nth-child(4) {
-background-color: #fde047; / 稍深的黃色 /
-color: #0f172a;            / 深色文字 /
-font-weight: bold;         / 加粗 Total 數值 */
+/* Row 4 (Total)：較深的金黃色背景 + 黑色粗體字 /
+.team-color-table tbody tr:nth-child(4) td {
+background-color: #eab308 !important; / 較深金黃色 /
+color: #000000 !important;            / 黑色字體 */
+font-weight: 800;
+font-size: 1.1rem;
 }
 
-/* 確保彩色表格的網格線依然強效明顯 */
+/* 確保 Team Color 表格的內部邊框也非常清楚 */
 .team-color-table th,
 .team-color-table td {
-border: 1.5px solid #475569 !important;
+border: 2px solid #475569 !important;
 }
