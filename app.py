@@ -18,7 +18,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     # 預設為 7SIDE，可透過網址參數切換 ?type=7SIDE 或 ?type=9SIDE
-    match_type = request.args.get('type', '7')
+    match_type = request.args.get('type', '7SIDE')
     
     rows = []
     try:
