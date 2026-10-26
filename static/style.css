@@ -1,12 +1,12 @@
 :root {
---sidebar-width: 240px; /* 約 15% - 18% 畫面寬度 */
+--sidebar-width: 240px; /* 約 15% - 18% 畫面寬度 /
 --bg-dark: #0f172a;
 --bg-card: #1e293b;
 --accent-color: #0284c7;
 --accent-hover: #0369a1;
 --text-primary: #f8fafc;
 --text-secondary: #94a3b8;
---border-color: #334155;
+--border-color: #475569; / 加深邊框顏色，讓邊框更清晰 */
 --active-green: #10b981;
 }
 
@@ -256,31 +256,35 @@ border-collapse: collapse;
 background-color: var(--bg-card);
 border-radius: 8px;
 overflow: hidden;
-border: 1px solid var(--border-color); / 外框線 */
+border: 2px solid #64748b; / 加厚加深外框線 */
 }
 
 .data-table th,
 .data-table td {
-padding: 12px 16px;
-text-align: left;
-border: 1px solid var(--border-color); /* 每個儲存格加上格線 */
+padding: 16px 32px; /* 水平內距增加一倍 (16px -> 32px)，讓寬度大幅提升 /
+text-align: center; / 居中對齊讓大 Cell 更美觀 /
+min-width: 100px; / 確保每個 Cell 有基礎寬度 /
+border: 1.5px solid #64748b !important; / 強制加上清晰明顯的網格線 */
 }
 
 .data-table th {
 background-color: #0f172a; /* 表頭背景色 */
 color: var(--accent-color);
-font-weight: 600;
+font-weight: 700;
+font-size: 1.05rem;
 }
 
 /* 滑鼠懸停效果 */
 .data-table tr:hover {
-background-color: rgba(255, 255, 255, 0.02);
+background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* 縮小表格 1 的容器寬度至 2/3 (66.6%) */
+/* 表格 1 容器調整 */
 .narrow-table {
-width: 66.6%;
-max-width: 800px;
+width: auto;
+max-width: 100%;
+display: inline-block;
+overflow-x: auto;
 }
 
 @media (max-width: 768px) {
@@ -331,8 +335,8 @@ color: #0f172a;            / 深色文字 /
 font-weight: bold;         / 加粗 Total 數值 */
 }
 
-/* 確保彩色表格格線維持清晰 */
+/* 確保彩色表格的網格線依然強效明顯 */
 .team-color-table th,
 .team-color-table td {
-border: 1px solid #cbd5e1;
+border: 1.5px solid #475569 !important;
 }
