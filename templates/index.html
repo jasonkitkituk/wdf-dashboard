@@ -1,140 +1,239 @@
-<!-- templates/components/rank_top10.html -->
-<section id="rank-top10" class="content-section">
-    <div class="section-header">
-        <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10 (Most Wins)</h2>
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WDF Football Club - Match Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <!-- 左側導覽列 (佔比約 15%) -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <!-- 指向 static/image/logo.png -->
+                <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo">
+                <div class="logo-text">
+                    <h2>WDF FC</h2>
+                    <span>Match Dashboard</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="#welcome" class="nav-btn active" onclick="switchTab('welcome')">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Main Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#match-stat" class="nav-btn" onclick="switchTab('match-stat')">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Match Stat.</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#rank-top10" class="nav-btn" onclick="switchTab('rank-top10')">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>RANK TOP 10</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#wld" class="nav-btn" onclick="switchTab('wld')">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>WinLossDraw</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#gaoc" class="nav-btn" onclick="switchTab('gaoc')">
+                            <i class="fa-solid fa-futbol"></i>
+                            <span>G.A.O.S</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Player Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#player-vs-player" class="nav-btn" onclick="switchTab('player-vs-player')">
+                            <i class="fa-solid fa-users-between-lines"></i>
+                            <span>Player vs Player</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>&copy; 2026 WDF Football Club</p>
+            </div>
+        </aside>
+
+        <!-- 右側主內容區域 (~85%) -->
+        <main class="main-content">
+            
+            <!-- 0) 起始 Welcome 頁面 (包含 Club Logo) -->
+            <section id="welcome" class="content-section active">
+                <div class="hero-welcome">
+                    <div class="club-badge-large">
+                        <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo-large">
+                    </div>
+                    <h1> 得閒足球會 Walking Daddy Football Club</h1>
+                    <p class="subtitle">WDF Club Match Analytics & Player Statistics</p>
+                </div>
+
+                <div class="quick-access-grid">
+                    <div class="card" onclick="switchTab('match-stat')">
+                        <i class="fa-solid fa-calendar-days card-icon"></i>
+                        <h3>Match Stat.</h3>
+                        <p>查看 7-a-side 及 9-a-side 賽事基本資料與詳細賽果</p>
+                    </div>
+                    <div class="card" onclick="switchTab('rank-top10')">
+                        <i class="fa-solid fa-trophy card-icon"></i>
+                        <h3>RANK TOP 10</h3>
+                        <p>Overall、9-a-side 及 7-a-side 全方位排行榜</p>
+                    </div>
+                    <div class="card" onclick="switchTab('wld')">
+                        <i class="fa-solid fa-chart-pie card-icon"></i>
+                        <h3>WLD (勝勝負)</h3>
+                        <p>個別球員勝率、勝場、負場與和局統計</p>
+                    </div>
+                    <div class="card" onclick="switchTab('gaoc')">
+                        <i class="fa-solid fa-futbol card-icon"></i>
+                        <h3>GAOC 數據</h3>
+                        <p>進球 (G)、助攻 (A)、烏龍 (O)、零封 (C) 數據統計</p>
+                    </div>
+                    <div class="card" onclick="switchTab('player-profile')">
+                        <i class="fa-solid fa-user card-icon"></i>
+                        <h3>Player Profile</h3>
+                        <p>選擇單一球員，檢視個人歷史戰力卡與里程碑</p>
+                    </div>
+                    <div class="card" onclick="switchTab('player-vs-player')">
+                        <i class="fa-solid fa-users-between-lines card-icon"></i>
+                        <h3>Player vs Player</h3>
+                        <p>雙人對決/隊友合作，對戰與合作勝率分析</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1) Match Stat. -->
+            {% include 'components/match_stat.html' %}
+
+            <!-- 2) RANK TOP10 -->
+            <section id="rank-top10" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10 排行榜</h2>
+                </div>
+                <div class="three-column-grid">
+                    <div class="rank-col">
+                        <h3><i class="fa-solid fa-globe"></i> Overall Rank</h3>
+                        <div class="rank-list-placeholder">Top 10 數據載入中...</div>
+                    </div>
+                    <div class="rank-col">
+                        <h3><i class="fa-solid fa-users"></i> 9-a-side Rank</h3>
+                        <div class="rank-list-placeholder">Top 10 數據載入中...</div>
+                    </div>
+                    <div class="rank-col">
+                        <h3><i class="fa-solid fa-user-group"></i> 7-a-side Rank</h3>
+                        <div class="rank-list-placeholder">Top 10 數據載入中...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3) WLD -->
+            <section id="wld" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-chart-pie"></i> WLD (勝勝負) 球員戰績</h2>
+                </div>
+                <div class="data-card">
+                    <p class="placeholder-text">WLD球員數據表載入中...</p>
+                </div>
+            </section>
+
+            <!-- 4) GAOC -->
+            <section id="gaoc" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-futbol"></i> GAOC (Goal, Assist, OwnGoal, CleanSheet)</h2>
+                </div>
+                <div class="data-card">
+                    <p class="placeholder-text">GAOC 數據表載入中...</p>
+                </div>
+            </section>
+
+            <!-- 5) Player Profile -->
+            <section id="player-profile" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-user"></i> Player Profile (球員個人資料)</h2>
+                </div>
+                <div class="selector-box">
+                    <label for="player-select"><i class="fa-solid fa-magnifying-glass"></i> 選擇球員：</label>
+                    <select id="player-select" class="dropdown">
+                        <option value="">-- 請選擇球員 --</option>
+                        <option value="player1">球員 A</option>
+                        <option value="player2">球員 B</option>
+                    </select>
+                </div>
+                <div class="profile-card-placeholder">
+                    <p>請從上方的 Dropdown Box 選擇一名球員以查看詳細數據</p>
+                </div>
+            </section>
+
+            <!-- 6) Player vs Player -->
+            <section id="player-vs-player" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-users-between-lines"></i> Player vs Player (球員對決 / 合作數據)</h2>
+                </div>
+                <div class="pvp-selector-container">
+                    <div class="pvp-select-group">
+                        <label><i class="fa-solid fa-user"></i> 球員 1：</label>
+                        <select class="dropdown">
+                            <option value="">-- 選擇球員 1 --</option>
+                        </select>
+                    </div>
+                    <div class="vs-badge">VS / WITH</div>
+                    <div class="pvp-select-group">
+                        <label><i class="fa-solid fa-user"></i> 球員 2：</label>
+                        <select class="dropdown">
+                            <option value="">-- 選擇球員 2 --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pvp-results-placeholder">
+                    <p>請選擇兩名球員以分析合作戰績與對賽紀錄</p>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <!-- 三欄式母容器：控制整體版面並讓三個大 Topic 平分 -->
-    <div class="three-column-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 1100px; margin: 0 auto;">
-        
-        <!-- ========================================== -->
-        <!-- 1. 左側大主題：OVERALL                      -->
-        <!-- ========================================== -->
-        <div class="rank-topic-group" style="background: var(--surface-card, #1e293b); border-radius: 10px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <div class="topic-header" style="border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 12px;">
-                <h3 style="margin: 0; color: var(--accent-color); font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-globe"></i> OVERALL
-                </h3>
-            </div>
+    <!-- JS 控制 Tab 切換與 DOM 操作 -->
+    <script>
+        function switchTab(tabId) {
+            // 隱藏所有 section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
 
-            <!-- 子表格 1：Overall Win 排行榜 -->
-            <div class="sub-table-container">
-                <h4 style="margin: 0 0 6px 0; font-size: 0.85rem; color: var(--text-secondary, #94a3b8);">Win (Overall)</h4>
-                <table class="data-table rank-table" style="width: 100%; font-size: 0.8rem; margin-bottom: 10px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%; text-align: center; padding: 6px;">Rank</th>
-                            <th style="padding: 6px;">Player Name</th>
-                            <th style="width: 20%; text-align: center; padding: 6px;">Win</th>
-                            <th style="width: 25%; text-align: center; padding: 6px;">Apps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rank_overall and rank_overall|length > 0 %}
-                            {% for row in rank_overall %}
-                            <tr>
-                                <td style="text-align: center; font-weight: bold; padding: 5px;">{{ row.rank }}</td>
-                                <td style="padding: 5px;">{{ row.player_name }}</td>
-                                <td style="text-align: center; padding: 5px;">{{ row.wins }}</td>
-                                <td style="text-align: center; padding: 5px;">{{ row.appearances }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 8px;">尚無數據</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- 之後如果還想加 OVERALL 的其他排行榜，可以直接在這裡往下加新的子表格 -->
-        </div>
+            // 移除所有 nav 按鈕 active
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
 
-        <!-- ========================================== -->
-        <!-- 2. 中間大主題：9-A-SIDE                     -->
-        <!-- ========================================== -->
-        <div class="rank-topic-group" style="background: var(--surface-card, #1e293b); border-radius: 10px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <div class="topic-header" style="border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 12px;">
-                <h3 style="margin: 0; color: var(--accent-color); font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-users"></i> 9-A-SIDE
-                </h3>
-            </div>
+            // 顯示目標 section
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
 
-            <!-- 子表格 1：9-a-side Win 排行榜 -->
-            <div class="sub-table-container">
-                <h4 style="margin: 0 0 6px 0; font-size: 0.85rem; color: var(--text-secondary, #94a3b8);">Win (9-a-side)</h4>
-                <table class="data-table rank-table" style="width: 100%; font-size: 0.8rem; margin-bottom: 10px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%; text-align: center; padding: 6px;">Rank</th>
-                            <th style="padding: 6px;">Player Name</th>
-                            <th style="width: 20%; text-align: center; padding: 6px;">Win</th>
-                            <th style="width: 25%; text-align: center; padding: 6px;">Apps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rank_9side and rank_9side|length > 0 %}
-                            {% for row in rank_9side %}
-                            <tr>
-                                <td style="text-align: center; font-weight: bold; padding: 5px;">{{ row.rank }}</td>
-                                <td style="padding: 5px;">{{ row.player_name }}</td>
-                                <td style="text-align: center; padding: 5px;">{{ row.wins }}</td>
-                                <td style="text-align: center; padding: 5px;">{{ row.appearances }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 8px;">尚無數據</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- 之後可在此擴充 9-a-side 其他排行榜 -->
-        </div>
-
-        <!-- ========================================== -->
-        <!-- 3. 右邊大主題：7-A-SIDE                     -->
-        <!-- ========================================== -->
-        <div class="rank-topic-group" style="background: var(--surface-card, #1e293b); border-radius: 10px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <div class="topic-header" style="border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 12px;">
-                <h3 style="margin: 0; color: var(--accent-color); font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-user-group"></i> 7-A-SIDE
-                </h3>
-            </div>
-
-            <!-- 子表格 1：7-a-side Win 排行榜 -->
-            <div class="sub-table-container">
-                <h4 style="margin: 0 0 6px 0; font-size: 0.85rem; color: var(--text-secondary, #94a3b8);">Win (7-a-side)</h4>
-                <table class="data-table rank-table" style="width: 100%; font-size: 0.8rem; margin-bottom: 10px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%; text-align: center; padding: 6px;">Rank</th>
-                            <th style="padding: 6px;">Player Name</th>
-                            <th style="width: 20%; text-align: center; padding: 6px;">Win</th>
-                            <th style="width: 25%; text-align: center; padding: 6px;">Apps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rank_7side and rank_7side|length > 0 %}
-                            {% for row in rank_7side %}
-                            <tr>
-                                <td style="text-align: center; font-weight: bold; padding: 5px;">{{ row.rank }}</td>
-                                <td style="padding: 5px;">{{ row.player_name }}</td>
-                                <td style="text-align: center; padding: 5px;">{{ row.wins }}</td>
-                                <td style="text-align: center; padding: 5px;">{{ row.appearances }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 8px;">尚無數據</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- 之後可在此擴充 7-a-side 其他排行榜 -->
-        </div>
-
-    </div>
-</section>
+            // 標示該按鈕為 active
+            const activeBtn = document.querySelector(`.nav-btn[href="#${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
