@@ -18,7 +18,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     # 預設為 7SIDE，可透過網址參數切換 ?type=7SIDE 或 ?type=9SIDE
-    match_type = request.args.get('type', '7SIDE')
+    match_type = request.args.get('type', '7')
     
     rows = []
     try:
@@ -35,6 +35,39 @@ def index():
         print(f"資料庫連線錯誤: {e}")
 
     return render_template('index.html', rows=rows, match_type=match_type)
+
+
+def load_sql_query(filename):
+    path = os.path.join('sql', filename)
+    with open(path, 'r', encoding='utf-8') as f:
+        return f.read()
+
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    try:
+        # 讀取並執行第一個 SQL
+        sql_format = load_sql_query('format_stats.sql')
+        cur.execute(sql_format)
+        format_stats = cur.fetchone() # 只有一筆加總結果
+        
+        # 讀取並執行第二個 SQL
+        sql_team = load_sql_query('team_color_stats.sql')
+        cur.execute(sql_team)
+        team_stats = cur.fetchone() # 只有一筆加總結果
+        
+    except Exception as e:
+        print(f"資料庫查詢錯誤: {e}")
+        format_stats = None
+        team_stats = None
+    finally:
+        cur.close()
+        conn.close()
+
+    return render_template('index.html', format_stats=format_stats, team_stats=team_stats)
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
