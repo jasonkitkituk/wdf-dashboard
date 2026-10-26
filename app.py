@@ -1,41 +1,20 @@
 import os
 from flask import Flask, render_template, request
 import psycopg2
+import psycopg2.extras
 
 app = Flask(__name__)
 
-# 填入你的 Supabase 連線字串 (記得換上你的密碼與專案 ID)
+# 優先讀取 Render 環境變數的 DATABASE_URL
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
-    #"postgresql://postgres.你的專案ID:你的密碼@aws-0-eu-central-1.pooler.supabase.com:5432/postgres?sslmode=require"
-     "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
+    "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
 )
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
+    # 使用 RealDictCursor 讓查詢結果能以字典/欄位名稱存取
+    conn = psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
     return conn
-
-@app.route('/')
-def index():
-    # 預設為 7SIDE，可透過網址參數切換 ?type=7SIDE 或 ?type=9SIDE
-    match_type = request.args.get('type', '7SIDE')
-    
-    rows = []
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        
-        # 查詢對應類型的數據 (請根據你的實際 Table 欄位名稱調整 SQL)
-        cur.execute("SELECT * FROM matches WHERE pitch_aside = %s;", (match_type,))
-        rows = cur.fetchall()
-        
-        cur.close()
-        conn.close()
-    except Exception as e:
-        print(f"資料庫連線錯誤: {e}")
-
-    return render_template('index.html', rows=rows, match_type=match_type)
-
 
 def load_sql_query(filename):
     path = os.path.join('sql', filename)
@@ -44,28 +23,29 @@ def load_sql_query(filename):
 
 @app.route('/')
 def index():
-    conn = get_db_connection()
-    cur = conn.cursor()
+    format_stats = None
+    team_stats = None
     
     try:
-        # 讀取並執行第一個 SQL
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # 1. 讀取並執行第一個 SQL (format_stats.sql)
         sql_format = load_sql_query('format_stats.sql')
         cur.execute(sql_format)
-        format_stats = cur.fetchone() # 只有一筆加總結果
+        format_stats = cur.fetchone() # 取得一筆加總結果
         
-        # 讀取並執行第二個 SQL
+        # 2. 讀取並執行第二個 SQL (team_color_stats.sql)
         sql_team = load_sql_query('team_color_stats.sql')
         cur.execute(sql_team)
-        team_stats = cur.fetchone() # 只有一筆加總結果
+        team_stats = cur.fetchone() # 取得一筆加總結果
         
-    except Exception as e:
-        print(f"資料庫查詢錯誤: {e}")
-        format_stats = None
-        team_stats = None
-    finally:
         cur.close()
         conn.close()
+    except Exception as e:
+        print(f"資料庫查詢錯誤: {e}")
 
+    # 渲染首頁並傳入兩個統計資料物件
     return render_template('index.html', format_stats=format_stats, team_stats=team_stats)
 
 
