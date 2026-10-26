@@ -125,25 +125,7 @@
             {% include 'components/match_stat.html' %}
 
             <!-- 2) RANK TOP10 -->
-            <section id="rank-top10" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10 排行榜</h2>
-                </div>
-                <div class="three-column-grid">
-                    <div class="rank-col">
-                        <h3><i class="fa-solid fa-globe"></i> Overall Rank</h3>
-                        <div class="rank-list-placeholder">Top 10 數據載入中...</div>
-                    </div>
-                    <div class="rank-col">
-                        <h3><i class="fa-solid fa-users"></i> 9-a-side Rank</h3>
-                        <div class="rank-list-placeholder">Top 10 數據載入中...</div>
-                    </div>
-                    <div class="rank-col">
-                        <h3><i class="fa-solid fa-user-group"></i> 7-a-side Rank</h3>
-                        <div class="rank-list-placeholder">Top 10 數據載入中...</div>
-                    </div>
-                </div>
-            </section>
+            {% include 'components/rank_top10.html' %}
 
             <!-- 3) WLD -->
             <section id="wld" class="content-section">
