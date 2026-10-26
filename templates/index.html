@@ -27,43 +27,43 @@
                     <li>
                         <a href="#welcome" class="nav-btn active" onclick="switchTab('welcome')">
                             <i class="fa-solid fa-house"></i>
-                            <span>主頁概覽</span>
+                            <span>Main Page</span>
                         </a>
                     </li>
                     <li>
                         <a href="#match-stat" class="nav-btn" onclick="switchTab('match-stat')">
                             <i class="fa-solid fa-calendar-days"></i>
-                            <span>1) Match Stat.</span>
+                            <span>Match Stat.</span>
                         </a>
                     </li>
                     <li>
                         <a href="#rank-top20" class="nav-btn" onclick="switchTab('rank-top20')">
                             <i class="fa-solid fa-trophy"></i>
-                            <span>2) RANK TOP 20</span>
+                            <span>RANK TOP 20</span>
                         </a>
                     </li>
                     <li>
                         <a href="#wld" class="nav-btn" onclick="switchTab('wld')">
                             <i class="fa-solid fa-chart-pie"></i>
-                            <span>3) WLD (勝負和)</span>
+                            <span>WinLossDraw</span>
                         </a>
                     </li>
                     <li>
                         <a href="#gaoc" class="nav-btn" onclick="switchTab('gaoc')">
                             <i class="fa-solid fa-futbol"></i>
-                            <span>4) GAOC 數據</span>
+                            <span>G.A.O.S</span>
                         </a>
                     </li>
                     <li>
                         <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
                             <i class="fa-solid fa-user"></i>
-                            <span>5) Player Profile</span>
+                            <span>Player Profile</span>
                         </a>
                     </li>
                     <li>
                         <a href="#player-vs-player" class="nav-btn" onclick="switchTab('player-vs-player')">
                             <i class="fa-solid fa-users-between-lines"></i>
-                            <span>6) Player vs Player</span>
+                            <span>Player vs Player</span>
                         </a>
                     </li>
                 </ul>
@@ -81,10 +81,10 @@
             <section id="welcome" class="content-section active">
                 <div class="hero-welcome">
                     <div class="club-badge-large">
-                        <i class="fa-solid fa-shield-halved"></i>
+                        <img src="{{ url_for('static', filename='image/logo.png') }}" alt="WDF Logo" class="club-logo-large">
                     </div>
-                    <h1>歡迎來到 WDF 足球會數據戰情室</h1>
-                    <p class="subtitle">WDF Football Club Match Analytics & Player Statistics</p>
+                    <h1> 得閒足球會 Walking Daddy Football Club</h1>
+                    <p class="subtitle">WDF Club Match Analytics & Player Statistics</p>
                 </div>
 
                 <div class="quick-access-grid">

@@ -236,8 +236,16 @@ body {
 }
 
 
+/* 側邊欄小 LOGO 尺寸 */
 .club-logo {
-    width: 40px;       /* 依你的圖片實際比例調整寬度 */
-    height: 40px;      /* 保持高度或設為 auto */
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+/* 主頁大徽章尺寸 */
+.club-logo-large {
+    width: 88px;
+    height: 88px;
     object-fit: contain;
 }
