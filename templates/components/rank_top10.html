@@ -10,14 +10,18 @@
         /* 專屬內部三欄容器 */
         .rank-custom-grid {
             display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 20px !important;
+            flex-wrap: nowrap !important; /* 💡 關鍵：強制不換行，保持單行三欄 */
+            gap: 15px !important;
             justify-content: flex-start !important;
             margin-top: 15px !important;
+            overflow-x: auto !important;  /* 💡 關鍵：寬度不夠時自動開啟橫向滑動 */
+            padding-bottom: 12px !important; /* 留出滑動條視覺空間 */
+            -webkit-overflow-scrolling: touch; /* 💡 iOS 滑動體驗優化 (順暢滑動) */
         }
 
         .rank-card-box {
-            width: 320px !important;
+            width: 300px !important;      /* 稍微微調卡片寬度，適合手機滑動 */
+            flex-shrink: 0 !important;     /* 💡 關鍵：防止手機螢幕硬把卡片擠壓變形 */
             background: #1e293b !important;
             border-radius: 10px !important;
             padding: 14px !important;
@@ -76,6 +80,9 @@
     <div class="section-header">
         <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10</h2>
     </div>
+    <div class="rank-note">
+        <i class="fa-solid fa-circle-info"></i> 備註：所有 "%" 的排名, "Overall" & "9-a-side" 只計參與5場以上球員; 而7-a-side 只計參與3場以上球員。
+    </div>
 
     <!-- 獨立三欄流式佈局 (靠左對齊，寬度 320px) -->
     <div class="rank-custom-grid">
@@ -89,7 +96,7 @@
             </div>
             
             <div class="rank-sub-title">
-                Win (Overall)
+                Win
             </div>
             
             <div class="rank-table-header">
@@ -132,7 +139,7 @@
             </div>
             
             <div class="rank-sub-title">
-                Win (9-a-side)
+                Win
             </div>
 
             <div class="rank-table-header">
@@ -175,7 +182,7 @@
             </div>
             
             <div class="rank-sub-title">
-                Win (7-a-side)
+                Win
             </div>
 
             <div class="rank-table-header">
@@ -224,7 +231,7 @@
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">
-                Win% (Overall)
+                Win%
             </div>
             <div class="rank-table-header">
                 <span style="width: 35px; text-align: center;">RANK</span>
@@ -262,7 +269,7 @@
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">
-                Win% (9-a-side)
+                Win%
             </div>
             <div class="rank-table-header">
                 <span style="width: 35px; text-align: center;">RANK</span>
@@ -333,8 +340,6 @@
             </div>
         </div>
     </div>
-    <div class="rank-note">
-        <i class="fa-solid fa-circle-info"></i> 備註：Overall & 9-a-side 只計參與5場以上球員;7-a-side 只計參與3場以上球員。
-    </div>
+
 
 </section>
