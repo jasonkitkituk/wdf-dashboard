@@ -1,137 +1,340 @@
 <!-- templates/components/rank_top10.html -->
-<section id="rank-top10" class="content-section">
+<section id="rank-top10" class="content-section" style="width: 100%; min-height: 400px; display: none;">
+    
+    <style>
+        /* 確保當 section 被加進 active 時能正確顯示 */
+        #rank-top10.active {
+            display: block !important;
+        }
+
+        /* 專屬內部三欄容器 */
+        .rank-custom-grid {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 20px !important;
+            justify-content: flex-start !important;
+            margin-top: 15px !important;
+        }
+
+        .rank-card-box {
+            width: 320px !important;
+            background: #1e293b !important;
+            border-radius: 10px !important;
+            padding: 14px !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+            box-sizing: border-box !important;
+        }
+
+        .rank-card-header {
+            border-bottom: 2px solid var(--accent-color, #38bdf8) !important;
+            padding-bottom: 6px !important;
+            margin-bottom: 10px !important;
+        }
+
+        .rank-card-header h3 {
+            margin: 0 !important;
+            color: var(--accent-color, #38bdf8) !important;
+            font-size: 1rem !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        .rank-sub-title {
+            font-size: 0.92rem !important;
+            color: #b89e94 !important;
+            margin-bottom: 8px !important;
+            font-weight: bold !important;
+            text-align: center !important;
+        }
+        
+        .rank-table-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            padding: 4px 8px !important;
+            font-size: 0.75rem !important;
+            color: #94a3b8 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            margin-bottom: 6px !important;
+            font-weight: bold !important;
+        }
+
+        .rank-row-item {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            background: rgba(255, 255, 255, 0.04) !important;
+            padding: 6px 8px !important;
+            border-radius: 6px !important;
+            font-size: 0.82rem !important;
+            margin-bottom: 6px !important;
+            color: #f8fafc !important;
+        }
+    </style>
+
     <div class="section-header">
         <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10</h2>
     </div>
 
-    <!-- 調整 1：靠左對齊、寬度設定為 fit-content 或合適的最大寬度、縮小欄位間距 (gap) -->
-    <div class="three-column-grid" style="display: grid; grid-template-columns: repeat(3, 280px); gap: 15px; justify-content: start; margin: 0;">
+    <!-- 獨立三欄流式佈局 (靠左對齊，寬度 320px) -->
+    <div class="rank-custom-grid">
         
         <!-- ========================================== -->
-        <!-- 1. 左側大主題：OVERALL                      -->
+        <!-- 1. OVERALL                                 -->
         <!-- ========================================== -->
-        <div class="rank-topic-group" style="background: var(--surface-card, #1e293b); border-radius: 8px; padding: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div class="topic-header" style="border-bottom: 2px solid var(--accent-color); padding-bottom: 4px; margin-bottom: 6px;">
-                <h3 style="margin: 0; color: var(--accent-color); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-globe"></i> OVERALL
-                </h3>
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            
+            <div class="rank-sub-title">
+                Win (Overall)
+            </div>
+            
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player Name</span>
+                <span style="width: 45px; text-align: center;">Win</span>
+                <span style="width: 50px; text-align: center;">Apps</span>
             </div>
 
-            <!-- 子表格 1：Overall Win 排行榜 -->
-            <div class="sub-table-container">
-                <h4 style="margin: 0 0 4px 0; font-size: 0.75rem; color: var(--text-secondary, #94a3b8);">Win (Overall)</h4>
-                <table class="data-table rank-table" style="width: 100%; font-size: 0.75rem; margin-bottom: 4px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%; text-align: center; padding: 3px 4px;">Rank</th>
-                            <th style="padding: 3px 4px;">Player Name</th>
-                            <th style="width: 20%; text-align: center; padding: 3px 4px;">Win</th>
-                            <th style="width: 25%; text-align: center; padding: 3px 4px;">Apps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rank_overall and rank_overall|length > 0 %}
-                            {% for row in rank_overall %}
-                            <tr>
-                                <td style="text-align: center; font-weight: bold; padding: 2px 4px;">{{ row.rank }}</td>
-                                <td style="padding: 2px 4px;">{{ row.player_name }}</td>
-                                <td style="text-align: center; padding: 2px 4px;">{{ row.wins }}</td>
-                                <td style="text-align: center; padding: 2px 4px;">{{ row.appearances }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 4px;">尚無數據</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+            <div class="rank-list-body">
+                {% if rank_overall and rank_overall|length > 0 %}
+                    {% for row in rank_overall %}
+                    <div class="rank-row-item">
+                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                            {{ row.rank }}
+                        </span>
+                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" title="{{ row.player_name }}">
+                            {{ row.player_name }}
+                        </span>
+                        <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
+                            {{ row.wins }}
+                        </span>
+                        <span style="width: 50px; text-align: center; color: #94a3b8;">
+                            {{ row.appearances }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>
+                {% endif %}
             </div>
         </div>
 
         <!-- ========================================== -->
-        <!-- 2. 中間大主題：9-A-SIDE                     -->
+        <!-- 2. 9-A-SIDE                                -->
         <!-- ========================================== -->
-        <div class="rank-topic-group" style="background: var(--surface-card, #1e293b); border-radius: 8px; padding: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div class="topic-header" style="border-bottom: 2px solid var(--accent-color); padding-bottom: 4px; margin-bottom: 6px;">
-                <h3 style="margin: 0; color: var(--accent-color); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-users"></i> 9-A-SIDE
-                </h3>
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            
+            <div class="rank-sub-title">
+                Win (9-a-side)
             </div>
 
-            <!-- 子表格 1：9-a-side Win 排行榜 -->
-            <div class="sub-table-container">
-                <h4 style="margin: 0 0 4px 0; font-size: 0.75rem; color: var(--text-secondary, #94a3b8);">Win (9-a-side)</h4>
-                <table class="data-table rank-table" style="width: 100%; font-size: 0.75rem; margin-bottom: 4px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%; text-align: center; padding: 3px 4px;">Rank</th>
-                            <th style="padding: 3px 4px;">Player Name</th>
-                            <th style="width: 20%; text-align: center; padding: 3px 4px;">Win</th>
-                            <th style="width: 25%; text-align: center; padding: 3px 4px;">Apps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rank_9side and rank_9side|length > 0 %}
-                            {% for row in rank_9side %}
-                            <tr>
-                                <td style="text-align: center; font-weight: bold; padding: 2px 4px;">{{ row.rank }}</td>
-                                <td style="padding: 2px 4px;">{{ row.player_name }}</td>
-                                <td style="text-align: center; padding: 2px 4px;">{{ row.wins }}</td>
-                                <td style="text-align: center; padding: 2px 4px;">{{ row.appearances }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 4px;">尚無數據</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player Name</span>
+                <span style="width: 45px; text-align: center;">Win</span>
+                <span style="width: 50px; text-align: center;">Apps</span>
+            </div>
+
+            <div class="rank-list-body">
+                {% if rank_9side and rank_9side|length > 0 %}
+                    {% for row in rank_9side %}
+                    <div class="rank-row-item">
+                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                            {{ row.rank }}
+                        </span>
+                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" title="{{ row.player_name }}">
+                            {{ row.player_name }}
+                        </span>
+                        <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
+                            {{ row.wins }}
+                        </span>
+                        <span style="width: 50px; text-align: center; color: #94a3b8;">
+                            {{ row.appearances }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>
+                {% endif %}
             </div>
         </div>
 
         <!-- ========================================== -->
-        <!-- 3. 右邊大主題：7-A-SIDE                     -->
+        <!-- 3. 7-A-SIDE                                -->
         <!-- ========================================== -->
-        <div class="rank-topic-group" style="background: var(--surface-card, #1e293b); border-radius: 8px; padding: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div class="topic-header" style="border-bottom: 2px solid var(--accent-color); padding-bottom: 4px; margin-bottom: 6px;">
-                <h3 style="margin: 0; color: var(--accent-color); font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-user-group"></i> 7-A-SIDE
-                </h3>
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            
+            <div class="rank-sub-title">
+                Win (7-a-side)
             </div>
 
-            <!-- 子表格 1：7-a-side Win 排行榜 -->
-            <div class="sub-table-container">
-                <h4 style="margin: 0 0 4px 0; font-size: 0.75rem; color: var(--text-secondary, #94a3b8);">Win (7-a-side)</h4>
-                <table class="data-table rank-table" style="width: 100%; font-size: 0.75rem; margin-bottom: 4px;">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%; text-align: center; padding: 3px 4px;">Rank</th>
-                            <th style="padding: 3px 4px;">Player Name</th>
-                            <th style="width: 20%; text-align: center; padding: 3px 4px;">Win</th>
-                            <th style="width: 25%; text-align: center; padding: 3px 4px;">Apps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if rank_7side and rank_7side|length > 0 %}
-                            {% for row in rank_7side %}
-                            <tr>
-                                <td style="text-align: center; font-weight: bold; padding: 2px 4px;">{{ row.rank }}</td>
-                                <td style="padding: 2px 4px;">{{ row.player_name }}</td>
-                                <td style="text-align: center; padding: 2px 4px;">{{ row.wins }}</td>
-                                <td style="text-align: center; padding: 2px 4px;">{{ row.appearances }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 4px;">尚無數據</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player Name</span>
+                <span style="width: 45px; text-align: center;">Win</span>
+                <span style="width: 50px; text-align: center;">Apps</span>
+            </div>
+
+            <div class="rank-list-body">
+                {% if rank_7side and rank_7side|length > 0 %}
+                    {% for row in rank_7side %}
+                    <div class="rank-row-item">
+                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                            {{ row.rank }}
+                        </span>
+                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" title="{{ row.player_name }}">
+                            {{ row.player_name }}
+                        </span>
+                        <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
+                            {{ row.wins }}
+                        </span>
+                        <span style="width: 50px; text-align: center; color: #94a3b8;">
+                            {{ row.appearances }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>
+                {% endif %}
             </div>
         </div>
-
     </div>
+
+    <!-- =================================================================== -->
+    <!-- 下半部：2. WIN% 排行榜 (勝率排行榜, 最少6場 & Active)               -->
+    <!-- =================================================================== -->
+
+   
+    
+    <!-- WIN% 排行榜：三欄區域 -->
+    <div class="rank-custom-grid">
+        <!-- 2.1 OVERALL WIN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">
+                Win% (Overall)
+            </div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">RANK</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player NAME</span>
+                <span style="width: 60px; text-align: center;">Win%</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body">
+                {% if winpct_overall and winpct_overall|length > 0 %}
+                    {% for row in winpct_overall %}
+                    <div class="rank-row-item">
+                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                            {{ row.rank }}
+                        </span>
+                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="{{ row.player_name }}">
+                            {{ row.player_name }}
+                        </span>
+                        <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                            {{ "%.2f"|format(row.win_pct) }}%
+                        </span>
+                        <span style="width: 45px; text-align: center; color: #94a3b8;">
+                            {{ row.appearances }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (需至少參與6場)</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 2.2 9-A-SIDE WIN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">
+                Win% (9-a-side)
+            </div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">RANK</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player NAME</span>
+                <span style="width: 60px; text-align: center;">Win%</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body">
+                {% if winpct_9side and winpct_9side|length > 0 %}
+                    {% for row in winpct_9side %}
+                    <div class="rank-row-item">
+                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                            {{ row.rank }}
+                        </span>
+                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="{{ row.player_name }}">
+                            {{ row.player_name }}
+                        </span>
+                        <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                            {{ "%.2f"|format(row.win_pct) }}%
+                        </span>
+                        <span style="width: 45px; text-align: center; color: #94a3b8;">
+                            {{ row.appearances }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (需至少參與6場)</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 2.3 7-A-SIDE WIN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+
+            <div class="rank-sub-title">
+                Win%
+            </div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">RANK</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player NAME</span>
+                <span style="width: 60px; text-align: center;">Win%</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body">
+                {% if winpct_7side and winpct_7side|length > 0 %}
+                    {% for row in winpct_7side %}
+                    <div class="rank-row-item">
+                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                            {{ row.rank }}
+                        </span>
+                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="{{ row.player_name }}">
+                            {{ row.player_name }}
+                        </span>
+                        <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                            {{ "%.2f"|format(row.win_pct) }}%
+                        </span>
+                        <span style="width: 45px; text-align: center; color: #94a3b8;">
+                            {{ row.appearances }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (需至少參與6場)</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="rank-note">
+        <i class="fa-solid fa-circle-info"></i> 備註：Overall & 9-a-side 只計參與5場以上球員;7-a-side 只計參與3場以上球員。
+    </div>
+
 </section>

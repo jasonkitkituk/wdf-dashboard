@@ -45,13 +45,22 @@ def index():
 
         # 2. 讀取並執行 Rank Top 20 (Most Wins) 的 SQL
         cur.execute(load_sql_query('rank_win_overall.sql'))
-        rank_overall = cur.fetchall()
+        rank_win_overall = cur.fetchall()
 
         cur.execute(load_sql_query('rank_win_9aside.sql'))
-        rank_9side = cur.fetchall()
+        rank_win_9side = cur.fetchall()
 
         cur.execute(load_sql_query('rank_win_7aside.sql'))
-        rank_7side = cur.fetchall()
+        rank_win_7side = cur.fetchall()
+
+        cur.execute(load_sql_query('rank_winpct_overall.sql'))
+        rank_winpct_overall = cur.fetchall()
+
+        cur.execute(load_sql_query('rank_winpct_9aside.sql'))
+        rank_winpct_9side = cur.fetchall()
+
+        cur.execute(load_sql_query('rank_winpct_7aside.sql'))
+        rank_winpct_7side = cur.fetchall()
         
         cur.close()
         conn.close()
@@ -63,9 +72,12 @@ def index():
         'index.html', 
         format_stats=format_stats, 
         team_stats=team_stats,
-        rank_overall=rank_overall,
-        rank_9side=rank_9side,
-        rank_7side=rank_7side
+        rank_overall=rank_win_overall,
+        rank_9side=rank_win_9side,
+        rank_7side=rank_win_7side,
+        winpct_overall=rank_winpct_overall,
+        winpct_9side=rank_winpct_9side,
+        winpct_7side=rank_winpct_7side
     )
 
 
