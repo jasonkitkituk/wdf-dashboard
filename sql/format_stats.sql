@@ -17,12 +17,16 @@ stat_sums AS (
         
         COALESCE(SUM(CASE WHEN m.pitch_aside = 9 THEN pms.own_goals ELSE 0 END), 0) as og_9,
         COALESCE(SUM(CASE WHEN m.pitch_aside = 7 THEN pms.own_goals ELSE 0 END), 0) as og_7,
-        COALESCE(SUM(pms.own_goals), 0) as og_overall,
-        
-        COALESCE(SUM(CASE WHEN m.pitch_aside = 9 AND pms.clean_sheet = TRUE THEN 1 ELSE 0 END), 0) as cs_9,
-        COALESCE(SUM(CASE WHEN m.pitch_aside = 7 AND pms.clean_sheet = TRUE THEN 1 ELSE 0 END), 0) as cs_7,
-        COALESCE(SUM(CASE WHEN pms.clean_sheet = TRUE THEN 1 ELSE 0 END), 0) as cs_overall
+        COALESCE(SUM(pms.own_goals), 0) as og_overall
     FROM public.player_match_stats pms
     JOIN public.matches m ON pms.match_id = m.id
+),
+clean_sheet_sums AS (
+    SELECT 
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 9 AND mt.goals_conceded = 0 THEN 1 ELSE 0 END), 0) as cs_9,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 7 AND mt.goals_conceded = 0 THEN 1 ELSE 0 END), 0) as cs_7,
+        COALESCE(SUM(CASE WHEN mt.goals_conceded = 0 THEN 1 ELSE 0 END), 0) as cs_overall
+    FROM public.match_teams mt
+    JOIN public.matches m ON mt.match_id = m.id
 )
-SELECT * FROM match_counts, stat_sums; 
+SELECT * FROM match_counts, stat_sums, clean_sheet_sums;
