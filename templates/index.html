@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>WDF 足球數據戰情室</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>⚽ WDF 足球數據戰情室</h1>
+            <p>Custom Flask Backend Dashboard</p>
+        </header>
+
+        <!-- 模式切換按鈕 -->
+        <div class="nav-buttons">
+            <a href="/?type=7" class="btn {% if match_type == '7' %}active{% endif %}">7-A-Side 數據</a>
+            <a href="/?type=9" class="btn {% if match_type == '9' %}active{% endif %}">9-A-Side 數據</a>
+        </div>
+
+        <div class="content-card">
+            <h2>目前檢視模式：<span>{{ match_type }}</span></h2>
+
+            <!-- 數據表格 -->
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>場次/日期</th>
+                        <th>球員名稱</th>
+                        <th>進球</th>
+                        <th>助攻</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if rows %}
+                        {% for row in rows %}
+                        <tr>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="no-data">目前沒有找到相關數據，或資料庫連線檢查中。</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
