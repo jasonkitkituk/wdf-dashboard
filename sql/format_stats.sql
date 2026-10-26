@@ -7,21 +7,21 @@ WITH match_counts AS (
 ),
 stat_sums AS (
     SELECT 
-        SUM(CASE WHEN m.pitch_aside = 9 THEN pms.goals ELSE 0 END) as goals_9,
-        SUM(CASE WHEN m.pitch_aside = 7 THEN pms.goals ELSE 0 END) as goals_7,
-        SUM(pms.goals) as goals_overall,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 9 THEN pms.goals ELSE 0 END), 0) as goals_9,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 7 THEN pms.goals ELSE 0 END), 0) as goals_7,
+        COALESCE(SUM(pms.goals), 0) as goals_overall,
         
-        SUM(CASE WHEN m.pitch_aside = 9 THEN pms.assists ELSE 0 END) as assists_9,
-        SUM(CASE WHEN m.pitch_aside = 7 THEN pms.assists ELSE 0 END) as assists_7,
-        SUM(pms.assists) as assists_overall,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 9 THEN pms.assists ELSE 0 END), 0) as assists_9,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 7 THEN pms.assists ELSE 0 END), 0) as assists_7,
+        COALESCE(SUM(pms.assists), 0) as assists_overall,
         
-        SUM(CASE WHEN m.pitch_aside = 9 THEN pms.own_goals ELSE 0 END) as og_9,
-        SUM(CASE WHEN m.pitch_aside = 7 THEN pms.own_goals ELSE 0 END) as og_7,
-        SUM(pms.own_goals) as og_overall,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 9 THEN pms.own_goals ELSE 0 END), 0) as og_9,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 7 THEN pms.own_goals ELSE 0 END), 0) as og_7,
+        COALESCE(SUM(pms.own_goals), 0) as og_overall,
         
-        SUM(CASE WHEN m.pitch_aside = 9 AND pms.clean_sheet = TRUE THEN 1 ELSE 0 END) as cs_9,
-        SUM(CASE WHEN m.pitch_aside = 7 AND pms.clean_sheet = TRUE THEN 1 ELSE 0 END) as cs_7,
-        SUM(pms.clean_sheet = TRUE::integer) as cs_overall
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 9 AND pms.clean_sheet = TRUE THEN 1 ELSE 0 END), 0) as cs_9,
+        COALESCE(SUM(CASE WHEN m.pitch_aside = 7 AND pms.clean_sheet = TRUE THEN 1 ELSE 0 END), 0) as cs_7,
+        COALESCE(SUM(CASE WHEN pms.clean_sheet = TRUE THEN 1 ELSE 0 END), 0) as cs_overall
     FROM public.player_match_stats pms
     JOIN public.matches m ON pms.match_id = m.id
 )
