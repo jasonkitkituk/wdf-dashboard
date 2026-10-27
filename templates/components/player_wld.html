@@ -1,0 +1,46 @@
+<div class="wld-controls" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+    
+    <!-- 1. 模式切換：Overall / 9-a-side / 7-a-side -->
+    <div>
+        <label style="color: #94a3b8; font-size: 0.85rem;">賽制類型：</label>
+        <select id="asideFilter" onchange="reloadWLDTable()" style="background: #1e293b; color: #fff; padding: 6px; border-radius: 6px; border: 1px solid #475569;">
+            <option value="all">Overall (全部)</option>
+            <option value="9">9-a-side (9人制)</option>
+            <option value="7">7-a-side (7人制)</option>
+        </select>
+    </div>
+
+    <!-- 2. 第一排序選擇 -->
+    <div>
+        <label style="color: #94a3b8; font-size: 0.85rem;">主要排序 (1st)：</label>
+        <select id="sort1" onchange="reloadWLDTable()" style="...">
+            <option value="point:desc">Point (高至低)</option>
+            <option value="win:desc">Win (高至低)</option>
+            <option value="win_pct:desc">Win% (高至低)</option>
+            <option value="avg_point:desc">Avg Point (高至低)</option>
+            <option value="total:desc">Total (高至低)</option>
+        </select>
+    </div>
+
+    <!-- 3. 第二排序選擇 -->
+    <div>
+        <label style="color: #94a3b8; font-size: 0.85rem;">次要排序 (2nd)：</label>
+        <select id="sort2" onchange="reloadWLDTable()" style="...">
+            <option value="avg_point:desc">Avg Point (高至低)</option>
+            <option value="point:desc">Point (高至低)</option>
+            <option value="win:desc">Win (高至低)</option>
+            <option value="total:desc" selected>Total (高至低)</option>
+        </select>
+    </div>
+
+    <!-- 4. 第三排序選擇 -->
+    <div>
+        <label style="color: #94a3b8; font-size: 0.85rem;">第三排序 (3rd)：</label>
+        <select id="sort3" onchange="reloadWLDTable()" style="...">
+            <option value="total:desc">Total (高至低)</option>
+            <option value="player_name:asc">Player Name (A-Z)</option>
+            <option value="win:desc">Win (高至低)</option>
+        </select>
+    </div>
+
+</div>

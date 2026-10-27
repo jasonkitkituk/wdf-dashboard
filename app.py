@@ -81,6 +81,56 @@ def index():
     )
 
 
+@app.route('/player-wld-stats')
+def player_wld_stats():
+    # 1. 取得前端傳來的參數（預設為 overall 與依 point 排序）
+    aside = request.args.get('aside', 'all')  # 可選 'all', '9', '7'
+    
+    # 用戶最多可以選三個排序欄位與方向 (例如 sort1=point:desc, sort2=win:desc, sort3=total:desc)
+    sort_1 = request.args.get('sort1', 'point:desc')
+    sort_2 = request.args.get('sort2', 'avg_point:desc')
+    sort_3 = request.args.get('sort3', 'total:desc')
+
+    # 2. 建立合法欄位白名單 (防止 SQL Injection)
+    allowed_columns = {
+        'player_name': 'pl.name',
+        'win': 'win',
+        'draw': 'draw',
+        'lose': 'lose',
+        'total': 'total',
+        'unbeaten': 'unbeaten',
+        'point': 'point',
+        'avg_point': 'avg_point',
+        'win_pct': 'win_pct',
+        'draw_pct': 'draw_pct',
+        'lose_pct': 'lose_pct',
+        'unbeaten_pct': 'unbeaten_pct'
+    }
+
+    def parse_sort_param(sort_str):
+        parts = sort_str.split(':')
+        col = parts[0] if parts[0] in allowed_columns else 'point'
+        direction = parts[1].upper() if len(parts) > 1 and parts[1].upper() in ['ASC', 'DESC'] else 'DESC'
+        return allowed_columns[col], direction
+
+    col1, dir1 = parse_sort_param(sort_1)
+    col2, dir2 = parse_sort_param(sort_2)
+    col3, dir3 = parse_sort_param(sort_3)
+
+    # 3. 讀取並動態組合 SQL
+    with open('sql/player_wld_dynamic.sql', 'r') as f:
+        sql_query = f.read()
+
+    formatted_sql = sql_query.format(
+        sort_col_1=col1, sort_dir_1=dir1,
+        sort_col_2=col2, sort_dir_2=dir2,
+        sort_col_3=col3, sort_dir_3=dir3
+    )
+
+    # 4. 執行查詢並回傳給前端 (以 Supabase 或 Psycopg2 為例)
+    # 傳入 aside 參數：若是 overall 傳 'all'，9-a-side 傳 9，7-a-side 傳 7
+    # ...執行查詢邏輯...
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
