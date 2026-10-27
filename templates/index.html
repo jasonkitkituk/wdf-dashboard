@@ -11,10 +11,9 @@
 <body>
 
     <div class="dashboard-wrapper">
-        <!-- 左側導覽列 (佔比約 15%) -->
-        <aside class="sidebar">
+        <!-- 🔝 頂部導覽列 (Top Navigation Bar - 佔上方 8-10%) -->
+        <header class="top-navbar">
             <div class="logo-container">
-                <!-- 指向 static/image/logo.png -->
                 <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo">
                 <div class="logo-text">
                     <h2>WDF</h2>
@@ -51,7 +50,7 @@
                     <li>
                         <a href="#gaos" class="nav-btn" onclick="switchTab('gaos')">
                             <i class="fa-solid fa-futbol"></i>
-                            <span>G.A.O.C</span>
+                            <span>G.A.O.S</span>
                         </a>
                     </li>
                     <li>
@@ -69,16 +68,12 @@
                 </ul>
             </nav>
             
-            <div class="sidebar-footer">
-                <!-- 💡 新增這行：顯示 Data 截至日期範圍 -->
-                <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 6px; line-height: 1.3;">
-                    📊 Data from {{ date_range.from_date }} to {{ date_range.end_date }}
-                </div>
-                <p>&copy; 2026 WDF Club</p>
+            <div class="navbar-footer-info">
+                <span>📊 Data: {{ date_range.from_date }} ~ {{ date_range.end_date }}</span>
             </div>
-        </aside>
+        </header>
 
-        <!-- 右側主內容區域 (~85%) -->
+        <!-- 🖥️ 主內容區域 (下方佔滿寬度) -->
         <main class="main-content">
             
             <!-- 0) 起始 Welcome 頁面 (包含 Club Logo) -->
@@ -111,7 +106,7 @@
                     </div>
                     <div class="card" onclick="switchTab('gaos')">
                         <i class="fa-solid fa-futbol card-icon"></i>
-                        <h3>G.A.O.C </h3>
+                        <h3>G.A.O.S </h3>
                         <p>Goal + Assist + Own Goal + Clean Sheet </p>
                     </div>
                     <div class="card" onclick="switchTab('player-profile')">
@@ -138,7 +133,7 @@
                 {% include 'components/player_wld.html' %}
             </section>
 
-            <!-- 4) GAOC -->
+            <!-- 4) GAOS -->
             <section id="gaos" class="content-section">
                 {% include 'components/player_gaos.html' %}
             </section>
@@ -212,26 +207,6 @@
                 activeBtn.classList.add('active');
             }
         }
-
-        function switchSection(sectionId, btnElement) {
-            // 隱藏所有 content-section
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // 移除所有按鈕的 active 樣式
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // 顯示目標區塊並點亮按鈕
-            document.getElementById(sectionId).classList.add('active');
-            if (btnElement) {
-                btnElement.classList.add('active');
-            }
-        }
-
-
     </script>
 </body>
 </html>

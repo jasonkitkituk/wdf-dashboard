@@ -1,7 +1,7 @@
 :root {
-    --sidebar-width: 220px; /* 約 15% - 18% 畫面寬度 */
     --bg-dark: #0f172a;
     --bg-card: #1e293b;
+    --bg-navbar: #020617;
     --accent-color: #0284c7;
     --accent-hover: #0369a1;
     --text-primary: #f8fafc;
@@ -25,93 +25,98 @@ body {
 
 .dashboard-wrapper {
     display: flex;
+    flex-direction: column; /* 改為上下排列 */
     min-height: 100vh;
 }
 
-/* ================= 1. 左側 Navigation (15%) ================= */
-.sidebar {
-    width: var(--sidebar-width);
-    background-color: #020617;
-    border-right: 1px solid var(--border-color);
+/* ================= 1. 頂部 Navigation Bar (約佔 8-10% 高度) ================= */
+.top-navbar {
+    background-color: var(--bg-navbar);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100vh;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    position: sticky;
+    top: 0;
     z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .logo-container {
-    padding: 24px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid var(--border-color);
+    gap: 10px;
 }
 
-.logo-icon {
-    font-size: 2rem;
-    color: var(--accent-color);
+.club-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
 }
 
 .logo-text h2 {
     font-size: 1.1rem;
     font-weight: 800;
     letter-spacing: 1px;
+    line-height: 1.1;
 }
 
 .logo-text span {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-secondary);
 }
 
 .nav-menu {
-    flex: 1;
-    padding: 16px 0;
-    overflow-y: auto;
+    display: flex;
+    align-items: center;
 }
 
 .nav-menu ul {
     list-style: none;
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-btn {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
+    gap: 8px;
+    padding: 8px 14px;
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     transition: all 0.2s ease;
-    border-left: 4px solid transparent;
+    border-radius: 6px;
+    border-left: none;
 }
 
 .nav-btn:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
 }
 
 .nav-btn.active {
-    background-color: rgba(2, 132, 199, 0.15);
-    color: var(--accent-color);
-    border-left-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: #ffffff;
 }
 
-.sidebar-footer {
-    padding: 16px;
-    font-size: 0.75rem;
+.navbar-footer-info {
+    font-size: 0.72rem;
     color: var(--text-secondary);
-    border-top: 1px solid var(--border-color);
-    text-align: center;
+    white-space: nowrap;
 }
 
-/* ================= 2. 右側 Content Area (~85%) ================= */
+/* ================= 2. 下方 Content Area (滿版頁面) ================= */
 .main-content {
-    margin-left: var(--sidebar-width);
+    margin-left: 0; /* 移除原本側邊欄留白 */
     flex: 1;
-    padding: 32px;
+    padding: 24px 32px;
     background-color: var(--bg-dark);
+    width: 100%;
 }
 
 .content-section {
@@ -235,13 +240,6 @@ body {
     border-radius: 20px;
 }
 
-/* 側邊欄小 LOGO 尺寸 */
-.club-logo {
-    width: 38px;
-    height: 38px;
-    object-fit: contain;
-}
-
 /* 主頁大徽章尺寸 */
 .club-logo-large {
     width: 88px;
@@ -275,15 +273,14 @@ body {
 
 .data-table th, 
 .data-table td {
-    padding: 18px 50px !important; /* Cell 寬度與高度大幅加寬 */
+    padding: 18px 50px !important;
     min-width: 130px;
     text-align: center;
     font-size: 1rem;
-    border-right: 2px solid #475569 !important; /* 儲存格右邊框 */
-    border-bottom: 2px solid #475569 !important; /* 儲存格下邊框 */
+    border-right: 2px solid #475569 !important;
+    border-bottom: 2px solid #475569 !important;
 }
 
-/* 移除最後一欄與最後一列多餘的雙重邊框 */
 .data-table th:last-child,
 .data-table td:last-child {
     border-right: none !important;
@@ -293,14 +290,12 @@ body {
     border-bottom: none !important;
 }
 
-/* 第一張表格預設表頭 */
 .data-table th {
     background-color: #0f172a;
     color: var(--accent-color);
     font-weight: 700;
 }
 
-/* 第一張表格預設內容底色 */
 .data-table td {
     background-color: #1e293b;
     color: #f8fafc;
@@ -311,51 +306,47 @@ body {
     font-weight: 600;
 }
 
-
 /* ================= Team Color Table (第二個表格專屬顏色) ================= */
 
-/* Row 1: 表頭 <thead> 各顏色 Cell 的獨立配色 */
 .team-color-table thead tr th:nth-child(1) {
-    background-color: #0f172a !important; /* 戰果/顏色 標題欄 */
+    background-color: #0f172a !important;
     color: var(--accent-color) !important;
 }
 
 .team-color-table thead tr th:nth-child(2) {
-    background-color: #000000 !important; /* Black */
+    background-color: #000000 !important;
     color: #ffffff !important;
 }
 
 .team-color-table thead tr th:nth-child(3) {
-    background-color: #ffffff !important; /* White */
+    background-color: #ffffff !important;
     color: #000000 !important;
 }
 
 .team-color-table thead tr th:nth-child(4) {
-    background-color: #1e3a8a !important; /* Blue (深藍) */
+    background-color: #1e3a8a !important;
     color: #ffffff !important;
 }
 
 .team-color-table thead tr th:nth-child(5) {
-    background-color: #dc2626 !important; /* Red (紅) */
-    color: #facc15 !important;            /* 文字深黃/金黃 */
+    background-color: #dc2626 !important;
+    color: #facc15 !important;
 }
 
 .team-color-table thead tr th:nth-child(6) {
-    background-color: #16a34a !important; /* Green (綠) */
+    background-color: #16a34a !important;
     color: #000000 !important;
 }
 
-/* Row 1 (Win), Row 2 (Draw), Row 3 (Lose)：淺黃色背景 */
 .team-color-table tbody tr:nth-child(1) td,
 .team-color-table tbody tr:nth-child(2) td,
 .team-color-table tbody tr:nth-child(3) td {
-    background-color: #fef9c3 !important; /* 柔和淺黃色 */
-    color: #0f172a !important;            /* 深色文字 */
+    background-color: #fef9c3 !important;
+    color: #0f172a !important;
 }
 
-/* Row 4 (Total)：較深黃色背景 */
 .team-color-table tbody tr:nth-child(4) td {
-    background-color: #fde047 !important; /* 較深黃色 */
-    color: #0f172a !important;            /* 深色文字 */
+    background-color: #fde047 !important;
+    color: #0f172a !important;
     font-weight: 800 !important;
 }
