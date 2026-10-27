@@ -1,7 +1,12 @@
 import os
 from flask import Flask, render_template, request
+from flask import request, jsonify
 import psycopg2
 import psycopg2.extras
+
+
+
+
 
 app = Flask(__name__)
 
@@ -28,10 +33,24 @@ def index():
     rank_overall = []
     rank_9side = []
     rank_7side = []
-    
+    rank_winpct_overall = []
+    rank_winpct_9side = []
+    rank_winpct_7side = []
+
+    # 💡 宣告變數儲存資料日期範圍預設值
+    date_range = {"from_date": "N/A", "end_date": "N/A"}
+
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+
+        # 0. 查詢 matches 表格最早與最遲的日期
+        cur.execute("SELECT MIN(match_date) AS min_date, MAX(match_date) AS max_date FROM matches;")
+        date_res = cur.fetchone()
+        if date_res and date_res.get('min_date') and date_res.get('max_date'):
+            # 💡 將日期格式化為 DD-MMM-YYYY (例如: 27-Nov-2025)
+            date_range["from_date"] = date_res['min_date'].strftime('%d-%b-%Y')
+            date_range["end_date"] = date_res['max_date'].strftime('%d-%b-%Y')
         
         # 1. 讀取並執行第一個 SQL (format_stats.sql)
         sql_format = load_sql_query('format_stats.sql')
@@ -77,21 +96,18 @@ def index():
         rank_7side=rank_win_7side,
         winpct_overall=rank_winpct_overall,
         winpct_9side=rank_winpct_9side,
-        winpct_7side=rank_winpct_7side
+        winpct_7side=rank_winpct_7side,
+        date_range=date_range
     )
 
 
-@app.route('/player-wld-stats')
-def player_wld_stats():
-    # 1. 取得前端傳來的參數（預設為 overall 與依 point 排序）
-    aside = request.args.get('aside', 'all')  # 可選 'all', '9', '7'
-    
-    # 用戶最多可以選三個排序欄位與方向 (例如 sort1=point:desc, sort2=win:desc, sort3=total:desc)
-    sort_1 = request.args.get('sort1', 'point:desc')
-    sort_2 = request.args.get('sort2', 'avg_point:desc')
-    sort_3 = request.args.get('sort3', 'total:desc')
+@app.route('/api/player-wld')
+def api_player_wld():
+    aside = request.args.get('aside', 'all')
+    sort1 = request.args.get('sort1', 'point:desc')
+    sort2 = request.args.get('sort2', 'avg_point:desc')
+    sort3 = request.args.get('sort3', 'total:desc')
 
-    # 2. 建立合法欄位白名單 (防止 SQL Injection)
     allowed_columns = {
         'player_name': 'pl.name',
         'win': 'win',
@@ -107,29 +123,84 @@ def player_wld_stats():
         'unbeaten_pct': 'unbeaten_pct'
     }
 
-    def parse_sort_param(sort_str):
+    def parse_sort(sort_str):
         parts = sort_str.split(':')
-        col = parts[0] if parts[0] in allowed_columns else 'point'
+        col_key = parts[0] if parts[0] in allowed_columns else 'point'
         direction = parts[1].upper() if len(parts) > 1 and parts[1].upper() in ['ASC', 'DESC'] else 'DESC'
-        return allowed_columns[col], direction
+        return allowed_columns[col_key], direction
 
-    col1, dir1 = parse_sort_param(sort_1)
-    col2, dir2 = parse_sort_param(sort_2)
-    col3, dir3 = parse_sort_param(sort_3)
+    col1, dir1 = parse_sort(sort1)
+    col2, dir2 = parse_sort(sort2)
+    col3, dir3 = parse_sort(sort3)
 
-    # 3. 讀取並動態組合 SQL
-    with open('sql/player_wld_dynamic.sql', 'r') as f:
-        sql_query = f.read()
+    # 💡 根據賽制類型動態設定「最小參與場數門檻」與過濾條件
+    min_games = 3 if aside == '7' else 6
+    
+    aside_condition = ""
+    query_params = []
+    
+    if aside in ['7', '9']:
+        aside_condition = "AND m.pitch_aside = %s"
+        query_params.append(int(aside))
 
-    formatted_sql = sql_query.format(
-        sort_col_1=col1, sort_dir_1=dir1,
-        sort_col_2=col2, sort_dir_2=dir2,
-        sort_col_3=col3, sort_dir_3=dir3
-    )
+    sql_query = f"""
+        SELECT 
+            pl.id AS player_id,
+            pl.name AS player_name,
+            SUM(CASE WHEN mt.result = 'Win' THEN 1 ELSE 0 END) AS win,
+            SUM(CASE WHEN mt.result = 'Draw' THEN 1 ELSE 0 END) AS draw,
+            SUM(CASE WHEN mt.result = 'Lose' THEN 1 ELSE 0 END) AS lose,
+            COUNT(pms.match_id) AS total,
+            SUM(CASE WHEN mt.result IN ('Win', 'Draw') THEN 1 ELSE 0 END) AS unbeaten,
+            SUM(CASE 
+                WHEN mt.result = 'Win' THEN 3 
+                WHEN mt.result = 'Draw' THEN 1 
+                ELSE 0 
+            END) AS point,
+            
+            -- 💡 依據選定的賽制使用對應的門檻值 (7-a-side 為 3場，其餘為 6場)
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND(SUM(CASE WHEN mt.result = 'Win' THEN 3 WHEN mt.result = 'Draw' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0), 2) ELSE NULL END AS avg_point,
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((SUM(CASE WHEN mt.result = 'Win' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)) * 100, 2) ELSE NULL END AS win_pct,
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((SUM(CASE WHEN mt.result = 'Draw' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)) * 100, 2) ELSE NULL END AS draw_pct,
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((SUM(CASE WHEN mt.result = 'Lose' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)) * 100, 2) ELSE NULL END AS lose_pct,
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((SUM(CASE WHEN mt.result IN ('Win', 'Draw') THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)) * 100, 2) ELSE NULL END AS unbeaten_pct
 
-    # 4. 執行查詢並回傳給前端 (以 Supabase 或 Psycopg2 為例)
-    # 傳入 aside 參數：若是 overall 傳 'all'，9-a-side 傳 9，7-a-side 傳 7
-    # ...執行查詢邏輯...
+        FROM 
+            player_match_stats pms
+        JOIN 
+            players pl ON pms.player_id = pl.id
+        JOIN 
+            match_teams mt ON pms.match_id = mt.match_id AND pms.team_color = mt.team_color
+        JOIN 
+            matches m ON pms.match_id = m.id
+        WHERE 
+            pl.is_active = true
+            {aside_condition}
+        GROUP BY 
+            pl.id, pl.name
+        HAVING 
+            COUNT(pms.match_id) > 0
+        ORDER BY 
+            {col1} {dir1} NULLS LAST,
+            {col2} {dir2} NULLS LAST,
+            {col3} {dir3} NULLS LAST;
+    """
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute(sql_query, tuple(query_params))
+        rows = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+        
+        return jsonify(rows)
+
+    except Exception as e:
+        print(f"Error in /api/player-wld: {e}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))

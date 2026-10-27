@@ -1,49 +1,299 @@
-<section>
-    <div class="wld-controls" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+<!-- templates/components/player_wld.html -->
+<div id="player-wld-container" class="wld-component-wrapper">
+    <style>
+        .wld-component-wrapper {
+            width: 100%;
+            color: #f8fafc;
+        }
+
+        .wld-control-panel {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .wld-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .wld-control-group label {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wld-select {
+            background: #0f172a;
+            color: #38bdf8;
+            border: 1px solid #334155;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            outline: none;
+            min-width: 160px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .wld-select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        .wld-btn-submit {
+            background: var(--accent-color, #38bdf8);
+            color: #0f172a;
+            font-weight: bold;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            transition: background 0.2s, transform 0.1s;
+            height: 38px;
+        }
+
+        .wld-btn-submit:hover {
+            background: #7dd3fc;
+        }
+
+        .wld-btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* 數據表格樣式 */
+        .wld-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            background: #1e293b;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .wld-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.85rem;
+            min-width: 900px;
+        }
+
+        .wld-table th {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 12px 10px;
+            border-bottom: 2px solid #334155;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        .wld-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .wld-table tr:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .wld-note {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+
+    <div class="section-header">
+        <h2><i class="fa-solid fa-chart-pie"></i>Win-Draw-Lose</h2>
+    </div>
+
+    <!-- 🎛️ 控制面板（方案 B：僅靠 Submit 按鈕套用） -->
+    <div class="wld-control-panel">
         
-        <!-- 1. 模式切換：Overall / 9-a-side / 7-a-side -->
-        <div>
-            <label style="color: #94a3b8; font-size: 0.85rem;">賽制類型：</label>
-            <select id="asideFilter" onchange="reloadWLDTable()" style="background: #1e293b; color: #fff; padding: 6px; border-radius: 6px; border: 1px solid #475569;">
-                <option value="all">Overall (全部)</option>
-                <option value="9">9-a-side (9人制)</option>
-                <option value="7">7-a-side (7人制)</option>
+        <!-- 1. 賽制選擇 -->
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-filter"></i> A-side</label>
+            <select id="wld-aside" class="wld-select">
+                <option value="all" selected>Overall</option>
+                <option value="9">9-a-side</option>
+                <option value="7">7-a-side</option>
             </select>
         </div>
 
-        <!-- 2. 第一排序選擇 -->
-        <div>
-            <label style="color: #94a3b8; font-size: 0.85rem;">主要排序 (1st)：</label>
-            <select id="sort1" onchange="reloadWLDTable()" style="...">
-                <option value="point:desc">Point (高至低)</option>
-                <option value="win:desc">Win (高至低)</option>
-                <option value="win_pct:desc">Win% (高至低)</option>
-                <option value="avg_point:desc">Avg Point (高至低)</option>
-                <option value="total:desc">Total (高至低)</option>
+        <!-- 2. 主要排序 (1st Sort) - 包含全部 12 個欄位 -->
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-sort-amount-down"></i> 1st Order</label>
+            <select id="wld-sort1" class="wld-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="win:desc">Win (High→Low)</option>
+                <option value="win_pct:desc">Win% (High→Low)</option>
+                <option value="unbeaten:desc">Unbeaten (High→Low)</option>
+                <option value="unbeaten_pct:desc">Unbeaten% (High→Low)</option>
+                <option value="draw:desc">Draw (High→Low)</option>
+                <option value="draw_pct:desc">Draw% (High→Low)</option>
+                <option value="lose:desc">Lose (High→Low)</option>
+                <option value="lose_pct:desc">Lose% (High→Low)</option>
+                <option value="point:desc">Point (High→Low)</option>
+                <option value="avg_point:desc">Avg Point (High→Low)</option>
+                <option value="total:desc">Total (High→Low)</option>
+
             </select>
         </div>
 
-        <!-- 3. 第二排序選擇 -->
-        <div>
-            <label style="color: #94a3b8; font-size: 0.85rem;">次要排序 (2nd)：</label>
-            <select id="sort2" onchange="reloadWLDTable()" style="...">
-                <option value="avg_point:desc">Avg Point (高至低)</option>
-                <option value="point:desc">Point (高至低)</option>
-                <option value="win:desc">Win (高至低)</option>
-                <option value="total:desc" selected>Total (高至低)</option>
+        <!-- 3. 次要排序 (2nd Sort) - 包含全部 12 個欄位 -->
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
+            <select id="wld-sort2" class="wld-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="win:desc">Win (High→Low)</option>
+                <option value="win_pct:desc">Win% (High→Low)</option>
+                <option value="unbeaten:desc">Unbeaten (High→Low)</option>
+                <option value="unbeaten_pct:desc">Unbeaten% (High→Low)</option>
+                <option value="draw:desc">Draw (High→Low)</option>
+                <option value="draw_pct:desc">Draw% (High→Low)</option>
+                <option value="lose:desc">Lose (High→Low)</option>
+                <option value="lose_pct:desc">Lose% (High→Low)</option>
+                <option value="point:desc" selected>Point (High→Low)</option>
+                <option value="avg_point:desc">Avg Point (High→Low)</option>
+                <option value="total:desc">Total (High→Low)</option>
             </select>
         </div>
 
-        <!-- 4. 第三排序選擇 -->
-        <div>
-            <label style="color: #94a3b8; font-size: 0.85rem;">第三排序 (3rd)：</label>
-            <select id="sort3" onchange="reloadWLDTable()" style="...">
-                <option value="total:desc">Total (高至低)</option>
-                <option value="player_name:asc">Player Name (A-Z)</option>
-                <option value="win:desc">Win (高至低)</option>
+        <!-- 4. 第三排序 (3rd Sort) - 包含全部 12 個欄位 -->
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-sort-numeric-down-alt"></i> 3rd Order</label>
+            <select id="wld-sort3" class="wld-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="win:desc">Win (High→Low)</option>
+                <option value="win_pct:desc">Win% (High→Low)</option>
+                <option value="unbeaten:desc">Unbeaten (High→Low)</option>
+                <option value="unbeaten_pct:desc">Unbeaten% (High→Low)</option>
+                <option value="draw:desc">Draw (High→Low)</option>
+                <option value="draw_pct:desc">Draw% (High→Low)</option>
+                <option value="lose:desc">Lose (High→Low)</option>
+                <option value="lose_pct:desc">Lose% (High→Low)</option>
+                <option value="point:desc" selected>Point (High→Low)</option>
+                <option value="avg_point:desc">Avg Point (High→Low)</option>
+                <option value="total:desc">Total (High→Low)</option>
             </select>
+        </div>
+
+        <!-- 5. 🔍 Submit 按鈕（唯一觸發更新的位置） -->
+        <div class="wld-control-group">
+            <button id="wld-submit-btn" class="wld-btn-submit" onclick="fetchWLDData()">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
         </div>
 
     </div>
 
-</section>
+    <!-- 📊 數據表格 Display 區塊 -->
+    <div class="wld-table-wrapper">
+        <table class="wld-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-left: 15px;">Player Name</th>
+                    <th>Win</th>
+                    <th>Draw</th>
+                    <th>Lose</th>
+                    <th>Total</th>
+                    <th>Unbeaten</th>
+                    <th>Point</th>
+                    <th>Avg Point</th>
+                    <th>Win%</th>
+                    <th>Draw%</th>
+                    <th>Lose%</th>
+                    <th>Unbeaten%</th>
+                </tr>
+            </thead>
+            <tbody id="wld-table-body">
+                <tr>
+                    <td colspan="12" style="text-align: center; padding: 20px; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="wld-note">
+        <i class="fa-solid fa-circle-info"></i> 備註：所有活躍（Active）球員皆會顯示基礎勝負數據；Avg Point、Win%、Draw%、Lose% 及 Unbeaten% 需最少參與 6 場比賽才進行計算 (7-a-side 三場)
+    </div>
+
+</div>
+
+<script>
+    // 方案 B：只有在點擊 Submit 按鈕或初次開啟頁面時執行 API 請求
+    function fetchWLDData() {
+        const aside = document.getElementById('wld-aside').value;
+        const sort1 = document.getElementById('wld-sort1').value;
+        const sort2 = document.getElementById('wld-sort2').value;
+        const sort3 = document.getElementById('wld-sort3').value;
+
+        const tbody = document.getElementById('wld-table-body');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="12" style="text-align: center; padding: 20px; color: #38bdf8;">
+                    <i class="fa-solid fa-spinner fa-spin"></i> 正在根據選擇條件更新數據...
+                </td>
+            </tr>`;
+
+        // 呼叫 Flask API
+        fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px; color: #94a3b8;">尚無相關數據</td></tr>`;
+                    return;
+                }
+
+                let html = '';
+                data.forEach(row => {
+                    html += `
+                        <tr>
+                            <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">${row.player_name}</td>
+                            <td style="color: #4ade80; font-weight: bold;">${row.win}</td>
+                            <td style="color: #facc15;">${row.draw}</td>
+                            <td style="color: #f87171;">${row.lose}</td>
+                            <td style="font-weight: bold;">${row.total}</td>
+                            <td style="color: #38bdf8;">${row.unbeaten}</td>
+                            <td style="color: #ffd700; font-weight: bold;">${row.point}</td>
+                            <td>${row.avg_point !== null && row.avg_point !== undefined ? parseFloat(row.avg_point).toFixed(2) : '<span style="color:#64748b;">-</span>'}</td>
+                            <td>${row.win_pct !== null && row.win_pct !== undefined ? parseFloat(row.win_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
+                            <td>${row.draw_pct !== null && row.draw_pct !== undefined ? parseFloat(row.draw_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
+                            <td>${row.lose_pct !== null && row.lose_pct !== undefined ? parseFloat(row.lose_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
+                            <td>${row.unbeaten_pct !== null && row.unbeaten_pct !== undefined ? parseFloat(row.unbeaten_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Fetch WLD error:', err);
+                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; color: #f87171; padding: 20px;">載入資料失敗，請重新嘗試。</td></tr>`;
+            });
+    }
+
+    // 初始載入
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchWLDData();
+    });
+</script>
