@@ -34,7 +34,7 @@
             font-size: 0.85rem; 
         }
 
-        /* 💡 讓 Header 當使用者往下拉時固定在最頂端 */
+/* 💡 讓 Header 當使用者往下拉時固定在最頂端 */
         .gaos-table th { 
             position: sticky;
             top: 0;
@@ -45,6 +45,18 @@
             border-bottom: 2px solid #334155; 
             white-space: nowrap; 
             font-weight: bold; 
+        }
+
+        /* 💡 補上這一段：GAOS 資料列的間距與清晰分隔線 */
+        .gaos-table td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #334155; /* 改為與 WLD 一樣清晰的深灰藍色分隔線 */
+            color: #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .gaos-table tr:hover {
+            background: rgba(255, 255, 255, 0.04);
         }
     </style>
 
