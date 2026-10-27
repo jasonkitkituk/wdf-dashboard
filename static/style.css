@@ -112,7 +112,7 @@ body {
 
 /* ================= 2. 下方 Content Area (滿版頁面) ================= */
 .main-content {
-    margin-left: 0; /* 移除原本側邊欄留白 */
+    margin-left: 0;
     flex: 1;
     padding: 24px 32px;
     background-color: var(--bg-dark);
@@ -240,14 +240,12 @@ body {
     border-radius: 20px;
 }
 
-/* 主頁大徽章尺寸 */
 .club-logo-large {
     width: 88px;
     height: 88px;
     object-fit: contain;
 }
 
-/* 讓第一個表格容器縮小為 2/3 寬度 */
 .narrow-table {
     width: 66.6%;
     max-width: 900px;
@@ -259,7 +257,7 @@ body {
     }
 }
 
-/* ================= 表格框線與 Cell 寬度美化 (強效邊框設定) ================= */
+/* ================= 表格框線與 Cell 寬度美化 ================= */
 .data-table {
     width: 100%;
     border-collapse: separate !important;
@@ -267,7 +265,7 @@ body {
     background-color: var(--bg-card);
     border-radius: 8px;
     overflow: hidden;
-    border: 2px solid #475569 !important; /* 表格外框實線 */
+    border: 2px solid #475569 !important;
     margin-top: 10px;
 }
 
@@ -306,37 +304,24 @@ body {
     font-weight: 600;
 }
 
-/* ================= Team Color Table (第二個表格專屬顏色) ================= */
-
-.team-color-table thead tr th:nth-child(1) {
+/* 📌 全局表格 Sticky Header (固定表頭) */
+.gaos-table th, 
+.data-table th,
+.wld-table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     background-color: #0f172a !important;
-    color: var(--accent-color) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-.team-color-table thead tr th:nth-child(2) {
-    background-color: #000000 !important;
-    color: #ffffff !important;
-}
-
-.team-color-table thead tr th:nth-child(3) {
-    background-color: #ffffff !important;
-    color: #000000 !important;
-}
-
-.team-color-table thead tr th:nth-child(4) {
-    background-color: #1e3a8a !important;
-    color: #ffffff !important;
-}
-
-.team-color-table thead tr th:nth-child(5) {
-    background-color: #dc2626 !important;
-    color: #facc15 !important;
-}
-
-.team-color-table thead tr th:nth-child(6) {
-    background-color: #16a34a !important;
-    color: #000000 !important;
-}
+/* ================= Team Color Table ================= */
+.team-color-table thead tr th:nth-child(1) { background-color: #0f172a !important; color: var(--accent-color) !important; }
+.team-color-table thead tr th:nth-child(2) { background-color: #000000 !important; color: #ffffff !important; }
+.team-color-table thead tr th:nth-child(3) { background-color: #ffffff !important; color: #000000 !important; }
+.team-color-table thead tr th:nth-child(4) { background-color: #1e3a8a !important; color: #ffffff !important; }
+.team-color-table thead tr th:nth-child(5) { background-color: #dc2626 !important; color: #facc15 !important; }
+.team-color-table thead tr th:nth-child(6) { background-color: #16a34a !important; color: #000000 !important; }
 
 .team-color-table tbody tr:nth-child(1) td,
 .team-color-table tbody tr:nth-child(2) td,
@@ -351,117 +336,104 @@ body {
     font-weight: 800 !important;
 }
 
-/* ================= 📱 手機版響應式優化 (RWD Media Query) ================= */
-@media (max-width: 768px) {
-    /* 1. 讓頂部導覽列在手機上可以橫向滑動，避免擠壓變形 */
+/* ================= 📱 手機端 RWD 排版優化 (寬度 < 900px 通用) ================= */
+@media (max-width: 900px) {
+    /* 1. Logo 與 Nav-Menu 在同一行 */
     .top-navbar {
-        padding: 8px 12px;
-        flex-wrap: wrap;
-        gap: 8px;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 8px 12px !important;
+        gap: 12px !important;
+    }
+
+    .logo-container {
+        flex-shrink: 0;
     }
 
     .nav-menu {
-        width: 100%;
+        flex: 1;
         overflow-x: auto;
-        justify-content: flex-start;
-        padding-bottom: 4px;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-menu ul {
-        display: flex;
-        white-space: nowrap;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 6px !important;
     }
 
     .nav-btn {
-        padding: 6px 10px;
-        font-size: 0.78rem;
+        padding: 6px 10px !important;
+        font-size: 0.8rem !important;
     }
 
-    /* 2. 解決主頁偏左、只佔 40% 的問題：拉闊寬度至 100% 滿版 */
+    /* 2. Welcome 頁面標題拉闊 */
     .hero-welcome {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto 24px auto !important;
         padding: 24px 16px !important;
-        box-sizing: border-box;
     }
 
     .hero-welcome h1 {
-        font-size: 1.35rem !important; /* 手機上字體大小適中，避免過長換行難看 */
+        font-size: 1.35rem !important;
         line-height: 1.4;
     }
 
     .main-content {
-        padding: 16px !important; /* 手機版主內容左右邊距縮小，增加可用空間 */
+        padding: 16px !important;
     }
 
     .quick-access-grid {
-        grid-template-columns: 1fr; /* 手機上首頁快速導覽卡片改為單欄完整排列 */
+        grid-template-columns: 1fr;
     }
 
+    /* 3. 壓縮表格 Padding，使手機畫面合身 */
+    .gaos-table, 
+    .wld-table,
+    .data-table {
+        min-width: 100% !important;
+        width: 100% !important;
+        font-size: 0.75rem !important;
+    }
 
-    /* ================= 📱 手機端排版與 Sticky Header 優化 ================= */
+    .gaos-table th, .gaos-table td,
+    .wld-table th, .wld-table td,
+    .data-table th, .data-table td {
+        padding: 6px 4px !important;
+        white-space: nowrap;
+    }
 
-/* 1. 表格 Header 固定（Sticky Header）全局設定 */
-.gaos-table th, 
-.data-table th,
-.wld-table th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background-color: #0f172a !important; /* 確保滾動時底色不透明 */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 增加輕微陰影提升層次感 */
+    /* 直放時預設改為單欄 */
+    .three-column-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-    /* 2. 手機版（含直放與橫放）響應式調整 */
-    @media (max-width: 900px) {
-        /* 讓 Logo 與 Nav-Menu 強制在同一水平線上 */
-        .top-navbar {
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: nowrap !important; /* 絕不換行 */
-            align-items: center !important;
-            justify-content: flex-start !important;
-            padding: 8px 12px !important;
-            gap: 12px !important;
-        }
+/* ================= 📱 手機「橫放」專用優化 (獨立區域) ================= */
+@media (max-width: 900px) and (orientation: landscape) {
+    /* 橫放時將 RANK TOP 10 改回 3 欄並排 */
+    .three-column-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+    }
 
-        .logo-container {
-            flex-shrink: 0; /* 防止 Logo 被擠壓 */
-        }
+    .rank-col {
+        padding: 10px !important;
+    }
 
-        .nav-menu {
-            flex: 1;
-            overflow-x: auto; /* 選單可橫向滑動 */
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
+    .rank-col table, 
+    .rank-col .data-table {
+        font-size: 0.7rem !important;
+        min-width: 100% !important;
+    }
 
-        .nav-menu ul {
-            display: flex !important;
-            flex-wrap: nowrap !important;
-            gap: 6px !important;
-        }
-
-        .nav-btn {
-            padding: 6px 10px !important;
-            font-size: 0.8rem !important;
-        }
-
-        /* 3. 壓縮表格 Padding 與字體，讓橫放手機時可以完整容納不需左右拉動 */
-        .gaos-table, 
-        .wld-table,
-        .data-table {
-            min-width: 100% !important; /* 覆蓋原本過大的 min-width */
-            width: 100% !important;
-            font-size: 0.75rem !important; /* 適度縮小字體 */
-        }
-
-        .gaos-table th, .gaos-table td,
-        .wld-table th, .wld-table td,
-        .data-table th, .data-table td {
-            padding: 6px 4px !important; /* 大幅縮小 Padding 讓數據能塞進畫面 */
-            white-space: nowrap;
-        }
+    .rank-col th, 
+    .rank-col td {
+        padding: 4px 6px !important;
     }
 }

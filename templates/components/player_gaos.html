@@ -74,13 +74,14 @@
                 <option value="own_goal:desc">Own Goal (High→Low)</option>
                 <option value="goal_conceded:desc">Goal Conceded (High→Low)</option>             
                 <option value="goal_ratio:desc">Goal Ratio (High→Low)</option>
-                <option value="gc_ratio:desc">Goals Conceded Ratio (High→Low)</option>
+                <option value="gc_ratio:desc">GC Ratio (High→Low)</option>
                 <option value="ga_ratio:desc">G+A Ratio (High→Low)</option>                               
                 <option value="total:desc">Total (High→Low)</option>
 
             </select>
         </div>
-
+        
+        <!--
         <div class="gaos-control-group">
             <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
             <select id="gaos-sort2" class="gaos-select">
@@ -114,7 +115,8 @@
                 <option value="total:desc">Total (High→Low)</option>
             </select>
         </div>
-
+        -->
+        
         <div class="gaos-control-group">
             <button id="gaos-submit-btn" class="gaos-btn-submit" onclick="fetchGAOSData()">
                 <i class="fa-solid fa-magnifying-glass"></i> Search
@@ -159,8 +161,8 @@
     function fetchGAOSData() {
         const asideSelect = document.getElementById('gaos-aside');
         const sort1Select = document.getElementById('gaos-sort1');
-        const sort2Select = document.getElementById('gaos-sort2');
-        const sort3Select = document.getElementById('gaos-sort3');
+        //const sort2Select = document.getElementById('gaos-sort2');
+        //const sort3Select = document.getElementById('gaos-sort3');
         const tbody = document.getElementById('gaos-table-body');
 
         if (!tbody || !asideSelect) {
@@ -170,8 +172,8 @@
 
         const aside = asideSelect.value;
         const sort1 = sort1Select.value;
-        const sort2 = sort2Select.value;
-        const sort3 = sort3Select.value;
+        //const sort2 = sort2Select.value;
+        //const sort3 = sort3Select.value;
 
         tbody.innerHTML = `
             <tr>
@@ -180,7 +182,8 @@
                 </td>
             </tr>`;
 
-        const url = `/api/player-gaos?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`;
+        const url = `/api/player-gaos?aside=${aside}&sort1=${sort1}`;
+        //const url = `/api/player-gaos?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`;
         
         fetch(url)
             .then(response => response.json())

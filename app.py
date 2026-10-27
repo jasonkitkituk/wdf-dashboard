@@ -111,8 +111,8 @@ def index():
 def api_player_wld():
     aside = request.args.get('aside', 'all')
     sort1 = request.args.get('sort1', 'point:desc')
-    sort2 = request.args.get('sort2', 'avg_point:desc')
-    sort3 = request.args.get('sort3', 'total:desc')
+    #sort2 = request.args.get('sort2', 'avg_point:desc')
+    #sort3 = request.args.get('sort3', 'total:desc')
 
     allowed_columns = {
         'player_name': 'pl.name',
@@ -136,8 +136,8 @@ def api_player_wld():
         return allowed_columns[col_key], direction
 
     col1, dir1 = parse_sort(sort1)
-    col2, dir2 = parse_sort(sort2)
-    col3, dir3 = parse_sort(sort3)
+    #col2, dir2 = parse_sort(sort2)
+    #col3, dir3 = parse_sort(sort3)
 
     # 💡 根據賽制類型動態設定「最小參與場數門檻」與過濾條件
     min_games = 3 if aside == '7' else 6
@@ -187,9 +187,8 @@ def api_player_wld():
         HAVING 
             COUNT(pms.match_id) > 0
         ORDER BY 
-            {col1} {dir1} NULLS LAST,
-            {col2} {dir2} NULLS LAST,
-            {col3} {dir3} NULLS LAST;
+            {col1} {dir1} NULLS LAST;
+            
     """
 
     try:
@@ -213,8 +212,8 @@ def api_player_wld():
 def api_player_gaos():
     aside = request.args.get('aside', 'all')
     sort1 = request.args.get('sort1', 'goal:desc')
-    sort2 = request.args.get('sort2', 'assist:desc')
-    sort3 = request.args.get('sort3', 'total:desc')
+    #sort2 = request.args.get('sort2', 'assist:desc')
+    #sort3 = request.args.get('sort3', 'total:desc')
 
     allowed_columns = {
         'player_name': 'pl.name',
@@ -237,8 +236,8 @@ def api_player_gaos():
         return allowed_columns[col_key], direction
 
     col1, dir1 = parse_sort(sort1)
-    col2, dir2 = parse_sort(sort2)
-    col3, dir3 = parse_sort(sort3)
+    #col2, dir2 = parse_sort(sort2)
+    #col3, dir3 = parse_sort(sort3)
 
     min_games = 3 if aside == '7' else 6
 
@@ -278,9 +277,8 @@ def api_player_gaos():
         HAVING 
             COUNT(pms.match_id) > 0
         ORDER BY 
-            {col1} {dir1} NULLS LAST,
-            {col2} {dir2} NULLS LAST,
-            {col3} {dir3} NULLS LAST;
+            {col1} {dir1} NULLS LAST;
+
     """
 
     try:

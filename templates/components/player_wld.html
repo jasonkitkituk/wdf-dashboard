@@ -174,7 +174,7 @@
             </select>
         </div>
 
-        <!-- 3. 次要排序 (2nd Sort) -->
+        <!-- 3. 次要排序 (2nd Sort)
         <div class="wld-control-group">
             <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
             <select id="wld-sort2" class="wld-select">
@@ -192,8 +192,9 @@
                 <option value="total:desc">Total (High→Low)</option>
             </select>
         </div>
-
-        <!-- 4. 第三排序 (3rd Sort) -->
+        -->
+        
+        <!-- 4. 第三排序 (3rd Sort)
         <div class="wld-control-group">
             <label><i class="fa-solid fa-sort-numeric-down-alt"></i> 3rd Order</label>
             <select id="wld-sort3" class="wld-select">
@@ -211,6 +212,7 @@
                 <option value="total:desc">Total (High→Low)</option>
             </select>
         </div>
+        -->
 
         <!-- 5. 🔍 Submit 按鈕 -->
         <div class="wld-control-group">
@@ -260,8 +262,8 @@
     function fetchWLDData() {
         const aside = document.getElementById('wld-aside').value;
         const sort1 = document.getElementById('wld-sort1').value;
-        const sort2 = document.getElementById('wld-sort2').value;
-        const sort3 = document.getElementById('wld-sort3').value;
+        //const sort2 = document.getElementById('wld-sort2').value;
+        //const sort3 = document.getElementById('wld-sort3').value;
 
         const tbody = document.getElementById('wld-table-body');
         tbody.innerHTML = `
@@ -271,7 +273,8 @@
                 </td>
             </tr>`;
 
-        fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`)
+        //fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`)
+        fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}`)
             .then(response => response.json())
             .then(data => {
                 if (!data || data.length === 0) {
