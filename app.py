@@ -57,10 +57,12 @@ def index():
         cur.execute(sql_format)
         format_stats = cur.fetchone() # 取得一筆加總結果
         
-        # 2. 讀取並執行第二個 SQL (team_color_stats.sql)
         sql_team = load_sql_query('team_color_stats.sql')
         cur.execute(sql_team)
         team_stats = cur.fetchone() # 取得一筆加總結果
+
+        cur.execute(load_sql_query('location_stats.sql'))
+        location_stats = cur.fetchall()
 
         # 2. 讀取並執行 Rank Top 20 (Most Wins) 的 SQL
         cur.execute(load_sql_query('rank_win_overall.sql'))
@@ -80,6 +82,9 @@ def index():
 
         cur.execute(load_sql_query('rank_winpct_7aside.sql'))
         rank_winpct_7side = cur.fetchall()
+
+        
+
         
         cur.close()
         conn.close()
@@ -91,6 +96,7 @@ def index():
         'index.html', 
         format_stats=format_stats, 
         team_stats=team_stats,
+        location_stats=location_stats,
         rank_overall=rank_win_overall,
         rank_9side=rank_win_9side,
         rank_7side=rank_win_7side,
@@ -201,6 +207,96 @@ def api_player_wld():
     except Exception as e:
         print(f"Error in /api/player-wld: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/player-gaos')
+def api_player_gaos():
+    aside = request.args.get('aside', 'all')
+    sort1 = request.args.get('sort1', 'goal:desc')
+    sort2 = request.args.get('sort2', 'assist:desc')
+    sort3 = request.args.get('sort3', 'total:desc')
+
+    allowed_columns = {
+        'player_name': 'pl.name',
+        'goal': 'goal',
+        'assist': 'assist',
+        'ga': 'ga',
+        'clean_sheet': 'clean_sheet',
+        'own_goal': 'own_goal',
+        'goal_conceded': 'goal_conceded',
+        'total': 'total',
+        'goal_ratio': 'goal_ratio',
+        'gc_ratio': 'gc_ratio',
+        'ga_ratio': 'ga_ratio'
+    }
+
+    def parse_sort(sort_str):
+        parts = sort_str.split(':')
+        col_key = parts[0] if parts[0] in allowed_columns else 'goal'
+        direction = parts[1].upper() if len(parts) > 1 and parts[1].upper() in ['ASC', 'DESC'] else 'DESC'
+        return allowed_columns[col_key], direction
+
+    col1, dir1 = parse_sort(sort1)
+    col2, dir2 = parse_sort(sort2)
+    col3, dir3 = parse_sort(sort3)
+
+    min_games = 3 if aside == '7' else 6
+
+    aside_condition = ""
+    if aside in ['7', '9']:
+        aside_condition = f"AND m.pitch_aside = {int(aside)}"
+
+    sql_query = f"""
+        SELECT 
+            pl.id AS player_id,
+            pl.name AS player_name,
+            COALESCE(SUM(pms.goals), 0) AS goal,
+            COALESCE(SUM(pms.assists), 0) AS assist,
+            (COALESCE(SUM(pms.goals), 0) + COALESCE(SUM(pms.assists), 0)) AS ga,
+            COALESCE(SUM(pms.own_goals), 0) AS own_goal,
+            SUM(CASE WHEN pms.clean_sheet = true THEN 1 ELSE 0 END) AS clean_sheet,
+            COALESCE(SUM(mt.goals_conceded), 0) AS goal_conceded,
+            COUNT(pms.match_id) AS total,
+            
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((COALESCE(SUM(pms.goals), 0)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)), 2) ELSE NULL END AS goal_ratio,
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((COALESCE(SUM(mt.goals_conceded), 0)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)), 2) ELSE NULL END AS gc_ratio,
+            CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND(((COALESCE(SUM(pms.goals), 0) + COALESCE(SUM(pms.assists), 0))::NUMERIC / NULLIF(COUNT(pms.match_id), 0)), 2) ELSE NULL END AS ga_ratio
+
+        FROM 
+            player_match_stats pms
+        JOIN 
+            players pl ON pms.player_id = pl.id
+        JOIN 
+            matches m ON pms.match_id = m.id
+        JOIN 
+            match_teams mt ON pms.match_id = mt.match_id AND pms.team_color = mt.team_color
+        WHERE 
+            pl.is_active = true
+            {aside_condition}
+        GROUP BY 
+            pl.id, pl.name
+        HAVING 
+            COUNT(pms.match_id) > 0
+        ORDER BY 
+            {col1} {dir1} NULLS LAST,
+            {col2} {dir2} NULLS LAST,
+            {col3} {dir3} NULLS LAST;
+    """
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(sql_query)
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return jsonify(rows)
+
+    except Exception as e:
+        print(f"Error in /api/player-gaos: {e}")
+        return jsonify({"error": str(e)}), 500
+
+    
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))

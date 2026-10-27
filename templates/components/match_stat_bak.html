@@ -1,0 +1,139 @@
+<!-- templates/components/match_stat.html -->
+<section id="match-stat" class="content-section">
+    <div class="section-header">
+        <h2><i class="fa-solid fa-calendar-days"></i> Match General Stat.</h2>
+    </div>
+
+    <!-- 表格一：賽制數據統計 -->
+    <div class="stat-container" style="margin-bottom: 30px;">
+        <h3 style="margin-bottom: 12px; color: var(--accent-color);">Match General Stat.</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>9-a-side</th>
+                    <th>7-a-side</th>
+                    <th>Overall</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Game</strong></td>
+                    <td>{{ format_stats.games_9 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.games_7 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.games_overall if format_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Goal</strong></td>
+                    <td>{{ format_stats.goals_9 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.goals_7 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.goals_overall if format_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Assist</strong></td>
+                    <td>{{ format_stats.assists_9 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.assists_7 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.assists_overall if format_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Own Goal</strong></td>
+                    <td>{{ format_stats.og_9 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.og_7 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.og_overall if format_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Clean Sheet</strong></td>
+                    <td>{{ format_stats.cs_9 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.cs_7 if format_stats else 0 }}</td>
+                    <td>{{ format_stats.cs_overall if format_stats else 0 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 表格二：球衣顏色勝負統計 -->
+    <div class="stat-container">
+        <h3 style="margin-bottom: 12px; color: var(--accent-color);">Team Color - WLD</h3>
+        <table class="data-table team-color-table">
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>Black</th>
+                    <th>White</th>
+                    <th>Blue</th>
+                    <th>Red</th>
+                    <th>Green</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Win</strong></td>
+                    <td>{{ team_stats.black_win if team_stats else 0 }}</td>
+                    <td>{{ team_stats.white_win if team_stats else 0 }}</td>
+                    <td>{{ team_stats.blue_win if team_stats else 0 }}</td>
+                    <td>{{ team_stats.red_win if team_stats else 0 }}</td>
+                    <td>{{ team_stats.green_win if team_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Draw</strong></td>
+                    <td>{{ team_stats.black_draw if team_stats else 0 }}</td>
+                    <td>{{ team_stats.white_draw if team_stats else 0 }}</td>
+                    <td>{{ team_stats.blue_draw if team_stats else 0 }}</td>
+                    <td>{{ team_stats.red_draw if team_stats else 0 }}</td>
+                    <td>{{ team_stats.green_draw if team_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Lose</strong></td>
+                    <td>{{ team_stats.black_lose if team_stats else 0 }}</td>
+                    <td>{{ team_stats.white_lose if team_stats else 0 }}</td>
+                    <td>{{ team_stats.blue_lose if team_stats else 0 }}</td>
+                    <td>{{ team_stats.red_lose if team_stats else 0 }}</td>
+                    <td>{{ team_stats.green_lose if team_stats else 0 }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>{{ team_stats.black_total if team_stats else 0 }}</strong></td>
+                    <td><strong>{{ team_stats.white_total if team_stats else 0 }}</strong></td>
+                    <td><strong>{{ team_stats.blue_total if team_stats else 0 }}</strong></td>
+                    <td><strong>{{ team_stats.red_total if team_stats else 0 }}</strong></td>
+                    <td><strong>{{ team_stats.green_total if team_stats else 0 }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 🏟️ 場地賽事統計表格 -->
+<div class="data-card" style="margin-top: 20px;">
+    <h3><i class="fa-solid fa-location-dot"></i> 各場地賽事統計 (Location Match Stats)</h3>
+    <div class="wld-table-wrapper" style="margin-top: 15px;">
+        <table class="wld-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-left: 15px;">Location</th>
+                    <th>9-A-SIDE</th>
+                    <th>7-A-SIDE</th>
+                    <th>OVERALL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if location_stats %}
+                    {% for stat in location_stats %}
+                    <tr>
+                        <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">
+                            {{ stat.location_name }}
+                        </td>
+                        <td style="color: #38bdf8;">{{ stat.count_9aside }}</td>
+                        <td style="color: #4ade80;">{{ stat.count_7aside }}</td>
+                        <td style="font-weight: bold; color: #ffd700;">{{ stat.overall_total }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px; color: #94a3b8;">暫無場地統計數據</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</section>

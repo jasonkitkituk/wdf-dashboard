@@ -1,0 +1,209 @@
+<!-- templates/components/player_gaos.html -->
+<div id="player-gaos-container" class="gaos-component-wrapper">
+    <style>
+        .gaos-component-wrapper { width: 100%; color: #f8fafc; }
+        .gaos-control-panel {
+            background: #1e293b; border-radius: 10px; padding: 16px 20px;
+            margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;
+        }
+        .gaos-control-group { display: flex; flex-direction: column; gap: 6px; }
+        .gaos-control-group label { font-size: 0.82rem; color: #94a3b8; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .gaos-select {
+            background: #0f172a; color: #38bdf8; border: 1px solid #334155;
+            padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; outline: none; min-width: 160px; cursor: pointer;
+        }
+        .gaos-btn-submit {
+            background: var(--accent-color, #38bdf8); color: #0f172a; font-weight: bold;
+            border: none; padding: 9px 22px; border-radius: 6px; cursor: pointer; display: flex;
+            align-items: center; gap: 8px; font-size: 0.88rem; height: 38px;
+        }
+        .gaos-table-wrapper { width: 100%; overflow-x: auto; background: #1e293b; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
+        .gaos-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; min-width: 900px; }
+        .gaos-table th { background: #0f172a; color: #38bdf8; padding: 12px 10px; border-bottom: 2px solid #334155; white-space: nowrap; font-weight: bold; }
+        .gaos-table td { padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); color: #e2e8f0; white-space: nowrap; }
+        .gaos-table tr:hover { background: rgba(255, 255, 255, 0.04); }
+        .gaos-note { font-size: 0.78rem; color: #64748b; margin-top: 10px; font-style: italic; }
+    </style>
+
+    <div class="section-header">
+        <h2><i class="fa-solid fa-futbol"></i> Player Goal.Assist.OwnGoal.CleanSheet </h2>
+    </div>
+
+    <!-- 🎛️ 控制面板 -->
+    <div class="gaos-control-panel">
+        <div class="gaos-control-group">
+            <label><i class="fa-solid fa-filter"></i> A-side</label>
+            <select id="gaos-aside" class="gaos-select">
+                <option value="all" selected>Overall</option>
+                <option value="9">9-a-side</option>
+                <option value="7">7-a-side</option>
+            </select>
+        </div>
+
+        <div class="gaos-control-group">
+            <label><i class="fa-solid fa-sort-amount-down"></i> 1st Order</label>
+            <select id="gaos-sort1" class="gaos-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="goal:desc">Goal (High→Low)</option>
+                <option value="assist:desc">Assist (High→Low)</option>
+                <option value="ga:desc">G+A (High→Low)</option>
+                <option value="clean_sheet:desc">Clean Sheet (High→Low)</option>
+                <option value="own_goal:desc">Own Goal (High→Low)</option>
+                <option value="goal_conceded:desc">Goal Conceded (High→Low)</option>             
+                <option value="goal_ratio:desc">Goal Ratio (High→Low)</option>
+                <option value="gc_ratio:desc">Goals Conceded Ratio (High→Low)</option>
+                <option value="ga_ratio:desc">G+A Ratio (High→Low)</option>                               
+                <option value="total:desc">Total (High→Low)</option>
+
+            </select>
+        </div>
+
+        <div class="gaos-control-group">
+            <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
+            <select id="gaos-sort2" class="gaos-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="goal:desc">Goal (High→Low)</option>
+                <option value="assist:desc">Assist (High→Low)</option>
+                <option value="ga:desc">G+A (High→Low)</option>
+                <option value="clean_sheet:desc">Clean Sheet (High→Low)</option>
+                <option value="own_goal:desc">Own Goal (High→Low)</option>
+                <option value="goal_conceded:desc">Goal Conceded (High→Low)</option>             
+                <option value="goal_ratio:desc">Goal Ratio (High→Low)</option>
+                <option value="gc_ratio:desc">Goals Conceded Ratio (High→Low)</option>
+                <option value="ga_ratio:desc">G+A Ratio (High→Low)</option>                               
+                <option value="total:desc">Total (High→Low)</option>
+            </select>
+        </div>
+
+        <div class="gaos-control-group">
+            <label><i class="fa-solid fa-sort-numeric-down-alt"></i> 3rd Order</label>
+            <select id="gaos-sort3" class="gaos-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="goal:desc">Goal (High→Low)</option>
+                <option value="assist:desc">Assist (High→Low)</option>
+                <option value="ga:desc">G+A (High→Low)</option>
+                <option value="clean_sheet:desc">Clean Sheet (High→Low)</option>
+                <option value="own_goal:desc">Own Goal (High→Low)</option>
+                <option value="goal_conceded:desc">Goal Conceded (High→Low)</option>             
+                <option value="goal_ratio:desc">Goal Ratio (High→Low)</option>
+                <option value="gc_ratio:desc">Goals Conceded Ratio (High→Low)</option>
+                <option value="ga_ratio:desc">G+A Ratio (High→Low)</option>                               
+                <option value="total:desc">Total (High→Low)</option>
+            </select>
+        </div>
+
+        <div class="gaos-control-group">
+            <button id="gaos-submit-btn" class="gaos-btn-submit" onclick="fetchGAOSData()">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+    </div>
+
+    <!-- 📊 數據表格 Display 區塊 -->
+    <div class="gaos-table-wrapper">
+        <table class="gaos-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-left: 15px;">Player Name</th>
+                    <th>Goal</th>
+                    <th>Assist</th>
+                    <th style="color: #ffd700;">G+A</th>
+                    <th>Own Goal</th>
+                    <th>Clean Sheet</th>
+                    <th>Goal Conceded</th>
+                    <th>Total</th>
+                    <th>Goal Ratio</th>
+                    <th>GC Ratio</th>
+                    <th>G+A Ratio</th>
+                </tr>
+            </thead>
+            <tbody id="gaos-table-body">
+                <tr>
+                    <td colspan="11" style="text-align: center; padding: 20px; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> 載入數據中...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="gaos-note">
+        <i class="fa-solid fa-circle-info"></i> 備註：所有活躍（Active）球員皆會顯示基礎累計數據；Goal Ratio、GC Ratio 及 G+A Ratio 在 Overall 與 9-a-side 需最少參與 6 場，7-a-side 需最少參與 3 場才進行計算。
+    </div>
+</div>
+
+<script>
+    function fetchGAOSData() {
+        const asideSelect = document.getElementById('gaos-aside');
+        const sort1Select = document.getElementById('gaos-sort1');
+        const sort2Select = document.getElementById('gaos-sort2');
+        const sort3Select = document.getElementById('gaos-sort3');
+        const tbody = document.getElementById('gaos-table-body');
+
+        if (!tbody || !asideSelect) {
+            console.error("找不到 gaos-table-body 或 gaos-aside 元素！");
+            return;
+        }
+
+        const aside = asideSelect.value;
+        const sort1 = sort1Select.value;
+        const sort2 = sort2Select.value;
+        const sort3 = sort3Select.value;
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="11" style="text-align: center; padding: 20px; color: #38bdf8;">
+                    <i class="fa-solid fa-spinner fa-spin"></i> 載入中...
+                </td>
+            </tr>`;
+
+        const url = `/api/player-gaos?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`;
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 20px; color: #94a3b8;">尚無相關數據</td></tr>`;
+                    return;
+                }
+
+                let html = '';
+                data.forEach((row) => {
+                    const formatRatio = (val) => {
+                        if (val !== null && val !== undefined) {
+                            return Number(val).toFixed(2);
+                        }
+                        return '<span style="color:#64748b;">-</span>';
+                    };
+
+                    html += `
+                        <tr>
+                            <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">${row.player_name || 'N/A'}</td>
+                            <td style="color: #4ade80; font-weight: bold;">${row.goal ?? 0}</td>
+                            <td style="color: #38bdf8; font-weight: bold;">${row.assist ?? 0}</td>
+                            <td style="color: #ffd700; font-weight: bold;">${row.ga ?? 0}</td>
+                            <td style="color: #f87171;">${row.own_goal ?? 0}</td>
+                            <td style="color: #facc15; font-weight: bold;">${row.clean_sheet ?? 0}</td>
+                            <td style="color: #cbd5e1;">${row.goal_conceded ?? 0}</td>
+                            <td style="font-weight: bold;">${row.total ?? 0}</td>
+                            <td>${formatRatio(row.goal_ratio)}</td>
+                            <td>${formatRatio(row.gc_ratio)}</td>
+                            <td style="color: #ffd700; font-weight: bold;">${formatRatio(row.ga_ratio)}</td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Fetch GAOS 發生錯誤:', err);
+                tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; color: #f87171; padding: 20px;">發生錯誤: ${err.message}</td></tr>`;
+            });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fetchGAOSData);
+    } else {
+        fetchGAOSData();
+    }
+</script>

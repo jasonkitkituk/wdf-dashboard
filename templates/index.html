@@ -49,9 +49,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#gaoc" class="nav-btn" onclick="switchTab('gaoc')">
+                        <a href="#gaos" class="nav-btn" onclick="switchTab('gaos')">
                             <i class="fa-solid fa-futbol"></i>
-                            <span>G.A.O.S</span>
+                            <span>G.A.O.C</span>
                         </a>
                     </li>
                     <li>
@@ -89,17 +89,7 @@
                     </div>
                     <h1> 得閒踢波 - Walking Daddy Football Club</h1>
                     <div class="subtitle">
-                        <p>🗣️🔊得閒講宗旨(排名不分先後）😎🌺</p>
-                        <ul style="list-style: none; padding-left: 0; line-height: 1.8;">
-                            <li>▶️⚽ 大家享受足球友誼賽</li>
-                            <li>▶️💦 出身靚汗，保持健康</li>
-                            <li>▶️🤝 互相尊重，場內場外都要有風度</li>
-                            <li>▶️🟨 踢波碰撞在所難免，但拒絕刻意飛剷或危險動作</li>
-                            <li>▶️🚫 對任何侮辱對手或隊友嘅行為零容忍</li>
-                            <li>▶️😎 要玩齊齊玩，睇下邊個做到地下Own Goal 王</li>
-                            <li>▶️🍻 Jap 下 jap 下又一場，開心最緊要</li>
-                            <li>▶️🤬 雙呦唔好口，想鬧抖一抖</li>
-                        </ul>
+                        <p>▶️⚽ 大家享受足球友誼賽</p>
                     </div>
                 </div>
 
@@ -119,7 +109,7 @@
                         <h3>Win Draw Lose (W.D.L)</h3>
                         <p>Player result and stat.</p>
                     </div>
-                    <div class="card" onclick="switchTab('gaoc')">
+                    <div class="card" onclick="switchTab('gaos')">
                         <i class="fa-solid fa-futbol card-icon"></i>
                         <h3>G.A.O.C </h3>
                         <p>Goal + Assist + Own Goal + Clean Sheet </p>
@@ -149,13 +139,8 @@
             </section>
 
             <!-- 4) GAOC -->
-            <section id="gaoc" class="content-section">
-                <div class="section-header">
-                    <h2><i class="fa-solid fa-futbol"></i> GAOC (Goal, Assist, OwnGoal, CleanSheet)</h2>
-                </div>
-                <div class="data-card">
-                    <p class="placeholder-text">GAOC 數據表載入中...</p>
-                </div>
+            <section id="gaos" class="content-section">
+                {% include 'components/player_gaos.html' %}
             </section>
 
             <!-- 5) Player Profile -->
