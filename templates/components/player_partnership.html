@@ -1,0 +1,188 @@
+<!-- templates/components/player_partnership.html -->
+<div id="player-partnership-container" class="part-component-wrapper">
+    <style>
+        .part-component-wrapper { width: 100%; color: #f8fafc; }
+        .part-control-panel {
+            background: #1e293b; border-radius: 10px; padding: 16px 20px;
+            margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;
+        }
+        .part-control-group { display: flex; flex-direction: column; gap: 6px; }
+        .part-control-group label { font-size: 0.82rem; color: #94a3b8; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+        .part-select {
+            background: #0f172a; color: #38bdf8; border: 1px solid #334155;
+            padding: 8px 12px; border-radius: 6px; font-size: 0.88rem; outline: none; min-width: 140px; cursor: pointer;
+        }
+        .part-btn-submit {
+            background: var(--accent-color, #38bdf8); color: #0f172a; font-weight: bold;
+            border: none; padding: 9px 22px; border-radius: 6px; cursor: pointer; display: flex;
+            align-items: center; gap: 8px; font-size: 0.88rem; height: 38px;
+        }
+        .part-table-wrapper { 
+            width: 100%; overflow-x: auto; max-height: 70vh; 
+            background: #1e293b; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+        }
+        .part-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; }
+        .part-table th { 
+            position: sticky; top: 0; z-index: 10; background: #0f172a; color: #38bdf8; 
+            padding: 12px 10px; border-bottom: 2px solid #334155; white-space: nowrap; font-weight: bold; 
+        }
+        .part-table td {
+            padding: 10px; border-bottom: 1px solid #334155; color: #e2e8f0; white-space: nowrap;
+        }
+        .part-table tr:hover { background: rgba(255, 255, 255, 0.04); }
+        .part-note { font-size: 0.78rem; color: #64748b; margin-top: 10px; font-style: italic; }
+    </style>
+
+    <div class="section-header">
+        <h2><i class="fa-solid fa-users-viewfinder"></i>Best Combo</h2>
+    </div>
+
+    <!-- 🎛️ 控制面板 -->
+    <div class="part-control-panel">
+        <!-- 1. A-side 選擇 -->
+        <div class="part-control-group">
+            <label><i class="fa-solid fa-filter"></i> A-side</label>
+            <select id="part-aside" class="part-select">
+                <option value="all" selected>Overall</option>
+                <option value="9">9-a-side</option>
+                <option value="7">7-a-side</option>
+            </select>
+        </div>
+
+        <!-- 2. 組合人數 (Best 2 ~ 7) -->
+        <div class="part-control-group">
+            <label><i class="fa-solid fa-people-group"></i> Size</label>
+            <select id="part-size" class="part-select">
+                <option value="2" selected>Best 2</option>
+                <option value="3">Best 3</option>
+                <option value="4">Best 4</option>
+                <option value="5">Best 5</option>
+                <option value="6">Best 6</option>
+                <option value="7">Best 7</option>
+            </select>
+        </div>
+
+        <!-- 3. 指定球員 (Player Name) -->
+        <div class="part-control-group">
+            <label><i class="fa-solid fa-user"></i> Player</label>
+            <select id="part-player" class="part-select">
+                <option value="" selected>- All Players -</option>
+                <!-- 動態載入球員清單 -->
+            </select>
+        </div>
+
+        <!-- 4. 排序欄位選擇 (Order By) -->
+        <div class="part-control-group">
+            <label><i class="fa-solid fa-sort"></i> Order By</label>
+            <select id="part-sort" class="part-select">
+                <option value="win_pct" selected>Win% (High→Low)</option>
+                <option value="unbeaten_pct">Unbeaten% (High→Low)</option>
+                <option value="games">Game (High→Low)</option>
+                <option value="wins">Win (High→Low)</option>
+                <option value="draws">Draw (High→Low)</option>
+                <option value="losses">Lose (High→Low)</option>
+            </select>
+        </div>
+
+        <!-- 5. Search 按鈕 -->
+        <div class="part-control-group">
+            <button class="part-btn-submit" onclick="fetchPartnershipData()">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+
+    <!-- 📊 數據表格 -->
+    <div class="part-table-wrapper">
+        <table class="part-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-left: 15px;">Combo</th>
+                    <th>Win%</th>
+                    <th>Unbeaten%</th>
+                    <th>Game</th>
+                    <th>Win</th>
+                    <th>Draw</th>
+                    <th>Lose</th>
+                </tr>
+            </thead>
+            <tbody id="part-table-body">
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 20px; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="part-note">
+        <i class="fa-solid fa-circle-info"></i> 備註：Overall & 9-a-side 最低合作門檻為 6 場；7-a-side 最低合作門檻為 3 場。預設依 Win% → Unbeaten% → Game 排序。
+    </div>
+</div>
+
+<script>
+    // 1. 自動從後端載入 Active 球員清單
+    function loadActivePlayers() {
+        fetch('/api/active-players')
+            .then(res => res.json())
+            .then(players => {
+                const selectEl = document.getElementById('part-player');
+                let optionsHtml = '<option value="" selected>-- All Players --</option>';
+                
+                players.forEach(p => {
+                    const playerName = typeof p === 'object' ? (p.name || p[1]) : p;
+                    optionsHtml += `<option value="${playerName}">${playerName}</option>`;
+                });
+                
+                selectEl.innerHTML = optionsHtml;
+            })
+            .catch(err => console.error('Load active players error:', err));
+    }
+
+    // 2. 獲取 Combo 數據並帶入 Order By 排序參數
+    function fetchPartnershipData() {
+        const aside = document.getElementById('part-aside').value;
+        const size = document.getElementById('part-size').value;
+        const player = document.getElementById('part-player').value;
+        const sort = document.getElementById('part-sort').value; // 💡 確保讀取排序選項
+        const tbody = document.getElementById('part-table-body');
+
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: #38bdf8;"><i class="fa-solid fa-spinner fa-spin"></i> 計算中...</td></tr>`;
+
+        // 帶入 &sort=${sort}
+        fetch(`/api/player-partnership?aside=${aside}&size=${size}&player=${encodeURIComponent(player)}&sort=${sort}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: #94a3b8;">找不到符合條件的組合數據</td></tr>`;
+                    return;
+                }
+                let html = '';
+                data.forEach(row => {
+                    html += `
+                        <tr>
+                            <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">${row.partnership}</td>
+                            <td style="color: #38bdf8; font-weight: bold;">${parseFloat(row.win_pct).toFixed(2)}%</td>
+                            <td style="color: #4ade80;">${parseFloat(row.unbeaten_pct).toFixed(2)}%</td>
+                            <td style="font-weight: bold;">${row.games}</td>
+                            <td style="color: #4ade80;">${row.wins}</td>
+                            <td style="color: #facc15;">${row.draws}</td>
+                            <td style="color: #f87171;">${row.losses}</td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Fetch partnership error:', err);
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #f87171; padding: 20px;">載入失敗</td></tr>`;
+            });
+    }
+
+    // 3. 網頁初始化載入
+    document.addEventListener('DOMContentLoaded', function() {
+        loadActivePlayers();
+        fetchPartnershipData();
+    });
+</script>

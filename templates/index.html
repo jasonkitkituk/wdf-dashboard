@@ -12,7 +12,7 @@
 
     <div class="dashboard-wrapper">
         <!-- 🔝 頂部導覽列 (Top Navigation Bar - 佔上方 8-10%) -->
-<!-- 🔝 頂部導覽列 (Top Navigation Bar) -->
+        <!-- 🔝 頂部導覽列 (Top Navigation Bar) -->
         <header class="top-navbar">
             <!-- 💡 將 Logo 改為點擊可返回 Home Page -->
             <div class="logo-container" onclick="switchTab('welcome')" style="cursor: pointer;" title="返回 Home Page">
@@ -46,6 +46,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#partnership" class="nav-btn" onclick="switchTab('partnership')">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                            <span>Best Combo</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
                             <i class="fa-solid fa-user"></i>
                             <span>P.Profile</span>
@@ -73,7 +79,7 @@
                     </div>
                     <h1> 得閒踢波 - Walking Daddy Football Club</h1>
                     <div class="subtitle">
-                        <p>⚽ 大家享受足球友誼賽 ⚽</p>
+                        <p>⚽ Enjoy Football ⚽</p>
                     </div>
                 </div>
 
@@ -97,6 +103,13 @@
                         <i class="fa-solid fa-futbol card-icon"></i>
                         <h3>G.A.O.S </h3>
                         <p>Goal + Assist + Own Goal + Clean Sheet </p>
+                    </div>
+                    <div class="card" onclick="switchTab('partnership')">
+                        <div class="card-icon">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                        <h3>Best Combo</h3>
+                        <p>Best Combo 2~ 7</p>
                     </div>
                     <div class="card" onclick="switchTab('player-profile')">
                         <i class="fa-solid fa-user card-icon"></i>
@@ -125,6 +138,10 @@
             <!-- 4) GAOS -->
             <section id="gaos" class="content-section">
                 {% include 'components/player_gaos.html' %}
+            </section>
+
+            <section id="partnership" class="content-section">
+                {% include 'components/player_partnership.html' %}
             </section>
 
             <!-- 5) Player Profile -->
