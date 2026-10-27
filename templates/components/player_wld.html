@@ -75,10 +75,11 @@
             transform: scale(0.98);
         }
 
-        /* 數據表格樣式 */
+        /* 數據表格樣式與 Sticky Header 設定 */
         .wld-table-wrapper {
             width: 100%;
             overflow-x: auto;
+            max-height: 70vh; /* 💡 限制表格容器高度，滾動時觸發固定表頭 */
             background: #1e293b;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -94,12 +95,16 @@
         }
 
         .wld-table th {
-            background: #0f172a;
+            position: sticky; /* 💡 讓表頭固定 */
+            top: 0;
+            z-index: 10;
+            background: #0f172a; /* 💡 確保滾動時底色不透明，遮擋下方文字 */
             color: #38bdf8;
             padding: 12px 10px;
             border-bottom: 2px solid #334155;
             white-space: nowrap;
             font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
         .wld-table td {
@@ -119,13 +124,25 @@
             margin-top: 10px;
             font-style: italic;
         }
+
+        /* 手機橫放或直放時自適應調整 */
+        @media (max-width: 900px) {
+            .wld-table {
+                min-width: 100% !important;
+                width: 100% !important;
+                font-size: 0.75rem !important;
+            }
+            .wld-table th, .wld-table td {
+                padding: 6px 4px !important;
+            }
+        }
     </style>
 
     <div class="section-header">
         <h2><i class="fa-solid fa-chart-pie"></i>Win-Draw-Lose</h2>
     </div>
 
-    <!-- 🎛️ 控制面板（方案 B：僅靠 Submit 按鈕套用） -->
+    <!-- 🎛️ 控制面板 -->
     <div class="wld-control-panel">
         
         <!-- 1. 賽制選擇 -->
@@ -138,7 +155,7 @@
             </select>
         </div>
 
-        <!-- 2. 主要排序 (1st Sort) - 包含全部 12 個欄位 -->
+        <!-- 2. 主要排序 (1st Sort) -->
         <div class="wld-control-group">
             <label><i class="fa-solid fa-sort-amount-down"></i> 1st Order</label>
             <select id="wld-sort1" class="wld-select">
@@ -154,11 +171,10 @@
                 <option value="point:desc">Point (High→Low)</option>
                 <option value="avg_point:desc">Avg Point (High→Low)</option>
                 <option value="total:desc">Total (High→Low)</option>
-
             </select>
         </div>
 
-        <!-- 3. 次要排序 (2nd Sort) - 包含全部 12 個欄位 -->
+        <!-- 3. 次要排序 (2nd Sort) -->
         <div class="wld-control-group">
             <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
             <select id="wld-sort2" class="wld-select">
@@ -177,7 +193,7 @@
             </select>
         </div>
 
-        <!-- 4. 第三排序 (3rd Sort) - 包含全部 12 個欄位 -->
+        <!-- 4. 第三排序 (3rd Sort) -->
         <div class="wld-control-group">
             <label><i class="fa-solid fa-sort-numeric-down-alt"></i> 3rd Order</label>
             <select id="wld-sort3" class="wld-select">
@@ -196,7 +212,7 @@
             </select>
         </div>
 
-        <!-- 5. 🔍 Submit 按鈕（唯一觸發更新的位置） -->
+        <!-- 5. 🔍 Submit 按鈕 -->
         <div class="wld-control-group">
             <button id="wld-submit-btn" class="wld-btn-submit" onclick="fetchWLDData()">
                 <i class="fa-solid fa-magnifying-glass"></i> Search
@@ -241,7 +257,6 @@
 </div>
 
 <script>
-    // 方案 B：只有在點擊 Submit 按鈕或初次開啟頁面時執行 API 請求
     function fetchWLDData() {
         const aside = document.getElementById('wld-aside').value;
         const sort1 = document.getElementById('wld-sort1').value;
@@ -256,7 +271,6 @@
                 </td>
             </tr>`;
 
-        // 呼叫 Flask API
         fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`)
             .then(response => response.json())
             .then(data => {
@@ -292,7 +306,6 @@
             });
     }
 
-    // 初始載入
     document.addEventListener('DOMContentLoaded', function() {
         fetchWLDData();
     });

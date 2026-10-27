@@ -18,12 +18,34 @@
             border: none; padding: 9px 22px; border-radius: 6px; cursor: pointer; display: flex;
             align-items: center; gap: 8px; font-size: 0.88rem; height: 38px;
         }
-        .gaos-table-wrapper { width: 100%; overflow-x: auto; background: #1e293b; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
-        .gaos-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; min-width: 900px; }
-        .gaos-table th { background: #0f172a; color: #38bdf8; padding: 12px 10px; border-bottom: 2px solid #334155; white-space: nowrap; font-weight: bold; }
-        .gaos-table td { padding: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); color: #e2e8f0; white-space: nowrap; }
-        .gaos-table tr:hover { background: rgba(255, 255, 255, 0.04); }
-        .gaos-note { font-size: 0.78rem; color: #64748b; margin-top: 10px; font-style: italic; }
+        .gaos-table-wrapper { 
+            width: 100%; 
+            overflow-x: auto; 
+            max-height: 70vh; /* 💡 限制表格最大高度，滾動時才會觸發內部 Sticky Header */
+            background: #1e293b; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+        }
+
+        .gaos-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            text-align: center; 
+            font-size: 0.85rem; 
+        }
+
+        /* 💡 讓 Header 當使用者往下拉時固定在最頂端 */
+        .gaos-table th { 
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #0f172a; 
+            color: #38bdf8; 
+            padding: 12px 6px; 
+            border-bottom: 2px solid #334155; 
+            white-space: nowrap; 
+            font-weight: bold; 
+        }
     </style>
 
     <div class="section-header">

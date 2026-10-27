@@ -398,4 +398,70 @@ body {
     .quick-access-grid {
         grid-template-columns: 1fr; /* 手機上首頁快速導覽卡片改為單欄完整排列 */
     }
+
+
+    /* ================= 📱 手機端排版與 Sticky Header 優化 ================= */
+
+/* 1. 表格 Header 固定（Sticky Header）全局設定 */
+.gaos-table th, 
+.data-table th,
+.wld-table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #0f172a !important; /* 確保滾動時底色不透明 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* 增加輕微陰影提升層次感 */
+}
+
+    /* 2. 手機版（含直放與橫放）響應式調整 */
+    @media (max-width: 900px) {
+        /* 讓 Logo 與 Nav-Menu 強制在同一水平線上 */
+        .top-navbar {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important; /* 絕不換行 */
+            align-items: center !important;
+            justify-content: flex-start !important;
+            padding: 8px 12px !important;
+            gap: 12px !important;
+        }
+
+        .logo-container {
+            flex-shrink: 0; /* 防止 Logo 被擠壓 */
+        }
+
+        .nav-menu {
+            flex: 1;
+            overflow-x: auto; /* 選單可橫向滑動 */
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-menu ul {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            gap: 6px !important;
+        }
+
+        .nav-btn {
+            padding: 6px 10px !important;
+            font-size: 0.8rem !important;
+        }
+
+        /* 3. 壓縮表格 Padding 與字體，讓橫放手機時可以完整容納不需左右拉動 */
+        .gaos-table, 
+        .wld-table,
+        .data-table {
+            min-width: 100% !important; /* 覆蓋原本過大的 min-width */
+            width: 100% !important;
+            font-size: 0.75rem !important; /* 適度縮小字體 */
+        }
+
+        .gaos-table th, .gaos-table td,
+        .wld-table th, .wld-table td,
+        .data-table th, .data-table td {
+            padding: 6px 4px !important; /* 大幅縮小 Padding 讓數據能塞進畫面 */
+            white-space: nowrap;
+        }
+    }
 }
