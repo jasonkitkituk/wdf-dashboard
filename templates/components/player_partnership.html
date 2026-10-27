@@ -128,7 +128,7 @@
             .then(res => res.json())
             .then(players => {
                 const selectEl = document.getElementById('part-player');
-                let optionsHtml = '<option value="" selected>-- All Players --</option>';
+                let optionsHtml = '<option value="" selected>-All Players-</option>';
                 
                 players.forEach(p => {
                     const playerName = typeof p === 'object' ? (p.name || p[1]) : p;

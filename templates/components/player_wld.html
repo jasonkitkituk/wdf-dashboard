@@ -174,6 +174,16 @@
             </select>
         </div>
 
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-calendar-days"></i>Time Range</label>
+            <select id="wld-days" class="wld-select">
+                <option value="all" selected>All Time</option>
+                <option value="30">Last 30-day</option>
+                <option value="60">Last 60-day</option>
+                <option value="90">Last 90-day</option>
+            </select>
+        </div>
+
         <!-- 3. 次要排序 (2nd Sort)
         <div class="wld-control-group">
             <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
@@ -261,55 +271,61 @@
 <script>
     function fetchWLDData() {
         const aside = document.getElementById('wld-aside').value;
+        const days = document.getElementById('wld-days').value; // 💡 取得時間選單的值
         const sort1 = document.getElementById('wld-sort1').value;
-        //const sort2 = document.getElementById('wld-sort2').value;
-        //const sort3 = document.getElementById('wld-sort3').value;
-
         const tbody = document.getElementById('wld-table-body');
+
+        if (!tbody) return;
+
         tbody.innerHTML = `
             <tr>
                 <td colspan="12" style="text-align: center; padding: 20px; color: #38bdf8;">
-                    <i class="fa-solid fa-spinner fa-spin"></i> 正在根據選擇條件更新數據...
+                    <i class="fa-solid fa-spinner fa-spin"></i> 載入中...
                 </td>
             </tr>`;
 
-        //fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&sort2=${sort2}&sort3=${sort3}`)
-        fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}`)
+        // 💡 將 &days=${days} 帶入 API 請求
+        fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&days=${days}`)
             .then(response => response.json())
             .then(data => {
                 if (!data || data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px; color: #94a3b8;">尚無相關數據</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px; color: #94a3b8;">此時間範圍內尚無相關數據</td></tr>`;
                     return;
                 }
 
                 let html = '';
-                data.forEach(row => {
+                data.forEach((row, index) => {
+                    const formatVal = (val) => (val !== null && val !== undefined) ? val : '-';
+                    const formatRatio = (val) => (val !== null && val !== undefined) ? Number(val).toFixed(2) + '%' : '-';
+
                     html += `
                         <tr>
-                            <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">${row.player_name}</td>
-                            <td style="color: #4ade80; font-weight: bold;">${row.win}</td>
-                            <td style="color: #facc15;">${row.draw}</td>
-                            <td style="color: #f87171;">${row.lose}</td>
-                            <td style="font-weight: bold;">${row.total}</td>
-                            <td style="color: #38bdf8;">${row.unbeaten}</td>
-                            <td style="color: #ffd700; font-weight: bold;">${row.point}</td>
-                            <td>${row.avg_point !== null && row.avg_point !== undefined ? parseFloat(row.avg_point).toFixed(2) : '<span style="color:#64748b;">-</span>'}</td>
-                            <td>${row.win_pct !== null && row.win_pct !== undefined ? parseFloat(row.win_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
-                            <td>${row.draw_pct !== null && row.draw_pct !== undefined ? parseFloat(row.draw_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
-                            <td>${row.lose_pct !== null && row.lose_pct !== undefined ? parseFloat(row.lose_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
-                            <td>${row.unbeaten_pct !== null && row.unbeaten_pct !== undefined ? parseFloat(row.unbeaten_pct).toFixed(2) + '%' : '<span style="color:#64748b;">-</span>'}</td>
+                            <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">${row.player_name || 'N/A'}</td>
+                            <td style="color: #4ade80; font-weight: bold;">${formatVal(row.win)}</td>
+                            <td style="color: #facc15;">${formatVal(row.draw)}</td>
+                            <td style="color: #f87171;">${formatVal(row.lose)}</td>
+                            <td style="font-weight: bold;">${formatVal(row.total)}</td>
+                            <td style="color: #38bdf8;">${formatVal(row.unbeaten)}</td>
+                            <td style="color: #38bdf8; font-weight: bold;">${formatVal(row.point)}</td>
+                            <td style="font-weight: bold;">${formatVal(row.avg_point)}</td>
+                            <td style="color: #4ade80; font-weight: bold;">${formatRatio(row.win_pct)}</td>
+                            <td>${formatRatio(row.draw_pct)}</td>
+                            <td>${formatRatio(row.lose_pct)}</td>
+                            <td style="color: #38bdf8;">${formatRatio(row.unbeaten_pct)}</td>
                         </tr>
                     `;
                 });
                 tbody.innerHTML = html;
             })
             .catch(err => {
-                console.error('Fetch WLD error:', err);
-                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; color: #f87171; padding: 20px;">載入資料失敗，請重新嘗試。</td></tr>`;
+                console.error('Fetch WLD 發生錯誤:', err);
+                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; color: #f87171; padding: 20px;">載入失敗</td></tr>`;
             });
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fetchWLDData);
+    } else {
         fetchWLDData();
-    });
+    }
 </script>

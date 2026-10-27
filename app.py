@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request
 from flask import request, jsonify
 from itertools import combinations
+from datetime import datetime, timedelta
 import psycopg2
 import psycopg2.extras
 
@@ -111,8 +112,7 @@ def index():
 def api_player_wld():
     aside = request.args.get('aside', 'all')
     sort1 = request.args.get('sort1', 'point:desc')
-    #sort2 = request.args.get('sort2', 'avg_point:desc')
-    #sort3 = request.args.get('sort3', 'total:desc')
+    days = request.args.get('days', 'all')  # 💡 接收時間篩選參數 (all, 30, 60, 90)
 
     allowed_columns = {
         'player_name': 'pl.name',
@@ -136,10 +136,7 @@ def api_player_wld():
         return allowed_columns[col_key], direction
 
     col1, dir1 = parse_sort(sort1)
-    #col2, dir2 = parse_sort(sort2)
-    #col3, dir3 = parse_sort(sort3)
 
-    # 💡 根據賽制類型動態設定「最小參與場數門檻」與過濾條件
     min_games = 3 if aside == '7' else 6
     
     aside_condition = ""
@@ -148,6 +145,13 @@ def api_player_wld():
     if aside in ['7', '9']:
         aside_condition = "AND m.pitch_aside = %s"
         query_params.append(int(aside))
+
+    # 💡 處理時間條件篩選
+    date_condition = ""
+    if days in ['30', '60', '90']:
+        limit_date = datetime.now().date() - timedelta(days=int(days))
+        date_condition = "AND m.match_date >= %s"
+        query_params.append(limit_date)
 
     sql_query = f"""
         SELECT 
@@ -164,7 +168,6 @@ def api_player_wld():
                 ELSE 0 
             END) AS point,
             
-            -- 💡 依據選定的賽制使用對應的門檻值 (7-a-side 為 3場，其餘為 6場)
             CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND(SUM(CASE WHEN mt.result = 'Win' THEN 3 WHEN mt.result = 'Draw' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0), 2) ELSE NULL END AS avg_point,
             CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((SUM(CASE WHEN mt.result = 'Win' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)) * 100, 2) ELSE NULL END AS win_pct,
             CASE WHEN COUNT(pms.match_id) >= {min_games} THEN ROUND((SUM(CASE WHEN mt.result = 'Draw' THEN 1 ELSE 0 END)::NUMERIC / NULLIF(COUNT(pms.match_id), 0)) * 100, 2) ELSE NULL END AS draw_pct,
@@ -182,13 +185,13 @@ def api_player_wld():
         WHERE 
             pl.is_active = true
             {aside_condition}
+            {date_condition}
         GROUP BY 
             pl.id, pl.name
         HAVING 
             COUNT(pms.match_id) > 0
         ORDER BY 
             {col1} {dir1} NULLS LAST;
-            
     """
 
     try:
@@ -211,6 +214,7 @@ def api_player_wld():
 def api_player_gaos():
     aside = request.args.get('aside', 'all')
     sort1 = request.args.get('sort1', 'player_name:asc')
+    days = request.args.get('days', 'all')  # 💡 接收時間篩選參數 (all, 30, 60, 90)
 
     allowed_columns = {
         'player_name': 'pl.name',
@@ -242,6 +246,13 @@ def api_player_gaos():
         aside_condition = "AND m.pitch_aside = %s"
         query_params.append(int(aside))
 
+    # 💡 處理時間條件篩選
+    date_condition = ""
+    if days in ['30', '60', '90']:
+        limit_date = datetime.now().date() - timedelta(days=int(days))
+        date_condition = "AND m.match_date >= %s"
+        query_params.append(limit_date)
+
     sql_query = f"""
         SELECT 
             pl.id AS player_id,
@@ -264,6 +275,7 @@ def api_player_gaos():
         JOIN matches m ON pms.match_id = m.id
         WHERE pl.is_active = true
             {aside_condition}
+            {date_condition}
         GROUP BY pl.id, pl.name
         HAVING COUNT(pms.match_id) > 0
         ORDER BY {col1} {dir1} NULLS LAST;
