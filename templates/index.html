@@ -12,57 +12,49 @@
 
     <div class="dashboard-wrapper">
         <!-- 🔝 頂部導覽列 (Top Navigation Bar - 佔上方 8-10%) -->
+<!-- 🔝 頂部導覽列 (Top Navigation Bar) -->
         <header class="top-navbar">
-            <div class="logo-container">
+            <!-- 💡 將 Logo 改為點擊可返回 Home Page -->
+            <div class="logo-container" onclick="switchTab('welcome')" style="cursor: pointer;" title="返回 Home Page">
                 <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo">
-                <div class="logo-text">
-                    <h2>WDF</h2>
-                    <span>Dashboard</span>
-                </div>
             </div>
-
+            
             <nav class="nav-menu">
                 <ul>
                     <li>
-                        <a href="#welcome" class="nav-btn active" onclick="switchTab('welcome')">
-                            <i class="fa-solid fa-house"></i>
-                            <span>Main Page</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="#match-stat" class="nav-btn" onclick="switchTab('match-stat')">
                             <i class="fa-solid fa-calendar-days"></i>
-                            <span>Match Stat.</span>
+                            <span>Stat.</span>
                         </a>
                     </li>
                     <li>
                         <a href="#rank-top10" class="nav-btn" onclick="switchTab('rank-top10')">
                             <i class="fa-solid fa-trophy"></i>
-                            <span>RANK TOP 10</span>
+                            <span>RANK</span>
                         </a>
                     </li>
                     <li>
                         <a href="#wld" class="nav-btn" onclick="switchTab('wld')">
                             <i class="fa-solid fa-chart-pie"></i>
-                            <span>Win-Draw-Lose</span>
+                            <span>W-D-L</span>
                         </a>
                     </li>
                     <li>
                         <a href="#gaos" class="nav-btn" onclick="switchTab('gaos')">
                             <i class="fa-solid fa-futbol"></i>
-                            <span>G.A.O.S</span>
+                            <span>G.A.O.C</span>
                         </a>
                     </li>
                     <li>
                         <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
                             <i class="fa-solid fa-user"></i>
-                            <span>Player Profile</span>
+                            <span>P.Profile</span>
                         </a>
                     </li>
                     <li>
                         <a href="#player-vs-player" class="nav-btn" onclick="switchTab('player-vs-player')">
                             <i class="fa-solid fa-users-between-lines"></i>
-                            <span>Player vs Player</span>
+                            <span>PvP</span>
                         </a>
                     </li>
                 </ul>
