@@ -60,9 +60,6 @@
                 </ul>
             </nav>
             
-            <div class="navbar-footer-info">
-                <span>📊 Data: {{ date_range.from_date }} ~ {{ date_range.end_date }}</span>
-            </div>
         </header>
 
         <!-- 🖥️ 主內容區域 (下方佔滿寬度) -->
@@ -174,6 +171,11 @@
             </section>
 
         </main>
+
+        <!-- 📊 全局頁尾 (Global Footer) -->
+        <footer style="text-align: center; padding: 16px; background: #020617; border-top: 1px solid #334155; font-size: 0.78rem; color: #94a3b8; margin-top: auto;">
+            📊 Data from {{ date_range.from_date }} to {{ date_range.end_date }} &nbsp;|&nbsp; &copy; 2026 WDF Club
+        </footer>
     </div>
 
     <!-- JS 控制 Tab 切換與 DOM 操作 -->

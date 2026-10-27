@@ -350,3 +350,52 @@ body {
     color: #0f172a !important;
     font-weight: 800 !important;
 }
+
+/* ================= 📱 手機版響應式優化 (RWD Media Query) ================= */
+@media (max-width: 768px) {
+    /* 1. 讓頂部導覽列在手機上可以橫向滑動，避免擠壓變形 */
+    .top-navbar {
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .nav-menu {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+    }
+
+    .nav-menu ul {
+        display: flex;
+        white-space: nowrap;
+    }
+
+    .nav-btn {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+    }
+
+    /* 2. 解決主頁偏左、只佔 40% 的問題：拉闊寬度至 100% 滿版 */
+    .hero-welcome {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto 24px auto !important;
+        padding: 24px 16px !important;
+        box-sizing: border-box;
+    }
+
+    .hero-welcome h1 {
+        font-size: 1.35rem !important; /* 手機上字體大小適中，避免過長換行難看 */
+        line-height: 1.4;
+    }
+
+    .main-content {
+        padding: 16px !important; /* 手機版主內容左右邊距縮小，增加可用空間 */
+    }
+
+    .quick-access-grid {
+        grid-template-columns: 1fr; /* 手機上首頁快速導覽卡片改為單欄完整排列 */
+    }
+}
