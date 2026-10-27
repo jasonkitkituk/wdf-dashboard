@@ -10,18 +10,18 @@
         /* 專屬內部三欄容器 */
         .rank-custom-grid {
             display: flex !important;
-            flex-wrap: nowrap !important; /* 💡 關鍵：強制不換行，保持單行三欄 */
+            flex-wrap: nowrap !important; 
             gap: 15px !important;
             justify-content: flex-start !important;
             margin-top: 15px !important;
-            overflow-x: auto !important;  /* 💡 關鍵：寬度不夠時自動開啟橫向滑動 */
-            padding-bottom: 12px !important; /* 留出滑動條視覺空間 */
-            -webkit-overflow-scrolling: touch; /* 💡 iOS 滑動體驗優化 (順暢滑動) */
+            overflow-x: auto !important;  
+            padding-bottom: 12px !important; 
+            -webkit-overflow-scrolling: touch; 
         }
 
         .rank-card-box {
-            width: 300px !important;      /* 稍微微調卡片寬度，適合手機滑動 */
-            flex-shrink: 0 !important;     /* 💡 關鍵：防止手機螢幕硬把卡片擠壓變形 */
+            width: 300px !important;      
+            flex-shrink: 0 !important;     
             background: #1e293b !important;
             border-radius: 10px !important;
             padding: 14px !important;
@@ -74,6 +74,27 @@
             font-size: 0.82rem !important;
             margin-bottom: 6px !important;
             color: #f8fafc !important;
+        }
+
+        /* ================= 📱 手機「橫放」專用優化：讓 3 張卡片並排 ================= */
+        @media screen and (max-width: 900px) and (orientation: landscape) {
+            .rank-custom-grid {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important; /* 強制 3 欄並排 */
+                gap: 8px !important;
+                overflow-x: visible !important; /* 橫放時不需要左右滑動 */
+            }
+
+            .rank-card-box {
+                width: 100% !important; /* 讓卡片自動適應網格寬度 */
+                padding: 8px !important;
+                font-size: 0.7rem !important;
+            }
+
+            .rank-row-item {
+                padding: 4px 6px !important;
+                font-size: 0.72rem !important;
+            }
         }
     </style>
 
