@@ -1,0 +1,442 @@
+:root {
+    
+    --bg-dark: #0f172a; 
+    --bg-navbar: #020617;    
+    --accent-hover: #0369a1;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --active-green: #10b981;
+    --bg-card: #1e293b; 
+    --border-color: #334155;  
+    --accent-color: #0284c7; 
+    
+ 
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: column; /* 改為上下排列 */
+    min-height: 100vh;
+}
+
+/* ================= 1. 頂部 Navigation Bar (約佔 8-10% 高度) ================= */
+.top-navbar {
+    background-color: var(--bg-navbar);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.club-logo {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.logo-text h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1.1;
+}
+
+.logo-text span {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu ul {
+    list-style: none;
+    display: flex;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    border-left: none;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+.nav-btn.active {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.navbar-footer-info {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+/* ================= 2. 下方 Content Area (滿版頁面) ================= */
+.main-content {
+    margin-left: 0;
+    flex: 1;
+    padding: 24px 32px;
+    background-color: var(--bg-dark);
+    width: 100%;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Home Welcome Layout */
+.hero-welcome {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(2,132,199,0.1) 0%, rgba(15,23,42,1) 100%);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 32px;
+}
+
+.club-badge-large {
+    font-size: 4rem;
+    color: var(--accent-color);
+    margin-bottom: 16px;
+}
+
+.hero-welcome h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.hero-welcome .subtitle {
+    color: var(--text-secondary);
+}
+
+.quick-access-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-color);
+}
+
+.card-icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 12px;
+}
+
+/* 三欄式 Top 20 Layout */
+.three-column-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.rank-col {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* 下拉選單與卡片設計 */
+.selector-box, .pvp-selector-container {
+    background-color: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.dropdown {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+.pvp-selector-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.vs-badge {
+    font-weight: 800;
+    color: var(--accent-color);
+    padding: 8px 16px;
+    background-color: rgba(2, 132, 199, 0.1);
+    border-radius: 20px;
+}
+
+.club-logo-large {
+    width: 88px;
+    height: 88px;
+    object-fit: contain;
+}
+
+.narrow-table {
+    width: 66.6%;
+    max-width: 900px;
+}
+
+@media (max-width: 1024px) {
+    .narrow-table {
+        width: 100%;
+    }
+}
+
+/* ================= 表格框線與 Cell 寬度美化 ================= */
+.data-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #475569 !important;
+    margin-top: 10px;
+}
+
+.data-table th, 
+.data-table td {
+    padding: 18px 50px !important;
+    min-width: 130px;
+    text-align: center;
+    font-size: 1rem;
+    border-right: 2px solid #475569 !important;
+    border-bottom: 2px solid #475569 !important;
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+    border-right: none !important;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.data-table th {
+    background-color: #0f172a;
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.data-table td {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.data-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+
+/* 📌 全局表格 Sticky Header (固定表頭) */
+.gaos-table th, 
+.data-table th,
+.wld-table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #0f172a !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* ================= Team Color Table ================= */
+.team-color-table thead tr th:nth-child(1) { background-color: #0f172a !important; color: var(--accent-color) !important; }
+.team-color-table thead tr th:nth-child(2) { background-color: #000000 !important; color: #ffffff !important; }
+.team-color-table thead tr th:nth-child(3) { background-color: #ffffff !important; color: #000000 !important; }
+.team-color-table thead tr th:nth-child(4) { background-color: #1e3a8a !important; color: #ffffff !important; }
+.team-color-table thead tr th:nth-child(5) { background-color: #dc2626 !important; color: #facc15 !important; }
+.team-color-table thead tr th:nth-child(6) { background-color: #16a34a !important; color: #000000 !important; }
+
+.team-color-table tbody tr:nth-child(1) td,
+.team-color-table tbody tr:nth-child(2) td,
+.team-color-table tbody tr:nth-child(3) td {
+    background-color: #fef9c3 !important;
+    color: #0f172a !important;
+}
+
+.team-color-table tbody tr:nth-child(4) td {
+    background-color: #fde047 !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+}
+
+/* ================= 📱 手機端 RWD 排版優化 (寬度 < 900px 通用) ================= */
+@media (max-width: 900px) {
+    /* 1. Logo 與 Nav-Menu 在同一行 */
+    .top-navbar {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 8px 12px !important;
+        gap: 12px !important;
+    }
+
+    .logo-container {
+        flex-shrink: 0;
+    }
+
+    .nav-menu {
+        flex: 1;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-menu ul {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 6px !important;
+    }
+
+    .nav-btn {
+        padding: 6px 10px !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* 2. Welcome 頁面標題拉闊 */
+    .hero-welcome {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto 24px auto !important;
+        padding: 24px 16px !important;
+    }
+
+    .hero-welcome h1 {
+        font-size: 1.35rem !important;
+        line-height: 1.4;
+    }
+
+    .main-content {
+        padding: 16px !important;
+    }
+
+    .quick-access-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* 3. 壓縮表格 Padding，使手機畫面合身 */
+    .gaos-table, 
+    .wld-table,
+    .data-table {
+        min-width: 100% !important;
+        width: 100% !important;
+        font-size: 0.75rem !important;
+    }
+
+    .gaos-table th, .gaos-table td,
+    .wld-table th, .wld-table td,
+    .data-table th, .data-table td {
+        padding: 6px 4px !important;
+        white-space: nowrap;
+    }
+
+    /* 直放時預設改為單欄 */
+    .three-column-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================= 📱 手機「橫放」專用優化 (獨立區域) ================= */
+@media (max-width: 900px) and (orientation: landscape) {
+    /* 橫放時將 RANK TOP 10 改回 3 欄並排 */
+    .three-column-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .rank-col {
+        padding: 10px !important;
+    }
+
+    .rank-col table, 
+    .rank-col .data-table {
+        font-size: 0.7rem !important;
+        min-width: 100% !important;
+    }
+
+    .rank-col th, 
+    .rank-col td {
+        padding: 4px 6px !important;
+    }
+}

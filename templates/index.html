@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WDF Football Club - Match Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <!-- 🔝 頂部導覽列 (Top Navigation Bar - 佔上方 8-10%) -->
+        <!-- 🔝 頂部導覽列 (Top Navigation Bar) -->
+        <header class="top-navbar">
+            <!-- 💡 將 Logo 改為點擊可返回 Home Page -->
+            <div class="logo-container" onclick="switchTab('welcome')" style="cursor: pointer;" title="返回 Home Page">
+                <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo">
+            </div>
+            
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="#match-stat" class="nav-btn" onclick="switchTab('match-stat')">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Stat.</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#rank-top10" class="nav-btn" onclick="switchTab('rank-top10')">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>RANK</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#wld" class="nav-btn" onclick="switchTab('wld')">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>W-D-L</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#gaos" class="nav-btn" onclick="switchTab('gaos')">
+                            <i class="fa-solid fa-futbol"></i>
+                            <span>G.A.O.C</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#partnership" class="nav-btn" onclick="switchTab('partnership')">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                            <span>Combo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
+                            <i class="fa-solid fa-user"></i>
+                            <span>P.Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#player-vs-player" class="nav-btn" onclick="switchTab('player-vs-player')">
+                            <i class="fa-solid fa-users-between-lines"></i>
+                            <span>PvP</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+        </header>
+
+        <!-- 🖥️ 主內容區域 (下方佔滿寬度) -->
+        <main class="main-content">
+            
+            <!-- 0) 起始 Welcome 頁面 (包含 Club Logo) -->
+            <section id="welcome" class="content-section active">
+                <div class="hero-welcome">
+                    <div class="club-badge-large">
+                        <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo-large">
+                    </div>
+                    <h1> 得閒踢波 - Walking Daddy Football Club</h1>
+                    <div class="subtitle">
+                        <p>⚽ Enjoy Football ⚽</p>
+                    </div>
+                </div>
+
+                <div class="quick-access-grid">
+                    <div class="card" onclick="switchTab('match-stat')">
+                        <i class="fa-solid fa-calendar-days card-icon"></i>
+                        <h3>Match Stat.</h3>
+                        <p>General stat. and Team Color stat. </p>
+                    </div>
+                    <div class="card" onclick="switchTab('rank-top10')">
+                        <i class="fa-solid fa-trophy card-icon"></i>
+                        <h3>RANK TOP 10</h3>
+                        <p>Overall、9-a-side & 7-a-side Top 10 Ranking</p>
+                    </div>
+                    <div class="card" onclick="switchTab('wld')">
+                        <i class="fa-solid fa-chart-pie card-icon"></i>
+                        <h3>Win Draw Lose (W.D.L)</h3>
+                        <p>Player result and stat.</p>
+                    </div>
+                    <div class="card" onclick="switchTab('gaos')">
+                        <i class="fa-solid fa-futbol card-icon"></i>
+                        <h3>G.A.O.S </h3>
+                        <p>Goal + Assist + Own Goal + Clean Sheet </p>
+                    </div>
+                    <div class="card" onclick="switchTab('partnership')">
+                        <div class="card-icon">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                        <h3>Combo</h3>
+                        <p>Best Combo 2~ 7</p>
+                    </div>
+                    <div class="card" onclick="switchTab('player-profile')">
+                        <i class="fa-solid fa-user card-icon"></i>
+                        <h3>Player Profile</h3>
+                        <p>Select a player to view their historical power cards and milestones.</p>
+                    </div>
+                    <div class="card" onclick="switchTab('player-vs-player')">
+                        <i class="fa-solid fa-users-between-lines card-icon"></i>
+                        <h3>Player vs Player</h3>
+                        <p>Analysis for 2-player battles/teammate cooperation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1) Match Stat. -->
+            {% include 'components/match_stat.html' %}
+
+            <!-- 2) RANK TOP10 -->
+            {% include 'components/rank_top10.html' %}
+
+            <!-- 3) WLD -->
+            <section id="wld" class="content-section">
+                {% include 'components/player_wld.html' %}
+            </section>
+
+            <!-- 4) GAOS -->
+            <section id="gaos" class="content-section">
+                {% include 'components/player_gaos.html' %}
+            </section>
+
+            <section id="partnership" class="content-section">
+                {% include 'components/player_partnership.html' %}
+            </section>
+
+            <!-- 5) Player Profile -->
+            <section id="player-profile" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-user"></i> Player Profile (球員個人資料)</h2>
+                </div>
+                <div class="selector-box">
+                    <label for="player-select"><i class="fa-solid fa-magnifying-glass"></i> 選擇球員：</label>
+                    <select id="player-select" class="dropdown">
+                        <option value="">-- 請選擇球員 --</option>
+                        <option value="player1">球員 A</option>
+                        <option value="player2">球員 B</option>
+                    </select>
+                </div>
+                <div class="profile-card-placeholder">
+                    <p>請從上方的 Dropdown Box 選擇一名球員以查看詳細數據</p>
+                </div>
+            </section>
+
+            <!-- 6) Player vs Player -->
+            <section id="player-vs-player" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-users-between-lines"></i> Player vs Player (球員對決 / 合作數據)</h2>
+                </div>
+                <div class="pvp-selector-container">
+                    <div class="pvp-select-group">
+                        <label><i class="fa-solid fa-user"></i> 球員 1：</label>
+                        <select class="dropdown">
+                            <option value="">-- 選擇球員 1 --</option>
+                        </select>
+                    </div>
+                    <div class="vs-badge">VS / WITH</div>
+                    <div class="pvp-select-group">
+                        <label><i class="fa-solid fa-user"></i> 球員 2：</label>
+                        <select class="dropdown">
+                            <option value="">-- 選擇球員 2 --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pvp-results-placeholder">
+                    <p>請選擇兩名球員以分析合作戰績與對賽紀錄</p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- 📊 全局頁尾 (Global Footer) -->
+        <footer style="text-align: center; padding: 16px; background: #020617; border-top: 1px solid #334155; font-size: 0.78rem; color: #94a3b8; margin-top: auto;">
+            📊 Data from {{ date_range.from_date }} to {{ date_range.end_date }} &nbsp;|&nbsp; &copy; 2026 WDF Club
+        </footer>
+    </div>
+
+    <!-- JS 控制 Tab 切換與 DOM 操作 -->
+    <script>
+        function switchTab(tabId) {
+            // 隱藏所有 section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            // 移除所有 nav 按鈕 active
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+
+            // 顯示目標 section
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // 標示該按鈕為 active
+            const activeBtn = document.querySelector(`.nav-btn[href="#${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!-- templates/components/player_wld.html -->
+<div id="player-wld-container" class="wld-component-wrapper">
+    <style>
+        .wld-component-wrapper {
+            width: 100%;
+            color: #f8fafc;
+        }
+
+        .wld-control-panel {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .wld-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .wld-control-group label {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wld-select {
+            background: #0f172a;
+            color: #38bdf8;
+            border: 1px solid #334155;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            outline: none;
+            min-width: 160px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .wld-select:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        .wld-btn-submit {
+            background: var(--accent-color, #38bdf8);
+            color: #0f172a;
+            font-weight: bold;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            transition: background 0.2s, transform 0.1s;
+            height: 38px;
+        }
+
+        .wld-btn-submit:hover {
+            background: #7dd3fc;
+        }
+
+        .wld-btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* 數據表格樣式與 Sticky Header 設定 */
+        .wld-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            max-height: 70vh; /* 💡 限制表格容器高度，滾動時觸發固定表頭 */
+            background: #1e293b;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .wld-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.85rem;
+            min-width: 900px;
+        }
+
+        .wld-table th {
+            position: sticky; /* 💡 讓表頭固定 */
+            top: 0;
+            z-index: 10;
+            background: #0f172a; /* 💡 確保滾動時底色不透明，遮擋下方文字 */
+            color: #38bdf8;
+            padding: 12px 10px;
+            border-bottom: 2px solid #334155;
+            white-space: nowrap;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .wld-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .wld-table tr:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .wld-note {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* 手機橫放或直放時自適應調整 */
+        @media (max-width: 900px) {
+            .wld-table {
+                min-width: 100% !important;
+                width: 100% !important;
+                font-size: 0.75rem !important;
+            }
+            .wld-table th, .wld-table td {
+                padding: 6px 4px !important;
+            }
+        }
+    </style>
+
+    <div class="section-header">
+        <h2><i class="fa-solid fa-chart-pie"></i>Win-Draw-Lose</h2>
+    </div>
+
+    <!-- 🎛️ 控制面板 -->
+    <div class="wld-control-panel">
+        
+        <!-- 1. 賽制選擇 -->
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-filter"></i> A-side</label>
+            <select id="wld-aside" class="wld-select">
+                <option value="all" selected>Overall</option>
+                <option value="9">9-a-side</option>
+                <option value="7">7-a-side</option>
+            </select>
+        </div>
+
+        <!-- 2. 主要排序 (1st Sort) -->
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-sort-amount-down"></i>Order by</label>
+            <select id="wld-sort1" class="wld-select">
+                <option value="player_name:asc" selected>Player Name (A→Z)</option>
+                <option value="win:desc">Win (High→Low)</option>
+                <option value="win_pct:desc">Win% (High→Low)</option>
+                <option value="unbeaten:desc">Unbeaten (High→Low)</option>
+                <option value="unbeaten_pct:desc">Unbeaten% (High→Low)</option>
+                <option value="draw:desc">Draw (High→Low)</option>
+                <option value="draw_pct:desc">Draw% (High→Low)</option>
+                <option value="lose:desc">Lose (High→Low)</option>
+                <option value="lose_pct:desc">Lose% (High→Low)</option>
+                <option value="point:desc">Point (High→Low)</option>
+                <option value="avg_point:desc">Avg. Pt (High→Low)</option>
+                <option value="total:desc">Total (High→Low)</option>
+            </select>
+        </div>
+
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-calendar-days"></i>Time Range</label>
+            <select id="wld-days" class="wld-select">
+                <option value="all" selected>All Time</option>
+                <option value="30">Last 30-day</option>
+                <option value="60">Last 60-day</option>
+                <option value="90">Last 90-day</option>
+            </select>
+        </div>
+
+        <!-- 3. 次要排序 (2nd Sort)
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-sort-amount-down-alt"></i> 2nd Order</label>
+            <select id="wld-sort2" class="wld-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="win:desc">Win (High→Low)</option>
+                <option value="win_pct:desc">Win% (High→Low)</option>
+                <option value="unbeaten:desc">Unbeaten (High→Low)</option>
+                <option value="unbeaten_pct:desc">Unbeaten% (High→Low)</option>
+                <option value="draw:desc">Draw (High→Low)</option>
+                <option value="draw_pct:desc">Draw% (High→Low)</option>
+                <option value="lose:desc">Lose (High→Low)</option>
+                <option value="lose_pct:desc">Lose% (High→Low)</option>
+                <option value="point:desc" selected>Point (High→Low)</option>
+                <option value="avg_point:desc">Avg Point (High→Low)</option>
+                <option value="total:desc">Total (High→Low)</option>
+            </select>
+        </div>
+        -->
+        
+        <!-- 4. 第三排序 (3rd Sort)
+        <div class="wld-control-group">
+            <label><i class="fa-solid fa-sort-numeric-down-alt"></i> 3rd Order</label>
+            <select id="wld-sort3" class="wld-select">
+                <option value="player_name:asc" selected>Player Name (A → Z)</option>
+                <option value="win:desc">Win (High→Low)</option>
+                <option value="win_pct:desc">Win% (High→Low)</option>
+                <option value="unbeaten:desc">Unbeaten (High→Low)</option>
+                <option value="unbeaten_pct:desc">Unbeaten% (High→Low)</option>
+                <option value="draw:desc">Draw (High→Low)</option>
+                <option value="draw_pct:desc">Draw% (High→Low)</option>
+                <option value="lose:desc">Lose (High→Low)</option>
+                <option value="lose_pct:desc">Lose% (High→Low)</option>
+                <option value="point:desc" selected>Point (High→Low)</option>
+                <option value="avg_point:desc">Avg Point (High→Low)</option>
+                <option value="total:desc">Total (High→Low)</option>
+            </select>
+        </div>
+        -->
+
+        <!-- 5. 🔍 Submit 按鈕 -->
+        <div class="wld-control-group">
+            <button id="wld-submit-btn" class="wld-btn-submit" onclick="fetchWLDData()">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+
+    </div>
+
+    <!-- 📊 數據表格 Display 區塊 -->
+    <div class="wld-table-wrapper">
+        <table class="wld-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-left: 15px;">Player Name</th>
+                    <th>Win</th>
+                    <th>Draw</th>
+                    <th>Lose</th>
+                    <th>Total</th>
+                    <th>Unbeaten</th>
+                    <th>Point</th>
+                    <th>Avg. Pt</th>
+                    <th>Win%</th>
+                    <th>Draw%</th>
+                    <th>Lose%</th>
+                    <th>Unbeaten%</th>
+                </tr>
+            </thead>
+            <tbody id="wld-table-body">
+                <tr>
+                    <td colspan="12" style="text-align: center; padding: 20px; color: #94a3b8;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="wld-note">
+        <i class="fa-solid fa-circle-info"></i> Threshold for 7-a-side is 3; Overall & 9-a-side are 6.
+    </div>
+
+</div>
+
+<script>
+    function fetchWLDData() {
+        const aside = document.getElementById('wld-aside').value;
+        const days = document.getElementById('wld-days').value; // 💡 取得時間選單的值
+        const sort1 = document.getElementById('wld-sort1').value;
+        const tbody = document.getElementById('wld-table-body');
+
+        if (!tbody) return;
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="12" style="text-align: center; padding: 20px; color: #38bdf8;">
+                    <i class="fa-solid fa-spinner fa-spin"></i> 載入中...
+                </td>
+            </tr>`;
+
+        // 💡 將 &days=${days} 帶入 API 請求
+        fetch(`/api/player-wld?aside=${aside}&sort1=${sort1}&days=${days}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; padding: 20px; color: #94a3b8;">此時間範圍內尚無相關數據</td></tr>`;
+                    return;
+                }
+
+                let html = '';
+                data.forEach((row, index) => {
+                    const formatVal = (val) => (val !== null && val !== undefined) ? val : '-';
+                    const formatRatio = (val) => (val !== null && val !== undefined) ? Number(val).toFixed(2) + '%' : '-';
+
+                    html += `
+                        <tr>
+                            <td style="text-align: left; padding-left: 15px; font-weight: bold; color: #f8fafc;">${row.player_name || 'N/A'}</td>
+                            <td style="color: #4ade80; font-weight: bold;">${formatVal(row.win)}</td>
+                            <td style="color: #facc15;">${formatVal(row.draw)}</td>
+                            <td style="color: #f87171;">${formatVal(row.lose)}</td>
+                            <td style="font-weight: bold;">${formatVal(row.total)}</td>
+                            <td style="color: #38bdf8;">${formatVal(row.unbeaten)}</td>
+                            <td style="color: #38bdf8; font-weight: bold;">${formatVal(row.point)}</td>
+                            <td style="font-weight: bold;">${formatVal(row.avg_point)}</td>
+                            <td style="color: #4ade80; font-weight: bold;">${formatRatio(row.win_pct)}</td>
+                            <td>${formatRatio(row.draw_pct)}</td>
+                            <td>${formatRatio(row.lose_pct)}</td>
+                            <td style="color: #38bdf8;">${formatRatio(row.unbeaten_pct)}</td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Fetch WLD 發生錯誤:', err);
+                tbody.innerHTML = `<tr><td colspan="12" style="text-align: center; color: #f87171; padding: 20px;">載入失敗</td></tr>`;
+            });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fetchWLDData);
+    } else {
+        fetchWLDData();
+    }
+</script>

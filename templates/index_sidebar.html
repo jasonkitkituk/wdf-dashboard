@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WDF Football Club - Match Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <!-- 左側導覽列 (佔比約 15%) -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <!-- 指向 static/image/logo.png -->
+                <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo">
+                <div class="logo-text">
+                    <h2>WDF</h2>
+                    <span>Dashboard</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="#welcome" class="nav-btn active" onclick="switchTab('welcome')">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Main Page</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#match-stat" class="nav-btn" onclick="switchTab('match-stat')">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Match Stat.</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#rank-top10" class="nav-btn" onclick="switchTab('rank-top10')">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>RANK TOP 10</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#wld" class="nav-btn" onclick="switchTab('wld')">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>Win-Draw-Lose</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#gaos" class="nav-btn" onclick="switchTab('gaos')">
+                            <i class="fa-solid fa-futbol"></i>
+                            <span>G.A.O.C</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Player Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#player-vs-player" class="nav-btn" onclick="switchTab('player-vs-player')">
+                            <i class="fa-solid fa-users-between-lines"></i>
+                            <span>Player vs Player</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <!-- 💡 新增這行：顯示 Data 截至日期範圍 -->
+                <div style="font-size: 0.72rem; color: #94a3b8; margin-bottom: 6px; line-height: 1.3;">
+                    📊 Data from {{ date_range.from_date }} to {{ date_range.end_date }}
+                </div>
+                <p>&copy; 2026 WDF Club</p>
+            </div>
+        </aside>
+
+        <!-- 右側主內容區域 (~85%) -->
+        <main class="main-content">
+            
+            <!-- 0) 起始 Welcome 頁面 (包含 Club Logo) -->
+            <section id="welcome" class="content-section active">
+                <div class="hero-welcome">
+                    <div class="club-badge-large">
+                        <img src="{{ url_for('static', filename='image/Chill40Football.png') }}" alt="WDF Logo" class="club-logo-large">
+                    </div>
+                    <h1> 得閒踢波 - Walking Daddy Football Club</h1>
+                    <div class="subtitle">
+                        <p>▶️⚽ 大家享受足球友誼賽</p>
+                    </div>
+                </div>
+
+                <div class="quick-access-grid">
+                    <div class="card" onclick="switchTab('match-stat')">
+                        <i class="fa-solid fa-calendar-days card-icon"></i>
+                        <h3>Match Stat.</h3>
+                        <p>General stat. and Team Color stat. </p>
+                    </div>
+                    <div class="card" onclick="switchTab('rank-top10')">
+                        <i class="fa-solid fa-trophy card-icon"></i>
+                        <h3>RANK TOP 10</h3>
+                        <p>Overall、9-a-side & 7-a-side Top 10 Ranking</p>
+                    </div>
+                    <div class="card" onclick="switchTab('wld')">
+                        <i class="fa-solid fa-chart-pie card-icon"></i>
+                        <h3>Win Draw Lose (W.D.L)</h3>
+                        <p>Player result and stat.</p>
+                    </div>
+                    <div class="card" onclick="switchTab('gaos')">
+                        <i class="fa-solid fa-futbol card-icon"></i>
+                        <h3>G.A.O.C </h3>
+                        <p>Goal + Assist + Own Goal + Clean Sheet </p>
+                    </div>
+                    <div class="card" onclick="switchTab('player-profile')">
+                        <i class="fa-solid fa-user card-icon"></i>
+                        <h3>Player Profile</h3>
+                        <p>Select a player to view their historical power cards and milestones.</p>
+                    </div>
+                    <div class="card" onclick="switchTab('player-vs-player')">
+                        <i class="fa-solid fa-users-between-lines card-icon"></i>
+                        <h3>Player vs Player</h3>
+                        <p>Analysis for 2-player battles/teammate cooperation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1) Match Stat. -->
+            {% include 'components/match_stat.html' %}
+
+            <!-- 2) RANK TOP10 -->
+            {% include 'components/rank_top10.html' %}
+
+            <!-- 3) WLD -->
+            <section id="wld" class="content-section">
+                {% include 'components/player_wld.html' %}
+            </section>
+
+            <!-- 4) GAOC -->
+            <section id="gaos" class="content-section">
+                {% include 'components/player_gaos.html' %}
+            </section>
+
+            <!-- 5) Player Profile -->
+            <section id="player-profile" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-user"></i> Player Profile (球員個人資料)</h2>
+                </div>
+                <div class="selector-box">
+                    <label for="player-select"><i class="fa-solid fa-magnifying-glass"></i> 選擇球員：</label>
+                    <select id="player-select" class="dropdown">
+                        <option value="">-- 請選擇球員 --</option>
+                        <option value="player1">球員 A</option>
+                        <option value="player2">球員 B</option>
+                    </select>
+                </div>
+                <div class="profile-card-placeholder">
+                    <p>請從上方的 Dropdown Box 選擇一名球員以查看詳細數據</p>
+                </div>
+            </section>
+
+            <!-- 6) Player vs Player -->
+            <section id="player-vs-player" class="content-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-users-between-lines"></i> Player vs Player (球員對決 / 合作數據)</h2>
+                </div>
+                <div class="pvp-selector-container">
+                    <div class="pvp-select-group">
+                        <label><i class="fa-solid fa-user"></i> 球員 1：</label>
+                        <select class="dropdown">
+                            <option value="">-- 選擇球員 1 --</option>
+                        </select>
+                    </div>
+                    <div class="vs-badge">VS / WITH</div>
+                    <div class="pvp-select-group">
+                        <label><i class="fa-solid fa-user"></i> 球員 2：</label>
+                        <select class="dropdown">
+                            <option value="">-- 選擇球員 2 --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pvp-results-placeholder">
+                    <p>請選擇兩名球員以分析合作戰績與對賽紀錄</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- JS 控制 Tab 切換與 DOM 操作 -->
+    <script>
+        function switchTab(tabId) {
+            // 隱藏所有 section
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+
+            // 移除所有 nav 按鈕 active
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+
+            // 顯示目標 section
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // 標示該按鈕為 active
+            const activeBtn = document.querySelector(`.nav-btn[href="#${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
+
+        function switchSection(sectionId, btnElement) {
+            // 隱藏所有 content-section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的 active 樣式
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示目標區塊並點亮按鈕
+            document.getElementById(sectionId).classList.add('active');
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+        }
+
+
+    </script>
+</body>
+</html>
