@@ -80,3 +80,34 @@ def api_rank_winpct_all():
     except Exception as e:
         print(f"Error in /api/rank-winpct-all: {e}")
         return jsonify({"error": str(e)}), 500
+
+@rank_bp.route('/api/rank-goalpct-all')
+def api_rank_goalpct_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_goal_pct.sql')
+
+        # 1. Overall Goal% (pitch_aside = None, 最少 6 場)
+        cursor.execute(sql_query, (None, None, 6))
+        goalpct_overall = cursor.fetchall()
+
+        # 2. 9-a-side Goal% (pitch_aside = 9, 最少 6 場)
+        cursor.execute(sql_query, (9, 9, 6))
+        goalpct_9side = cursor.fetchall()
+
+        # 3. 7-a-side Goal% (pitch_aside = 7, 最少 3 場)
+        cursor.execute(sql_query, (7, 7, 3))
+        goalpct_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": goalpct_overall,
+            "nine_side": goalpct_9side,
+            "seven_side": goalpct_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-goalpct-all: {e}")
+        return jsonify({"error": str(e)}), 500

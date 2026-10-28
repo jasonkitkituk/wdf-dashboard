@@ -51,6 +51,7 @@ def index():
     rank_winpct_9side = []
     rank_winpct_7side = []
 
+
     # 💡 宣告變數儲存資料日期範圍預設值
     date_range = {"from_date": "N/A", "end_date": "N/A"}
 
@@ -97,7 +98,7 @@ def index():
         cur.execute(load_sql_query('rank_winpct_7aside.sql'))
         rank_winpct_7side = cur.fetchall()
 
-        
+
 
         
         cur.close()
