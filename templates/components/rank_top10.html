@@ -774,7 +774,119 @@
             </div>
         </div>
     </div>
-    
+
+<!-- =================================================================== -->
+    <!-- GC% 排行榜 (場均失球率排行榜)                                        -->
+    <!-- =================================================================== -->
+    <div class="rank-custom-grid">
+        <!-- OVERALL GC% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">Goals Conceded %</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 55px; text-align: center;">GC%</span>
+                <span style="width: 45px; text-align: center;">GC</span>
+            </div>
+            <div class="rank-list-body" id="gcpct-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 9-A-SIDE GC% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Goals Conceded %</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 55px; text-align: center;">GC%</span>
+                <span style="width: 45px; text-align: center;">GC</span>
+            </div>
+            <div class="rank-list-body" id="gcpct-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 7-A-SIDE GC% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Goals Conceded %</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 55px; text-align: center;">GC%</span>
+                <span style="width: 45px; text-align: center;">GC</span>
+            </div>
+            <div class="rank-list-body" id="gcpct-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- APPEARANCES 排行榜 (總出場與勝場排行榜)                                -->
+    <!-- =================================================================== -->
+    <div class="rank-custom-grid">
+        <!-- OVERALL APPEARANCES -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">Appearances</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 45px; text-align: center;">Win</span>
+            </div>
+            <div class="rank-list-body" id="app-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 9-A-SIDE APPEARANCES -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Appearances</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 45px; text-align: center;">Win</span>
+            </div>
+            <div class="rank-list-body" id="app-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 7-A-SIDE APPEARANCES -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Appearances</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 45px; text-align: center;">Win</span>
+            </div>
+            <div class="rank-list-body" id="app-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+    </div>
+
     <div class="rank-note">
         <i class="fa-solid fa-circle-info"></i> Threshold for 7-a-side is 3; Overall & 9-a-side are 6.
     </div>
@@ -1207,7 +1319,7 @@
             .catch(err => console.error('Fetch All G+A Ranks Error:', err));
     }
 
-// 發送 API 請求抓取 G+A% 資料
+    // 發送 API 請求抓取 G+A% 資料
     function fetchAllGAPctRanks() {
         fetch('/api/rank-gapct-all')
             .then(res => res.json())
@@ -1219,6 +1331,111 @@
             .catch(err => console.error('Fetch All G+A% Ranks Error:', err));
     }
 
+
+// 渲染 GC% 表格
+    function renderGCPctTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#ffd700';
+            else if (rankNum === 2) rankColor = '#c0c0c0';
+            else if (rankNum === 3) rankColor = '#cd7f32';
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 55px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        ${Number(row.gc_pct).toFixed(2)}
+                    </span>
+                    <span style="width: 45px; text-align: center; color: #f87171;">
+                        ${row.gc}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // 發送 API 請求抓取 GC% 資料
+    function fetchAllGCPctRanks() {
+        fetch('/api/rank-gcpct-all')
+            .then(res => res.json())
+            .then(data => {
+                renderGCPctTable('gcpct-rank-overall', data.overall);
+                renderGCPctTable('gcpct-rank-9side', data.nine_side);
+                renderGCPctTable('gcpct-rank-7side', data.seven_side);
+            })
+            .catch(err => console.error('Fetch All GC% Ranks Error:', err));
+    }
+
+
+
+    // 渲染 Appearances 表格
+    function renderAppearancesTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#ffd700';
+            else if (rankNum === 2) rankColor = '#c0c0c0';
+            else if (rankNum === 3) rankColor = '#cd7f32';
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 45px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        ${row.appearances}
+                    </span>
+                    <span style="width: 45px; text-align: center; color: #4ade80;">
+                        ${row.wins}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // 發送 API 請求抓取 Appearances 資料
+    function fetchAllAppearancesRanks() {
+        fetch('/api/rank-appearances-all')
+            .then(res => res.json())
+            .then(data => {
+                renderAppearancesTable('app-rank-overall', data.overall);
+                renderAppearancesTable('app-rank-9side', data.nine_side);
+                renderAppearancesTable('app-rank-7side', data.seven_side);
+            })
+            .catch(err => console.error('Fetch All Appearances Ranks Error:', err));
+    }
+
+    
+
     // 在 DOMContentLoaded 中加入觸發
     document.addEventListener('DOMContentLoaded', () => {
         if (typeof fetchAllGoalRanks === 'function') fetchAllGoalRanks();
@@ -1228,7 +1445,9 @@
         if (typeof fetchAllAssistPctRanks === 'function') fetchAllAssistPctRanks();
         if (typeof fetchAllAssistRanks === 'function') fetchAllAssistRanks();
         if (typeof fetchAllGARanks === 'function') fetchAllGARanks();
-        fetchAllGAPctRanks(); // 觸發 G+A% 排行榜
+        if (typeof fetchAllGAPctRanks === 'function') fetchAllGAPctRanks();
+        if (typeof fetchAllAppearancesRanks === 'function') fetchAllAppearancesRanks();
+        fetchAllGCPctRanks(); // 觸發 GC% 排行榜
     });
 
     </script>
