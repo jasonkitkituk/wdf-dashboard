@@ -1,0 +1,185 @@
+<!-- templates/components/lmf_list.html -->
+<!-- <section id="lmf-section" class="content-section" style="width: 100%; display: none;">-->
+<div id="lmf" class="content-section" style="width: 100%;"></div>    
+    
+    <style>
+        #lmf-section.active {
+            display: block !important;
+        }
+
+        .lmf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .lmf-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .lmf-sort-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lmf-sort-btn {
+            background: #334155;
+            color: #94a3b8;
+            border: 1px solid #475569;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .lmf-sort-btn.active, .lmf-sort-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: bold;
+            border-color: #38bdf8;
+        }
+
+        .lmf-table-header, .lmf-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+        }
+
+        .lmf-table-header {
+            border-bottom: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .lmf-row-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+        }
+
+        /* W / D / L / Empty 標籤樣式 */
+        .badge-box {
+            display: flex;
+            gap: 5px;
+        }
+
+        .badge-item {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: #ffffff;
+        }
+
+        .badge-w { background-color: #16a34a; } /* 綠色 Win */
+        .badge-d { background-color: #64748b; } /* 灰色 Draw */
+        .badge-l { background-color: #dc2626; } /* 紅色 Lose */
+        .badge-none { background-color: rgba(255, 255, 255, 0.08); color: #475569; } /* 沒有參與 (淺灰 -) */
+    </style>
+
+    <div class="lmf-container">
+        <div class="lmf-toolbar">
+            <h3 style="margin:0; color:#38bdf8;"><i class="fa-solid fa-chart-line"></i> Last Matches Form (LMF)</h3>
+            
+            <div class="lmf-sort-btn-group">
+                <button class="lmf-sort-btn active" onclick="sortLMF('form')" id="btn-sort-form">By Form</button>
+                <button class="lmf-sort-btn" onclick="sortLMF('name')" id="btn-sort-name">By Player Name</button>
+            </div>
+        </div>
+
+        <div class="lmf-table-header">
+            <span style="width: 35px; text-align: center;">#</span>
+            <span style="flex-grow: 1; padding-left: 10px;">Player</span>
+            <span style="width: 50px; text-align: center;">Pts</span>
+            <span style="width: 180px; text-align: right; padding-right: 5px;">Form (Old ➔ Recent)</span>
+        </div>
+
+        <div id="lmf-list-body">
+            <div style="text-align: center; color: #94a3b8; padding: 20px;">載入中...</div>
+        </div>
+    </div>
+
+    <script>
+        let lmfRawData = [];
+
+        function renderBadges(row) {
+            const matches = [row.m6, row.m5, row.m4, row.m3, row.m2, row.m1];
+            let html = '<div class="badge-box">';
+            matches.forEach(res => {
+                if (res === 'Win') html += `<div class="badge-item badge-w">W</div>`;
+                else if (res === 'Draw') html += `<div class="badge-item badge-d">D</div>`;
+                else if (res === 'Lose') html += `<div class="badge-item badge-l">L</div>`;
+                else html += `<div class="badge-item badge-none">-</div>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function renderLMFTable(data) {
+            const container = document.getElementById('lmf-list-body');
+            if (!container) return;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:15px;">尚無比賽數據</div>`;
+                return;
+            }
+
+            let html = '';
+            data.forEach((row, index) => {
+                html += `
+                    <div class="lmf-row-item">
+                        <span style="width: 35px; text-align: center; color: #94a3b8; font-weight: bold;">${index + 1}</span>
+                        <span style="flex-grow: 1; padding-left: 10px; font-weight: 500; color: #f8fafc;">${row.player_name}</span>
+                        <span style="width: 50px; text-align: center; font-weight: bold; color: #38bdf8;">${row.total_points}</span>
+                        <span style="width: 180px; display: flex; justify-content: flex-end;">${renderBadges(row)}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function sortLMF(type) {
+            document.getElementById('btn-sort-form').classList.toggle('active', type === 'form');
+            document.getElementById('btn-sort-name').classList.toggle('active', type === 'name');
+
+            let sorted = [...lmfRawData];
+            if (type === 'name') {
+                sorted.sort((a, b) => a.player_name.localeCompare(b.player_name));
+            } else {
+                // 原本 SQL 回傳結果即為依照 Form 排序的最佳順序
+                sorted = [...lmfRawData];
+            }
+            renderLMFTable(sorted);
+        }
+
+        function fetchLMFStats() {
+            fetch('/api/lmf-stats')
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        lmfRawData = res.data;
+                        renderLMFTable(lmfRawData);
+                    }
+                })
+                .catch(err => console.error('Fetch LMF Error:', err));
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLMFStats);
+    </script>
+</div>

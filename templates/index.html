@@ -42,7 +42,13 @@
                     <li>
                         <a href="#gaos" class="nav-btn" onclick="switchTab('gaos')">
                             <i class="fa-solid fa-futbol"></i>
-                            <span>G.A.O.C</span>
+                            <span>G.A.O.S</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lmf" class="nav-btn" onclick="switchTab('lmf')">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>LMF</span>
                         </a>
                     </li>
                     <li>
@@ -140,6 +146,10 @@
                 {% include 'components/player_gaos.html' %}
             </section>
 
+            <section id="lmf" class="content-section">
+                {% include 'components/lmf_list.html' %}
+            </section>
+            
             <section id="partnership" class="content-section">
                 {% include 'components/player_partnership.html' %}
             </section>
