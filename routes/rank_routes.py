@@ -111,3 +111,35 @@ def api_rank_goalpct_all():
     except Exception as e:
         print(f"Error in /api/rank-goalpct-all: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+@rank_bp.route('/api/rank-unbeatenpct-all')
+def api_rank_unbeatenpct_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_unbeaten_pct.sql')
+
+        # 1. Overall Unbeaten% (pitch_aside = None, 最少 6 場)
+        cursor.execute(sql_query, (None, None, 6))
+        unbeatenpct_overall = cursor.fetchall()
+
+        # 2. 9-a-side Unbeaten% (pitch_aside = 9, 最少 6 場)
+        cursor.execute(sql_query, (9, 9, 6))
+        unbeatenpct_9side = cursor.fetchall()
+
+        # 3. 7-a-side Unbeaten% (pitch_aside = 7, 最少 3 場)
+        cursor.execute(sql_query, (7, 7, 3))
+        unbeatenpct_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": unbeatenpct_overall,
+            "nine_side": unbeatenpct_9side,
+            "seven_side": unbeatenpct_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-unbeatenpct-all: {e}")
+        return jsonify({"error": str(e)}), 500

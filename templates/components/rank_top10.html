@@ -592,6 +592,67 @@
         fetchAllGoalPctRanks(); // 觸發 Goal% 排行榜
     });
     
+    // 渲染 Unbeaten% 表格
+    function renderUnbeatenPctTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#ffd700';
+            else if (rankNum === 2) rankColor = '#c0c0c0';
+            else if (rankNum === 3) rankColor = '#cd7f32';
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        ${Number(row.unbeaten_pct).toFixed(2)}%
+                    </span>
+                    <span style="width: 35px; text-align: center; color: #4ade80;">
+                        ${row.wins}
+                    </span>
+                    <span style="width: 35px; text-align: center; color: #facc15;">
+                        ${row.draws}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // 發送 API 請求抓取 Unbeaten% 資料
+    function fetchAllUnbeatenPctRanks() {
+        fetch('/api/rank-unbeatenpct-all')
+            .then(res => res.json())
+            .then(data => {
+                renderUnbeatenPctTable('unbeatenpct-rank-overall', data.overall);
+                renderUnbeatenPctTable('unbeatenpct-rank-9side', data.nine_side);
+                renderUnbeatenPctTable('unbeatenpct-rank-7side', data.seven_side);
+            })
+            .catch(err => console.error('Fetch All UnbeatenPct Ranks Error:', err));
+    }
+
+    // 確保 DOM 載入後同時執行
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof fetchAllGoalRanks === 'function') fetchAllGoalRanks();
+        if (typeof fetchAllWinPctRanks === 'function') fetchAllWinPctRanks();
+        if (typeof fetchAllGoalPctRanks === 'function') fetchAllGoalPctRanks();
+        fetchAllUnbeatenPctRanks(); // 觸發 Unbeaten% 排行榜
+    });
+
     </script>
 
 
@@ -646,6 +707,66 @@
                 <span style="width: 45px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="goalpct-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =================================================================== -->
+    <!-- UNBEATEN% 排行榜 (不敗率排行榜)                                     -->
+    <!-- =================================================================== -->
+    <div class="rank-custom-grid">
+        <!-- OVERALL UNBEATEN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">Unbeaten%</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 60px; text-align: center;">Unbeaten%</span>
+                <span style="width: 35px; text-align: center;">Win</span>
+                <span style="width: 35px; text-align: center;">Draw</span>
+            </div>
+            <div class="rank-list-body" id="unbeatenpct-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 9-A-SIDE UNBEATEN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Unbeaten%</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 60px; text-align: center;">Unbeaten%</span>
+                <span style="width: 35px; text-align: center;">Win</span>
+                <span style="width: 35px; text-align: center;">Draw</span>
+            </div>
+            <div class="rank-list-body" id="unbeatenpct-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 7-A-SIDE UNBEATEN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Unbeaten%</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 60px; text-align: center;">Unbeaten%</span>
+                <span style="width: 35px; text-align: center;">Win</span>
+                <span style="width: 35px; text-align: center;">Draw</span>
+            </div>
+            <div class="rank-list-body" id="unbeatenpct-rank-7side">
                 <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
             </div>
         </div>
