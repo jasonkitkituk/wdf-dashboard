@@ -479,10 +479,126 @@
     }
 
     document.addEventListener('DOMContentLoaded', fetchAllGoalRanks);
+
+
+
+    /* =================================================================== */
+    /* 2. WIN% 排行榜相關函式                                              */
+    /* =================================================================== */
+    function renderWinPctTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#ffd700';
+            else if (rankNum === 2) rankColor = '#c0c0c0';
+            else if (rankNum === 3) rankColor = '#cd7f32';
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        ${Number(row.win_pct).toFixed(2)}%
+                    </span>
+                    <span style="width: 45px; text-align: center; color: #94a3b8;">
+                        ${row.appearances}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function fetchAllWinPctRanks() {
+        fetch('/api/rank-winpct-all')
+            .then(res => res.json())
+            .then(data => {
+                renderWinPctTable('winpct-rank-overall', data.overall);
+                renderWinPctTable('winpct-rank-9side', data.nine_side);
+                renderWinPctTable('winpct-rank-7side', data.seven_side);
+            })
+            .catch(err => console.error('Fetch All WinPct Ranks Error:', err));
+    }
+
+
+    
     </script>
 
 
+    <!-- =================================================================== -->
+    <!-- 2. WIN% 排行榜 (勝率排行榜)                                         -->
+    <!-- =================================================================== -->
+    <div class="rank-custom-grid">
+        <!-- 2.1 OVERALL WIN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">
+                Win%
+            </div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 60px; text-align: center;">Win%</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="winpct-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
 
+        <!-- 2.2 9-A-SIDE WIN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">
+                Win%
+            </div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 60px; text-align: center;">Win%</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="winpct-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+
+        <!-- 2.3 7-A-SIDE WIN% -->
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">
+                Win%
+            </div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">Rank</span>
+                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
+                <span style="width: 60px; text-align: center;">Win%</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="winpct-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="rank-note">

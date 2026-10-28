@@ -7,6 +7,7 @@ import psycopg2
 import psycopg2.extras
 
 
+
 from routes.part_routes import part_bp
 from routes.wld_routes import wld_bp
 from routes.gaos_routes import gaos_bp
@@ -19,6 +20,8 @@ app.register_blueprint(part_bp)
 app.register_blueprint(wld_bp)
 app.register_blueprint(gaos_bp)
 app.register_blueprint(rank_bp)
+
+
 
 
 # 優先讀取 Render 環境變數的 DATABASE_URL
