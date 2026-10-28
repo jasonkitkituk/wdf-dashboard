@@ -1,9 +1,10 @@
 <!-- templates/components/lmf_list.html -->
 <!-- <section id="lmf-section" class="content-section" style="width: 100%; display: none;">-->
 <div id="lmf" class="content-section" style="width: 100%;"></div>    
+
     
     <style>
-        #lmf-section.active {
+        #lmf.active {
             display: block !important;
         }
 
@@ -69,7 +70,7 @@
             font-size: 0.88rem;
         }
 
-        /* W / D / L / Empty 標籤樣式 */
+        /* W / D / L 標籤樣式 */
         .badge-box {
             display: flex;
             gap: 5px;
@@ -90,24 +91,22 @@
         .badge-w { background-color: #16a34a; } /* 綠色 Win */
         .badge-d { background-color: #64748b; } /* 灰色 Draw */
         .badge-l { background-color: #dc2626; } /* 紅色 Lose */
-        .badge-none { background-color: rgba(255, 255, 255, 0.08); color: #475569; } /* 沒有參與 (淺灰 -) */
     </style>
 
     <div class="lmf-container">
         <div class="lmf-toolbar">
-            <h3 style="margin:0; color:#38bdf8;"><i class="fa-solid fa-chart-line"></i> Last Matches Form (LMF)</h3>
+            <h3 style="margin:0; color:#38bdf8;"><i class="fa-solid fa-chart-line"></i> Last 6 Matches Form</h3>
             
             <div class="lmf-sort-btn-group">
-                <button class="lmf-sort-btn active" onclick="sortLMF('form')" id="btn-sort-form">By Form</button>
-                <button class="lmf-sort-btn" onclick="sortLMF('name')" id="btn-sort-name">By Player Name</button>
+                <button class="lmf-sort-btn active" onclick="sortLMF('hot')" id="btn-sort-hot"><i class="fa-solid fa-fire"></i> </button>
+                <button class="lmf-sort-btn" onclick="sortLMF('cold')" id="btn-sort-cold"><i class="fa-solid fa-arrow-down-wide-short"></i> </button>
             </div>
         </div>
 
         <div class="lmf-table-header">
             <span style="width: 35px; text-align: center;">#</span>
             <span style="flex-grow: 1; padding-left: 10px;">Player</span>
-            <span style="width: 50px; text-align: center;">Pts</span>
-            <span style="width: 180px; text-align: right; padding-right: 5px;">Form (Old ➔ Recent)</span>
+            <span style="width: 220px; text-align: right; padding-right: 5px;">Form (Older ➔ Recent)</span>
         </div>
 
         <div id="lmf-list-body">
@@ -119,13 +118,13 @@
         let lmfRawData = [];
 
         function renderBadges(row) {
+            // 左邊為較早 (m6)，右邊為最近 (m1)
             const matches = [row.m6, row.m5, row.m4, row.m3, row.m2, row.m1];
             let html = '<div class="badge-box">';
             matches.forEach(res => {
                 if (res === 'Win') html += `<div class="badge-item badge-w">W</div>`;
                 else if (res === 'Draw') html += `<div class="badge-item badge-d">D</div>`;
                 else if (res === 'Lose') html += `<div class="badge-item badge-l">L</div>`;
-                else html += `<div class="badge-item badge-none">-</div>`;
             });
             html += '</div>';
             return html;
@@ -146,8 +145,7 @@
                     <div class="lmf-row-item">
                         <span style="width: 35px; text-align: center; color: #94a3b8; font-weight: bold;">${index + 1}</span>
                         <span style="flex-grow: 1; padding-left: 10px; font-weight: 500; color: #f8fafc;">${row.player_name}</span>
-                        <span style="width: 50px; text-align: center; font-weight: bold; color: #38bdf8;">${row.total_points}</span>
-                        <span style="width: 180px; display: flex; justify-content: flex-end;">${renderBadges(row)}</span>
+                        <span style="width: 220px; display: flex; justify-content: flex-end;">${renderBadges(row)}</span>
                     </div>
                 `;
             });
@@ -155,15 +153,34 @@
         }
 
         function sortLMF(type) {
-            document.getElementById('btn-sort-form').classList.toggle('active', type === 'form');
-            document.getElementById('btn-sort-name').classList.toggle('active', type === 'name');
+            document.getElementById('btn-sort-hot').classList.toggle('active', type === 'hot');
+            document.getElementById('btn-sort-cold').classList.toggle('active', type === 'cold');
 
             let sorted = [...lmfRawData];
-            if (type === 'name') {
-                sorted.sort((a, b) => a.player_name.localeCompare(b.player_name));
+            if (type === 'cold') {
+                // 近況不濟排序：總分由低到高，若同分則依 m1 ➔ m6 表現差的排前面
+                sorted.sort((a, b) => {
+                    if (a.total_points !== b.total_points) return a.total_points - b.total_points;
+                    if (a.w1 !== b.w1) return a.w1 - b.w1;
+                    if (a.w2 !== b.w2) return a.w2 - b.w2;
+                    if (a.w3 !== b.w3) return a.w3 - b.w3;
+                    if (a.w4 !== b.w4) return a.w4 - b.w4;
+                    if (a.w5 !== b.w5) return a.w5 - b.w5;
+                    if (a.w6 !== b.w6) return a.w6 - b.w6;
+                    return a.player_name.localeCompare(b.player_name);
+                });
             } else {
-                // 原本 SQL 回傳結果即為依照 Form 排序的最佳順序
-                sorted = [...lmfRawData];
+                // 火熱狀態排序：總分由高到低 (對應 SQL 預設排序)
+                sorted.sort((a, b) => {
+                    if (a.total_points !== b.total_points) return b.total_points - a.total_points;
+                    if (a.w1 !== b.w1) return b.w1 - a.w1;
+                    if (a.w2 !== b.w2) return b.w2 - a.w2;
+                    if (a.w3 !== b.w3) return b.w3 - a.w3;
+                    if (a.w4 !== b.w4) return b.w4 - a.w4;
+                    if (a.w5 !== b.w5) return b.w5 - a.w5;
+                    if (a.w6 !== b.w6) return b.w6 - a.w6;
+                    return a.player_name.localeCompare(b.player_name);
+                });
             }
             renderLMFTable(sorted);
         }
@@ -182,4 +199,5 @@
 
         document.addEventListener('DOMContentLoaded', fetchLMFStats);
     </script>
+
 </div>
