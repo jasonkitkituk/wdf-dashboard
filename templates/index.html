@@ -48,7 +48,7 @@
                     <li>
                         <a href="#lmf" class="nav-btn" onclick="switchTab('lmf')">
                             <i class="fa-solid fa-chart-line"></i>
-                            <span>LMF</span>
+                            <span>MF</span>
                         </a>
                     </li>
                     <li>
@@ -110,6 +110,11 @@
                         <h3>G.A.O.S </h3>
                         <p>Goal + Assist + Own Goal + Clean Sheet </p>
                     </div>
+                    <div class="card" onclick="switchTab('lmf')">
+                        <i class="fa-solid fa-futbol card-icon"></i>
+                        <h3>Match Form</h3>
+                        <p>Last 6 Matches Form</p>
+                    </div>
                     <div class="card" onclick="switchTab('partnership')">
                         <div class="card-icon">
                             <i class="fa-solid fa-users-viewfinder"></i>
@@ -149,7 +154,7 @@
             <section id="lmf" class="content-section">
                 {% include 'components/lmf_list.html' %}
             </section>
-            
+
             <section id="partnership" class="content-section">
                 {% include 'components/player_partnership.html' %}
             </section>
