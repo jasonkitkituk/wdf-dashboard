@@ -143,3 +143,130 @@ def api_rank_unbeatenpct_all():
     except Exception as e:
         print(f"Error in /api/rank-unbeatenpct-all: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+@rank_bp.route('/api/rank-assists-all')
+def api_rank_assists_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_assist.sql')
+
+        # 1. Overall Assists (pitch_aside = None, 最少 6 場)
+        cursor.execute(sql_query, (None, None, 6))
+        assists_overall = cursor.fetchall()
+
+        # 2. 9-a-side Assists (pitch_aside = 9, 最少 6 場)
+        cursor.execute(sql_query, (9, 9, 6))
+        assists_9side = cursor.fetchall()
+
+        # 3. 7-a-side Assists (pitch_aside = 7, 最少 3 場)
+        cursor.execute(sql_query, (7, 7, 3))
+        assists_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": assists_overall,
+            "nine_side": assists_9side,
+            "seven_side": assists_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-assists-all: {e}")
+        return jsonify({"error": str(e)}), 500
+    
+
+@rank_bp.route('/api/rank-assistpct-all')
+def api_rank_assistpct_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_assist_pct.sql')
+
+        # 1. Overall Assist%
+        cursor.execute(sql_query, (None, None, 6))
+        assistpct_overall = cursor.fetchall()
+
+        # 2. 9-a-side Assist%
+        cursor.execute(sql_query, (9, 9, 6))
+        assistpct_9side = cursor.fetchall()
+
+        # 3. 7-a-side Assist%
+        cursor.execute(sql_query, (7, 7, 3))
+        assistpct_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": assistpct_overall,
+            "nine_side": assistpct_9side,
+            "seven_side": assistpct_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-assistpct-all: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@rank_bp.route('/api/rank-ga-all')
+def api_rank_ga_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_ga.sql')
+
+        # 1. Overall G+A (pitch_aside = None, 最少 6 場)
+        cursor.execute(sql_query, (None, None, 6))
+        ga_overall = cursor.fetchall()
+
+        # 2. 9-a-side G+A (pitch_aside = 9, 最少 6 場)
+        cursor.execute(sql_query, (9, 9, 6))
+        ga_9side = cursor.fetchall()
+
+        # 3. 7-a-side G+A (pitch_aside = 7, 最少 3 場)
+        cursor.execute(sql_query, (7, 7, 3))
+        ga_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": ga_overall,
+            "nine_side": ga_9side,
+            "seven_side": ga_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-ga-all: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@rank_bp.route('/api/rank-gapct-all')
+def api_rank_gapct_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_ga_pct.sql')
+
+        # 1. Overall G+A% (pitch_aside = None, 最少 6 場)
+        cursor.execute(sql_query, (None, None, 6))
+        gapct_overall = cursor.fetchall()
+
+        # 2. 9-a-side G+A% (pitch_aside = 9, 最少 6 場)
+        cursor.execute(sql_query, (9, 9, 6))
+        gapct_9side = cursor.fetchall()
+
+        # 3. 7-a-side G+A% (pitch_aside = 7, 最少 3 場)
+        cursor.execute(sql_query, (7, 7, 3))
+        gapct_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": gapct_overall,
+            "nine_side": gapct_9side,
+            "seven_side": gapct_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-gapct-all: {e}")
+        return jsonify({"error": str(e)}), 500
