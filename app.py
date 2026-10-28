@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request
-from flask import request, jsonify
+#from flask import request, jsonify
 #from itertools import combinations
 #from datetime import datetime, timedelta
 import psycopg2
