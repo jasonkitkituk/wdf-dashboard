@@ -223,9 +223,9 @@
         background: #f1f5f9;
     }
 
-.stat-icons-group {
+    .stat-icons-group {
         display: flex;
-        gap: 8px;
+        gap: 6px;
         align-items: center;
     }
 
@@ -234,23 +234,32 @@
         font-size: 0.85rem; 
     } /* 進球：經典足球 */
 
-    .icon-assist { 
-        color: #0284c7; 
-        font-size: 0.85rem; 
-    } /* 助攻：球鞋 ICON */
-
-    /* 💡 OG 標籤：紅底黃字，醒目且專業 */
-    .badge-og {
-        background-color: #dc2626; /* 紅色底 */
-        color: #facc15;           /* 黃色字 */
+    /* 💡 藍底白字的助攻標籤 (AST) */
+    .badge-ast {
+        background-color: #0284c7; /* 英超藍色 */
+        color: #ffffff;
         font-size: 0.65rem;
         font-weight: 800;
-        padding: 2px 6px;
+        padding: 2px 5px;
         border-radius: 4px;
         letter-spacing: 0.5px;
         display: inline-block;
         line-height: 1;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+
+    /* 紅底黃字的烏龍球標籤 (OG) */
+    .badge-og {
+        background-color: #dc2626; 
+        color: #facc15;           
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 2px 5px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        line-height: 1;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     }
 
     @media (max-width: 640px) {
@@ -287,7 +296,7 @@
             </div>
             <div style="display: flex; gap: 8px;">
                 <button class="search-btn" onclick="handleMatchSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search </button>
-                <button class="reset-btn" onclick="resetMatchSearch()" title="重設並顯示最近一場"><i class="fa-solid fa-rotate-right"></i></button>
+                <button class="reset-btn" onclick="resetMatchSearch()" title="Reset and show latest match"><i class="fa-solid fa-rotate-right"></i></button>
             </div>
         </div>
     </div>
@@ -332,17 +341,17 @@
         
         // 1) 進球：足球 ICON
         for (let i = 0; i < goals; i++) {
-            html += `<i class="fa-solid fa-futbol icon-ball" title="Goal (進球)"></i>`;
+            html += `<i class="fa-solid fa-futbol icon-ball" title="Goal"></i>`;
         }
         
         // 2) 助攻：改用肯定能顯示的雙箭頭向前傳球 ICON (fa-angles-right)
         for (let i = 0; i < assists; i++) {
-            html += `<i class="fa-solid fa-angles-right icon-assist" title="Assist (助攻)"></i>`;
+            html += `<span class="badge-ast" title="Assist">A</span>`;
         }
         
         // 3) 烏龍球：紅底黃字 OG 標籤
         for (let i = 0; i < ownGoals; i++) {
-            html += `<span class="badge-og" title="Own Goal (烏龍球)">OG</span>`;
+            html += `<span class="badge-og" title="Own Goal">OG</span>`;
         }
 
         html += '</div>';
@@ -352,7 +361,7 @@
     function renderSingleMatchCard(m) {
         const container = document.getElementById('match-display-container');
         if (!m) {
-            container.innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">找不到符合條件的比賽紀錄</div>';
+            container.innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">match not found...</div>';
             return;
         }
 
@@ -487,7 +496,7 @@
             renderSingleMatchCard(matchedList[0]);
         } else {
             selectorContainer.style.display = 'flex';
-            tip.innerText = `找到 ${matchedList.length} 場符合的比賽，請選擇：`;
+            tip.innerText = `${matchedList.length} matching matches found, please select:`;
             
             dropdown.innerHTML = '';
             matchedList.forEach(m => {
@@ -532,7 +541,7 @@
                     allMatchesData = res.data;
                     renderSingleMatchCard(allMatchesData[0]);
                 } else {
-                    document.getElementById('match-display-container').innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">尚無比賽資料</div>';
+                    document.getElementById('match-display-container').innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">match not found...</div>';
                 }
             })
             .catch(err => console.error('Fetch Match History Error:', err));
