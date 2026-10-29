@@ -1,0 +1,203 @@
+<!-- templates/components/lmf_list.html -->
+<!-- <section id="lmf-section" class="content-section" style="width: 100%; display: none;">-->
+<div id="lmf" class="content-section" style="width: 100%;"></div>    
+
+    
+    <style>
+        #lmf.active {
+            display: block !important;
+        }
+
+        .lmf-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .lmf-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .lmf-sort-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lmf-sort-btn {
+            background: #334155;
+            color: #94a3b8;
+            border: 1px solid #475569;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .lmf-sort-btn.active, .lmf-sort-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: bold;
+            border-color: #38bdf8;
+        }
+
+        .lmf-table-header, .lmf-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+        }
+
+        .lmf-table-header {
+            border-bottom: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .lmf-row-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+        }
+
+        /* W / D / L 標籤樣式 */
+        .badge-box {
+            display: flex;
+            gap: 5px;
+        }
+
+        .badge-item {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: #ffffff;
+        }
+
+        .badge-w { background-color: #16a34a; } /* 綠色 Win */
+        .badge-d { background-color: #64748b; } /* 灰色 Draw */
+        .badge-l { background-color: #dc2626; } /* 紅色 Lose */
+    </style>
+
+    <div class="lmf-container">
+        <div class="lmf-toolbar">
+            <h3 style="margin:0; color:#38bdf8;"><i class="fa-solid fa-chart-line"></i> Last 6 Matches Form</h3>
+            
+            <div class="lmf-sort-btn-group">
+                <button class="lmf-sort-btn active" onclick="sortLMF('hot')" id="btn-sort-hot"><i class="fa-solid fa-arrow-alt-circle-up"></i> </button>
+                <button class="lmf-sort-btn" onclick="sortLMF('cold')" id="btn-sort-cold"><i class="fa-solid fa-arrow-alt-circle-down"></i> </button>
+            </div>
+        </div>
+
+        <div class="lmf-table-header">
+            <span style="width: 35px; text-align: center;">#</span>
+            <span style="flex-grow: 1; padding-left: 10px;">Player</span>
+            <span style="width: 220px; text-align: right; padding-right: 5px;">Form (Older ➔ Recent)</span>
+        </div>
+
+        <div id="lmf-list-body">
+            <div style="text-align: center; color: #94a3b8; padding: 20px;">載入中...</div>
+        </div>
+    </div>
+
+    <script>
+        let lmfRawData = [];
+
+        function renderBadges(row) {
+            // 左邊為較早 (m6)，右邊為最近 (m1)
+            const matches = [row.m6, row.m5, row.m4, row.m3, row.m2, row.m1];
+            let html = '<div class="badge-box">';
+            matches.forEach(res => {
+                if (res === 'Win') html += `<div class="badge-item badge-w">W</div>`;
+                else if (res === 'Draw') html += `<div class="badge-item badge-d">D</div>`;
+                else if (res === 'Lose') html += `<div class="badge-item badge-l">L</div>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function renderLMFTable(data) {
+            const container = document.getElementById('lmf-list-body');
+            if (!container) return;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:15px;">尚無比賽數據</div>`;
+                return;
+            }
+
+            let html = '';
+            data.forEach((row, index) => {
+                html += `
+                    <div class="lmf-row-item">
+                        <span style="width: 35px; text-align: center; color: #94a3b8; font-weight: bold;">${index + 1}</span>
+                        <span style="flex-grow: 1; padding-left: 10px; font-weight: 500; color: #f8fafc;">${row.player_name}</span>
+                        <span style="width: 220px; display: flex; justify-content: flex-end;">${renderBadges(row)}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function sortLMF(type) {
+            document.getElementById('btn-sort-hot').classList.toggle('active', type === 'hot');
+            document.getElementById('btn-sort-cold').classList.toggle('active', type === 'cold');
+
+            let sorted = [...lmfRawData];
+            if (type === 'cold') {
+                // 近況不濟排序：總分由低到高，若同分則依 m1 ➔ m6 表現差的排前面
+                sorted.sort((a, b) => {
+                    if (a.total_points !== b.total_points) return a.total_points - b.total_points;
+                    if (a.w1 !== b.w1) return a.w1 - b.w1;
+                    if (a.w2 !== b.w2) return a.w2 - b.w2;
+                    if (a.w3 !== b.w3) return a.w3 - b.w3;
+                    if (a.w4 !== b.w4) return a.w4 - b.w4;
+                    if (a.w5 !== b.w5) return a.w5 - b.w5;
+                    if (a.w6 !== b.w6) return a.w6 - b.w6;
+                    return a.player_name.localeCompare(b.player_name);
+                });
+            } else {
+                // 火熱狀態排序：總分由高到低 (對應 SQL 預設排序)
+                sorted.sort((a, b) => {
+                    if (a.total_points !== b.total_points) return b.total_points - a.total_points;
+                    if (a.w1 !== b.w1) return b.w1 - a.w1;
+                    if (a.w2 !== b.w2) return b.w2 - a.w2;
+                    if (a.w3 !== b.w3) return b.w3 - a.w3;
+                    if (a.w4 !== b.w4) return b.w4 - a.w4;
+                    if (a.w5 !== b.w5) return b.w5 - a.w5;
+                    if (a.w6 !== b.w6) return b.w6 - a.w6;
+                    return a.player_name.localeCompare(b.player_name);
+                });
+            }
+            renderLMFTable(sorted);
+        }
+
+        function fetchLMFStats() {
+            fetch('/api/lmf-stats')
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        lmfRawData = res.data;
+                        renderLMFTable(lmfRawData);
+                    }
+                })
+                .catch(err => console.error('Fetch LMF Error:', err));
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLMFStats);
+    </script>
+
+</div>

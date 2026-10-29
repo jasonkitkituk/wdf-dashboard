@@ -12,7 +12,8 @@ from routes.part_routes import part_bp
 from routes.wld_routes import wld_bp
 from routes.gaos_routes import gaos_bp
 from routes.rank_routes import rank_bp
-from routes.lmf_routes import lmf_bp
+from routes.lmf_routes import lmf_bp 
+
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ app.register_blueprint(wld_bp)
 app.register_blueprint(gaos_bp)
 app.register_blueprint(rank_bp)
 app.register_blueprint(lmf_bp)
+
 
 
 
@@ -79,24 +81,19 @@ def index():
         cur.execute(load_sql_query('location_stats.sql'))
         location_stats = cur.fetchall()
 
-        # 2. 讀取並執行 Rank Top 20 (Most Wins) 的 SQL
-        cur.execute(load_sql_query('rank_win_overall.sql'))
-        rank_win_overall = cur.fetchall()
+        cur.execute(load_sql_query('rank_wins_all.sql'))
+        rank_wins_data = cur.fetchone()
+        # 從合併查詢的結果中解包出三個清單（若為 None 則給予空陣列 []）
+        rank_win_overall = rank_wins_data.get('overall') or []
+        rank_win_9side = rank_wins_data.get('nine_side') or []
+        rank_win_7side = rank_wins_data.get('seven_side') or []
 
-        cur.execute(load_sql_query('rank_win_9aside.sql'))
-        rank_win_9side = cur.fetchall()
+        cur.execute(load_sql_query('rank_winpct_all.sql'))
+        rank_winpct_data = cur.fetchone()
 
-        cur.execute(load_sql_query('rank_win_7aside.sql'))
-        rank_win_7side = cur.fetchall()
-
-        cur.execute(load_sql_query('rank_winpct_overall.sql'))
-        rank_winpct_overall = cur.fetchall()
-
-        cur.execute(load_sql_query('rank_winpct_9aside.sql'))
-        rank_winpct_9side = cur.fetchall()
-
-        cur.execute(load_sql_query('rank_winpct_7aside.sql'))
-        rank_winpct_7side = cur.fetchall()
+        rank_winpct_overall = rank_winpct_data.get('overall') or []
+        rank_winpct_9side = rank_winpct_data.get('nine_side') or []
+        rank_winpct_7side = rank_winpct_data.get('seven_side') or []
 
 
 
