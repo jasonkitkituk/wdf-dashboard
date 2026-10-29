@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WDF Football Club - Match Dashboard</title>
+    <title>WDF Club - Match Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <!-- 引入 FontAwesome 圖示 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -55,6 +55,12 @@
                         <a href="#partnership" class="nav-btn" onclick="switchTab('partnership')">
                             <i class="fa-solid fa-users-viewfinder"></i>
                             <span>Combo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#match-history" class="nav-btn" onclick="switchTab('match-history')">
+                            <i class="fa-solid fa-rectangle-list"></i>
+                            <span>Matches</span>
                         </a>
                     </li>
                     <li>
@@ -158,6 +164,10 @@
 
             <section id="partnership" class="content-section">
                 {% include 'components/player_partnership.html' %}
+            </section>
+
+            <section id="match-history" class="content-section">
+                {% include 'components/match_history.html' %}
             </section>
 
             <!-- 5) Player Profile -->

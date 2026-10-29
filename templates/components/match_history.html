@@ -1,0 +1,545 @@
+<!-- templates/components/match_history.html -->
+<style>
+    .match-history-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 10px;
+        color: #1e293b;
+    }
+
+    /* 英超風格搜尋面板 */
+    .match-search-panel {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-end;
+    }
+
+    .search-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        flex: 1;
+        min-width: 170px;
+    }
+
+    .search-group label {
+        font-size: 0.8rem;
+        color: #64748b;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .search-select {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #0f172a;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .search-select:focus {
+        border-color: #0284c7;
+        box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+    }
+
+    .search-btn {
+        background: #0284c7;
+        color: #ffffff;
+        font-weight: bold;
+        border: none;
+        padding: 9px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        height: 38px;
+        transition: background 0.2s;
+    }
+
+    .search-btn:hover {
+        background: #0369a1;
+    }
+
+    .reset-btn {
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1px solid #cbd5e1;
+        padding: 9px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        height: 38px;
+    }
+
+    .reset-btn:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+
+    /* 多筆結果簡選器 */
+    .match-selector-bar {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.88rem;
+        color: #166534;
+    }
+
+    .match-selector-dropdown {
+        background: #ffffff;
+        color: #0284c7;
+        border: 1px solid #cbd5e1;
+        padding: 6px 10px;
+        border-radius: 6px;
+        outline: none;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    /* 英超風格戰報主卡片 */
+    .match-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .match-card-header {
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 12px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.88rem;
+        color: #475569;
+    }
+
+    .match-info-meta {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        font-weight: 600;
+    }
+
+    /* 💡 比分橫幅：增加左右兩側與中間比分盒的間距 */
+    .scoreboard-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 36px; /* 增加左右 padding 空間 */
+        background: #ffffff;
+        border-bottom: 1px solid #f1f5f9;
+        gap: 24px; /* 確保雙方隊伍與中間比分盒之間有足夠的寬敞間距 */
+    }
+
+    .team-badge-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.15rem;
+        font-weight: bold;
+        color: #0f172a;
+    }
+
+    .team-badge-side.team-left { justify-content: flex-end; }
+    .team-badge-side.team-right { justify-content: flex-start; }
+
+    /* 💡 改為有顏色的球衣 ICON 樣式 */
+    .team-shirt-icon {
+        font-size: 1.4rem;
+        filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+    }
+
+    .score-center-box {
+        background: #0f172a;
+        border-radius: 8px;
+        padding: 8px 26px; /* 稍微加大比分方塊 */
+        font-size: 1.6rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        white-space: nowrap;
+    }
+
+    .teams-lineup-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: #e2e8f0;
+    }
+
+    .team-lineup-column {
+        background: #ffffff;
+        padding: 16px 18px;
+    }
+
+    .team-column-title {
+        font-size: 0.82rem;
+        color: #64748b;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .player-line-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 10px;
+        border-radius: 6px;
+        font-size: 0.88rem;
+        margin-bottom: 4px;
+        color: #1e293b;
+        background: #f8fafc;
+        transition: background 0.15s;
+    }
+
+    .player-line-item:hover {
+        background: #f1f5f9;
+    }
+
+.stat-icons-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .icon-ball { 
+        color: #0f172a; 
+        font-size: 0.85rem; 
+    } /* 進球：經典足球 */
+
+    .icon-assist { 
+        color: #0284c7; 
+        font-size: 0.85rem; 
+    } /* 助攻：球鞋 ICON */
+
+    /* 💡 OG 標籤：紅底黃字，醒目且專業 */
+    .badge-og {
+        background-color: #dc2626; /* 紅色底 */
+        color: #facc15;           /* 黃色字 */
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 2px 6px;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        line-height: 1;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 640px) {
+        .teams-lineup-grid { grid-template-columns: 1fr; }
+        .scoreboard-banner { padding: 16px 16px; gap: 12px; }
+        .score-center-box { font-size: 1.3rem; padding: 6px 16px; }
+        .team-badge-side { font-size: 0.95rem; gap: 8px; }
+        .search-row { flex-direction: column; align-items: stretch; }
+    }
+</style>
+
+<div class="match-history-container">
+    
+    <!-- 🔍 搜尋控制面板 -->
+    <div class="match-search-panel">
+        <div class="search-row">
+            <div class="search-group">
+                <label><i class="fa-solid fa-calendar"></i> Date </label>
+                <select id="search-date" class="search-select">
+                    <option value="">- All Dates -</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <label><i class="fa-solid fa-location-dot"></i> Location</label>
+                <select id="search-location" class="search-select">
+                    <option value="">- All Locations -</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <label><i class="fa-solid fa-user"></i> Player</label>
+                <select id="search-player" class="search-select">
+                    <option value="">- All Players -</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="search-btn" onclick="handleMatchSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search </button>
+                <button class="reset-btn" onclick="resetMatchSearch()" title="重設並顯示最近一場"><i class="fa-solid fa-rotate-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📌 多筆結果的簡選器 -->
+    <div id="match-selector-container" class="match-selector-bar" style="display: none;">
+        <span id="selector-tip">Multiple matches found, please select：</span>
+        <select id="match-select-dropdown" class="match-selector-dropdown" onchange="onSelectMatchChanged()">
+            <!-- 動態填入選項 -->
+        </select>
+    </div>
+
+    <!-- 📊 比賽詳細卡片容器 -->
+    <div id="match-display-container">
+        <div style="text-align: center; color: #64748b; padding: 40px; font-size: 1rem;">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading match data...
+        </div>
+    </div>
+</div>
+
+<script>
+    let allMatchesData = [];
+
+    // 💡 回傳帶有特定顏色的球衣 ICON 樣式 (使用 FontAwesome 的 fa-shirt)
+    function getTeamShirtStyle(colorName) {
+        const c = (colorName || '').toLowerCase();
+        let colorHex = '#64748b'; // 預設灰色
+        if (c === 'red') colorHex = '#ef4444';
+        else if (c === 'black') colorHex = '#18181b';
+        else if (c === 'blue') colorHex = '#3b82f6';
+        else if (c === 'yellow') colorHex = '#eab308';
+        else if (c === 'white') colorHex = '#cbd5e1'; // 白衣配淺灰邊框凸顯
+        else if (c === 'green') colorHex = '#22c55e';
+        else if (c === 'orange') colorHex = '#f97316';
+        else if (c === 'purple') colorHex = '#a855f7';
+
+        return `color: ${colorHex};`;
+    }
+
+    function renderStatIcons(goals, assists, ownGoals) {
+        let html = '<div class="stat-icons-group">';
+        
+        // 1) 進球：足球 ICON
+        for (let i = 0; i < goals; i++) {
+            html += `<i class="fa-solid fa-futbol icon-ball" title="Goal (進球)"></i>`;
+        }
+        
+        // 2) 助攻：改用肯定能顯示的雙箭頭向前傳球 ICON (fa-angles-right)
+        for (let i = 0; i < assists; i++) {
+            html += `<i class="fa-solid fa-angles-right icon-assist" title="Assist (助攻)"></i>`;
+        }
+        
+        // 3) 烏龍球：紅底黃字 OG 標籤
+        for (let i = 0; i < ownGoals; i++) {
+            html += `<span class="badge-og" title="Own Goal (烏龍球)">OG</span>`;
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    function renderSingleMatchCard(m) {
+        const container = document.getElementById('match-display-container');
+        if (!m) {
+            container.innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">找不到符合條件的比賽紀錄</div>';
+            return;
+        }
+
+        const team1 = m.teams[0] || { team_color: 'Team A', goals: 0, players: [] };
+        const team2 = m.teams[1] || { team_color: 'Team B', goals: 0, players: [] };
+
+        container.innerHTML = `
+            <div class="match-card">
+                <div class="match-card-header">
+                    <div class="match-info-meta">
+                        <span><i class="fa-regular fa-calendar-days"></i> ${m.match_date}</span>
+                        <span><i class="fa-solid fa-location-dot"></i> ${m.location || 'N/A'}</span>
+                    </div>
+                    <div style="font-weight: 700; background: #e2e8f0; color: #334155; padding: 2px 10px; border-radius: 12px; font-size: 0.78rem;">
+                        ${m.pitch_aside}-a-side
+                    </div>
+                </div>
+
+                <div class="scoreboard-banner">
+                    <div class="team-badge-side team-left">
+                        <span>${team1.team_color.toUpperCase()}</span>
+                        <i class="fa-solid fa-shirt team-shirt-icon" style="${getTeamShirtStyle(team1.team_color)}" title="${team1.team_color} team"></i>
+                    </div>
+                    
+                    <div class="score-center-box">
+                        ${team1.goals} : ${team2.goals}
+                    </div>
+
+                    <div class="team-badge-side team-right">
+                        <i class="fa-solid fa-shirt team-shirt-icon" style="${getTeamShirtStyle(team2.team_color)}" title="${team2.team_color} team"></i>
+                        <span>${team2.team_color.toUpperCase()}</span>
+                    </div>
+                </div>
+
+                <div class="teams-lineup-grid">
+                    <div class="team-lineup-column">
+                        <div class="team-column-title">
+                            <span><i class="fa-solid fa-users"></i> ${team1.team_color.toUpperCase()} LINEUP</span>
+                            <span>(${team1.players.length})</span>
+                        </div>
+                        ${team1.players.map(p => `
+                            <div class="player-line-item">
+                                <span style="font-weight: 600;">${p.player_name}</span>
+                                ${renderStatIcons(p.goals, p.assists, p.own_goals)}
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="team-lineup-column">
+                        <div class="team-column-title">
+                            <span><i class="fa-solid fa-users"></i> ${team2.team_color.toUpperCase()} LINEUP</span>
+                            <span>(${team2.players.length})</span>
+                        </div>
+                        ${team2.players.map(p => `
+                            <div class="player-line-item">
+                                <span style="font-weight: 600;">${p.player_name}</span>
+                                ${renderStatIcons(p.goals, p.assists, p.own_goals)}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function loadFilterOptions() {
+        fetch('/api/match-filter-options')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    const dateSelect = document.getElementById('search-date');
+                    res.dates.forEach(d => {
+                        const opt = document.createElement('option');
+                        opt.value = d;
+                        opt.text = d;
+                        dateSelect.appendChild(opt);
+                    });
+
+                    const locSelect = document.getElementById('search-location');
+                    res.locations.forEach(l => {
+                        const opt = document.createElement('option');
+                        opt.value = l;
+                        opt.text = l;
+                        locSelect.appendChild(opt);
+                    });
+
+                    const playerSelect = document.getElementById('search-player');
+                    res.players.forEach(p => {
+                        const opt = document.createElement('option');
+                        opt.value = p.name;
+                        opt.text = p.name;
+                        playerSelect.appendChild(opt);
+                    });
+                }
+            })
+            .catch(err => console.error('Load Filter Options Error:', err));
+    }
+
+    function handleMatchSearch() {
+        const selectedDate = document.getElementById('search-date').value;
+        const selectedLoc = document.getElementById('search-location').value;
+        const selectedPlayer = document.getElementById('search-player').value.toLowerCase();
+
+        const matched = allMatchesData.filter(m => {
+            if (selectedDate && m.match_date !== selectedDate) return false;
+            if (selectedLoc && m.location !== selectedLoc) return false;
+            if (selectedPlayer) {
+                const hasPlayer = m.teams.some(t => 
+                    t.players.some(p => p.player_name.toLowerCase() === selectedPlayer)
+                );
+                if (!hasPlayer) return false;
+            }
+            return true;
+        });
+
+        handleSearchResults(matched);
+    }
+
+    function handleSearchResults(matchedList) {
+        const selectorContainer = document.getElementById('match-selector-container');
+        const dropdown = document.getElementById('match-select-dropdown');
+        const tip = document.getElementById('selector-tip');
+
+        if (matchedList.length === 0) {
+            selectorContainer.style.display = 'none';
+            renderSingleMatchCard(null);
+            return;
+        }
+
+        if (matchedList.length === 1) {
+            selectorContainer.style.display = 'none';
+            renderSingleMatchCard(matchedList[0]);
+        } else {
+            selectorContainer.style.display = 'flex';
+            tip.innerText = `找到 ${matchedList.length} 場符合的比賽，請選擇：`;
+            
+            dropdown.innerHTML = '';
+            matchedList.forEach(m => {
+                const t1 = m.teams[0] ? m.teams[0].team_color : '';
+                const t2 = m.teams[1] ? m.teams[1].team_color : '';
+                const score1 = m.teams[0] ? m.teams[0].goals : 0;
+                const score2 = m.teams[1] ? m.teams[1].goals : 0;
+                
+                const opt = document.createElement('option');
+                opt.value = m.match_id;
+                opt.text = `${m.match_date} | [${m.location || 'N/A'}] ${t1} (${score1}:${score2}) ${t2}`;
+                dropdown.appendChild(opt);
+            });
+
+            renderSingleMatchCard(matchedList[0]);
+        }
+    }
+
+    function onSelectMatchChanged() {
+        const dropdown = document.getElementById('match-select-dropdown');
+        const selectedId = dropdown.value;
+        const target = allMatchesData.find(x => x.match_id == selectedId);
+        renderSingleMatchCard(target);
+    }
+
+    function resetMatchSearch() {
+        document.getElementById('search-date').value = '';
+        document.getElementById('search-location').value = '';
+        document.getElementById('search-player').value = '';
+        document.getElementById('match-selector-container').style.display = 'none';
+
+        if (allMatchesData.length > 0) {
+            renderSingleMatchCard(allMatchesData[0]);
+        }
+    }
+
+    function fetchMatchHistory() {
+        fetch('/api/match-history')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success && res.data.length > 0) {
+                    allMatchesData = res.data;
+                    renderSingleMatchCard(allMatchesData[0]);
+                } else {
+                    document.getElementById('match-display-container').innerHTML = '<div style="text-align:center; color:#64748b; padding:30px;">尚無比賽資料</div>';
+                }
+            })
+            .catch(err => console.error('Fetch Match History Error:', err));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadFilterOptions();
+        fetchMatchHistory();
+    });
+</script>

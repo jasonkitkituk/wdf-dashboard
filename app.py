@@ -13,7 +13,7 @@ from routes.wld_routes import wld_bp
 from routes.gaos_routes import gaos_bp
 from routes.rank_routes import rank_bp
 from routes.lmf_routes import lmf_bp 
-
+from routes.match_routes import match_bp
 
 app = Flask(__name__)
 
@@ -22,7 +22,7 @@ app.register_blueprint(wld_bp)
 app.register_blueprint(gaos_bp)
 app.register_blueprint(rank_bp)
 app.register_blueprint(lmf_bp)
-
+app.register_blueprint(match_bp)
 
 
 
