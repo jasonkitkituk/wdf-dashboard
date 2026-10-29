@@ -1,9 +1,6 @@
 <!-- templates/components/lmf_list.html -->
 <style>
-    #lmf.active {
-        display: block !important;
-    }
-
+    /* 💡 使用 class 或把隱藏邏輯交給外層 index.html 的 section#lmf 控制 */
     .lmf-container {
         max-width: 900px;
         margin: 0 auto;
@@ -69,6 +66,7 @@
         margin-bottom: 4px;
         font-size: 0.9rem;
         transition: background 0.15s ease;
+        padding-bottom: 16px;
     }
 
     .lmf-row-item:hover {
@@ -92,22 +90,29 @@
         font-size: 0.7rem;
         color: #ffffff;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        position: relative;
     }
 
-    .badge-w { background-color: #10b981; } /* 鮮綠色 Win */
-    .badge-d { background-color: #94a3b8; } /* 灰色 Draw */
-    .badge-l { background-color: #ef4444; } /* 紅色 Lose */
+    .badge-w { background-color: #10b981; } 
+    .badge-d { background-color: #94a3b8; } 
+    .badge-l { background-color: #ef4444; } 
 
-    /* 💡 模擬圖片中的最近一場比賽下方彩色底線 */
-    .latest-badge-w {
-        border-bottom: 3px solid #059669; /* 深綠色底線 */
+    /* 獨立底線設定 */
+    .latest-badge-w::after,
+    .latest-badge-d::after,
+    .latest-badge-l::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        border-radius: 2px;
     }
-    .latest-badge-d {
-        border-bottom: 3px solid #475569; /* 深灰色底線 */
-    }
-    .latest-badge-l {
-        border-bottom: 3px solid #b91c1c; /* 深紅色底線 */
-    }
+
+    .latest-badge-w::after { background-color: #059669; }
+    .latest-badge-d::after { background-color: #475569; }
+    .latest-badge-l::after { background-color: #b91c1c; }
 </style>
 
 <div class="lmf-container">
@@ -118,10 +123,10 @@
         
         <div class="lmf-sort-btn-group">
             <button class="lmf-sort-btn active" onclick="sortLMF('hot')" id="btn-sort-hot">
-                <i class="fa-solid fa-arrow-trend-up"></i> Hot
+                <i class="fa-solid fa-arrow-trend-up"></i> 
             </button>
             <button class="lmf-sort-btn" onclick="sortLMF('cold')" id="btn-sort-cold">
-                <i class="fa-solid fa-arrow-trend-down"></i> Cold
+                <i class="fa-solid fa-arrow-trend-down"></i> 
             </button>
         </div>
     </div>
