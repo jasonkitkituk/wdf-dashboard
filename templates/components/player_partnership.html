@@ -1,7 +1,7 @@
-<!-- templates/components/player_partnership.html -->
-<div id="player-partnership-container" class="part-component-wrapper">
+
+
     <style>
-        .part-component-wrapper { width: 100%; color: #f8fafc; }
+        .part-component-wrapper { width: 100%; color: #f8fafc; margin: 0; padding: 0; }
         .part-control-panel {
             background: #1e293b; border-radius: 10px; padding: 16px 20px;
             margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
@@ -19,8 +19,16 @@
             align-items: center; gap: 8px; font-size: 0.88rem; height: 38px;
         }
         .part-table-wrapper { 
-            width: 100%; overflow-x: auto; max-height: 70vh; 
-            background: #1e293b; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+            width: 100%; 
+            overflow-x: auto; 
+            overflow-y: auto;
+            min-height: 350px; /* 💡 關鍵：預先撐開最小高度，防止載入前後高度突變造成頁面跳動與留白 */
+            max-height: 60vh; 
+            background: #1e293b; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+            transform: translateZ(0); 
+            -webkit-overflow-scrolling: touch;
         }
         .part-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 0.85rem; }
         .part-table th { 
@@ -35,12 +43,11 @@
     </style>
 
     <div class="section-header">
-        <h2><i class="fa-solid fa-users-viewfinder"></i>Combo</h2>
+        <h2><i class="fa-solid fa-users-viewfinder"></i> Combo</h2>
     </div>
 
     <!-- 🎛️ 控制面板 -->
     <div class="part-control-panel">
-        <!-- 1. A-side 選擇 -->
         <div class="part-control-group">
             <label><i class="fa-solid fa-filter"></i> A-side</label>
             <select id="part-aside" class="part-select">
@@ -50,7 +57,6 @@
             </select>
         </div>
 
-        <!-- 2. 組合人數 (Best 2 ~ 7) -->
         <div class="part-control-group">
             <label><i class="fa-solid fa-people-group"></i> Size</label>
             <select id="part-size" class="part-select">
@@ -63,16 +69,13 @@
             </select>
         </div>
 
-        <!-- 3. 指定球員 (Player Name) -->
         <div class="part-control-group">
             <label><i class="fa-solid fa-user"></i> Player</label>
             <select id="part-player" class="part-select">
                 <option value="" selected>- All Players -</option>
-                <!-- 動態載入球員清單 -->
             </select>
         </div>
 
-        <!-- 4. 排序欄位選擇 (Order By) -->
         <div class="part-control-group">
             <label><i class="fa-solid fa-sort"></i> Order By</label>
             <select id="part-sort" class="part-select">
@@ -85,12 +88,12 @@
             </select>
         </div>
 
-        <!-- 5. Search 按鈕 -->
         <div class="part-control-group">
             <button class="part-btn-submit" onclick="fetchPartnershipData()">
                 <i class="fa-solid fa-magnifying-glass"></i> Search
             </button>
         </div>
+    </div>
 
     <!-- 📊 數據表格 -->
     <div class="part-table-wrapper">
@@ -122,35 +125,30 @@
 </div>
 
 <script>
-    // 1. 自動從後端載入 Active 球員清單
     function loadActivePlayers() {
         fetch('/api/active-players')
             .then(res => res.json())
             .then(players => {
                 const selectEl = document.getElementById('part-player');
                 let optionsHtml = '<option value="" selected>-All Players-</option>';
-                
                 players.forEach(p => {
                     const playerName = typeof p === 'object' ? (p.name || p[1]) : p;
                     optionsHtml += `<option value="${playerName}">${playerName}</option>`;
                 });
-                
                 selectEl.innerHTML = optionsHtml;
             })
             .catch(err => console.error('Load active players error:', err));
     }
 
-    // 2. 獲取 Combo 數據並帶入 Order By 排序參數
     function fetchPartnershipData() {
         const aside = document.getElementById('part-aside').value;
         const size = document.getElementById('part-size').value;
         const player = document.getElementById('part-player').value;
-        const sort = document.getElementById('part-sort').value; // 💡 確保讀取排序選項
+        const sort = document.getElementById('part-sort').value;
         const tbody = document.getElementById('part-table-body');
 
         tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: #38bdf8;"><i class="fa-solid fa-spinner fa-spin"></i> 計算中...</td></tr>`;
 
-        // 帶入 &sort=${sort}
         fetch(`/api/player-partnership?aside=${aside}&size=${size}&player=${encodeURIComponent(player)}&sort=${sort}`)
             .then(res => res.json())
             .then(data => {
@@ -180,9 +178,10 @@
             });
     }
 
-    // 3. 網頁初始化載入
     document.addEventListener('DOMContentLoaded', function() {
         loadActivePlayers();
         fetchPartnershipData();
     });
 </script>
+
+

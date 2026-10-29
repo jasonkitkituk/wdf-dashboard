@@ -210,7 +210,7 @@
         </footer>
     </div>
 
-    <!-- JS 控制 Tab 切換與 DOM 操作 -->
+<!-- JS 控制 Tab 切換與 DOM 操作 -->
     <script>
         function switchTab(tabId) {
             // 隱藏所有 section
@@ -232,6 +232,11 @@
             if (activeBtn) {
                 activeBtn.classList.add('active');
             }
+
+            // 💡 關鍵修復：每次切換 Tab 時，強制將頁面與主容器捲軸歸零，防止上方出現留白
+            window.scrollTo(0, 0);
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) mainContent.scrollTop = 0;
         }
     </script>
 </body>
