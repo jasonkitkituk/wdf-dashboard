@@ -4,16 +4,12 @@ from datetime import datetime, timedelta
 import psycopg2
 import psycopg2.extras
 import os
+from routes.db import get_db_connection
 
 # 建立 WLD 專屬藍圖
 wld_bp = Blueprint('wld_bp', __name__)
 
-def get_db_connection():
-    DATABASE_URL = os.getenv(
-        "DATABASE_URL", 
-        "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
-    )
-    return psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
+
 
 @wld_bp.route('/api/player-wld')
 def api_player_wld():

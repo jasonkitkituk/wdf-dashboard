@@ -3,15 +3,11 @@ from itertools import combinations
 import psycopg2
 import psycopg2.extras
 import os
+from routes.db import get_db_connection
 
 part_bp = Blueprint('part_bp', __name__)
 
-def get_db_connection():
-    DATABASE_URL = os.getenv(
-        "DATABASE_URL", 
-        "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
-    )
-    return psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
+
 
 @part_bp.route('/api/player-partnership')
 def api_player_partnership():

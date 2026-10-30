@@ -514,7 +514,7 @@
                 
                 const opt = document.createElement('option');
                 opt.value = m.match_id;
-                opt.text = `${m.match_date} | [${m.location || 'N/A'}] ${t1} (${score1}:${score2}) ${t2}`;
+                opt.text = `${m.match_date} [${m.location || 'N/A'}] ${t1} ${score1}:${score2} ${t2}`;
                 dropdown.appendChild(opt);
             });
 

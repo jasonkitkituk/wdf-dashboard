@@ -14,6 +14,7 @@ from routes.gaos_routes import gaos_bp
 from routes.rank_routes import rank_bp
 from routes.lmf_routes import lmf_bp 
 from routes.match_routes import match_bp
+from routes.db import get_db_connection
 
 app = Flask(__name__)
 
@@ -27,15 +28,7 @@ app.register_blueprint(match_bp)
 
 
 # 優先讀取 Render 環境變數的 DATABASE_URL
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
-)
 
-def get_db_connection():
-    # 使用 RealDictCursor 讓查詢結果能以字典/欄位名稱存取
-    conn = psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
-    return conn
 
 def load_sql_query(filename):
     path = os.path.join('sql', filename)

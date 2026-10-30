@@ -1,19 +1,15 @@
 # routes/gaos_routes.py
-from flask import Blueprint, jsonify, request
-from datetime import datetime, timedelta
 import psycopg2
 import psycopg2.extras
 import os
+from flask import Blueprint, jsonify, request
+from datetime import datetime, timedelta
+from routes.db import get_db_connection
 
 # 建立 GAOS 專屬藍圖
 gaos_bp = Blueprint('gaos_bp', __name__)
 
-def get_db_connection():
-    DATABASE_URL = os.getenv(
-        "DATABASE_URL", 
-        "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
-    )
-    return psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
+
 
 @gaos_bp.route('/api/player-gaos')
 def api_player_gaos():

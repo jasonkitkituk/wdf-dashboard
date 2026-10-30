@@ -3,16 +3,11 @@ from flask import Blueprint, jsonify
 import os
 import psycopg2
 import psycopg2.extras
+from routes.db import get_db_connection
 
 lmf_bp = Blueprint('lmf_bp', __name__)
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL", 
-    "postgresql://postgres:www.WDF123.com@db.pdmcmmibyyjjelwmcgjs.supabase.co:5432/postgres"
-)
 
-def get_db_connection():
-    return psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
 
 def load_sql_query(filename):
     path = os.path.join('sql', filename)
