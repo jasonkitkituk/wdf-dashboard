@@ -28,6 +28,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#match-history" class="nav-btn" onclick="switchTab('match-history')">
+                            <i class="fa-solid fa-rectangle-list"></i>
+                            <span>Matches</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#rank-top10" class="nav-btn" onclick="switchTab('rank-top10')">
                             <i class="fa-solid fa-trophy"></i>
                             <span>RANK</span>
@@ -57,12 +63,7 @@
                             <span>Combo</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#match-history" class="nav-btn" onclick="switchTab('match-history')">
-                            <i class="fa-solid fa-rectangle-list"></i>
-                            <span>Matches</span>
-                        </a>
-                    </li>
+
                     <!--
                     <li>
                         <a href="#player-profile" class="nav-btn" onclick="switchTab('player-profile')">
@@ -103,6 +104,11 @@
                         <h3>Match Stat.</h3>
                         <p>General stat. and Team Color stat. </p>
                     </div>
+                    <div class="card" onclick="switchTab('match-history')">
+                        <i class="fa-solid fa-rectangle-list card-icon"></i>
+                        <h3>Match History</h3>
+                        <p>View past match results and statistics</p>
+                    </div>
                     <div class="card" onclick="switchTab('rank-top10')">
                         <i class="fa-solid fa-trophy card-icon"></i>
                         <h3>RANK TOP 10</h3>
@@ -130,11 +136,7 @@
                         <h3>Combo</h3>
                         <p>Best Combo 2~ 7</p>
                     </div>
-                    <div class="card" onclick="switchTab('match-history')">
-                        <i class="fa-solid fa-rectangle-list card-icon"></i>
-                        <h3>Match History</h3>
-                        <p>View past match results and statistics</p>
-                    </div>
+
                     <!--
                     <div class="card" onclick="switchTab('player-profile')">
                         <i class="fa-solid fa-user card-icon"></i>
@@ -258,6 +260,8 @@
             const mainContent = document.querySelector('.main-content');
             if (mainContent) mainContent.scrollTop = 0;
         }
+
+        
     </script>
 </body>
 </html>

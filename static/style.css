@@ -125,6 +125,8 @@ body {
 .content-section {
     display: none;
     width: 100%;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .content-section.active {
@@ -445,10 +447,10 @@ body {
 /* 1. 鎖定整個網頁本體與外層容器，防止上下拉動時產生空白留白 */
 html, body {
     background-color: var(--bg-dark);
-    overscroll-behavior-y: none; /* 禁止瀏覽器下拉回彈空白 */
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 .dashboard-wrapper {
@@ -456,5 +458,6 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start !important;
+    
 }
 
