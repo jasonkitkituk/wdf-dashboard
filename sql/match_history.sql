@@ -44,6 +44,7 @@ SELECT
     TO_CHAR(m.match_date, 'YYYY-MM-DD') AS match_date,
     COALESCE(l.name, 'N/A') AS location,
     m.pitch_aside,
+    m.match_report,  -- 💡 新增這行，將資料庫的戰報欄位選取出來
     json_agg(
         json_build_object(
             'team_color', mta.team_color,

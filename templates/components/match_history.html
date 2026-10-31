@@ -140,15 +140,15 @@
         font-weight: 600;
     }
 
-    /* 💡 比分橫幅：增加左右兩側與中間比分盒的間距 */
+    /* 比分橫幅 */
     .scoreboard-banner {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 22px 36px; /* 增加左右 padding 空間 */
+        padding: 22px 36px;
         background: #ffffff;
         border-bottom: 1px solid #f1f5f9;
-        gap: 24px; /* 確保雙方隊伍與中間比分盒之間有足夠的寬敞間距 */
+        gap: 24px;
     }
 
     .team-badge-side {
@@ -164,7 +164,6 @@
     .team-badge-side.team-left { justify-content: flex-end; }
     .team-badge-side.team-right { justify-content: flex-start; }
 
-    /* 💡 改為有顏色的球衣 ICON 樣式 */
     .team-shirt-icon {
         font-size: 1.4rem;
         filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
@@ -178,15 +177,42 @@
         font-size: 1.8rem;
         font-weight: 900;
         letter-spacing: 4px;
-        color: #facc15; /* 大螢幕經典的亮黃/琥珀色數字，也可改為 #ffffff */
-        font-family: 'Courier New', Courier, monospace; /* 使用等寬字體模擬電子計分板 */
-        text-shadow: 0 0 10px rgba(250, 204, 21, 0.5), 0 0 20px rgba(250, 204, 21, 0.2); /* 發光特效 */
+        color: #facc15;
+        font-family: 'Courier New', Courier, monospace;
+        text-shadow: 0 0 10px rgba(250, 204, 21, 0.5), 0 0 20px rgba(250, 204, 21, 0.2);
         box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.3);
         white-space: nowrap;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
+    }
+
+    /* 💡 賽事戰報區塊樣式 */
+    .match-report-box {
+        background: #f8fafc;
+        border-top: 1px solid #f1f5f9;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px 24px;
+    }
+
+    .match-report-title {
+        font-size: 0.85rem;
+        color: #0284c7;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .match-report-content {
+        font-size: 0.95rem;
+        color: #334155;
+        line-height: 1.6;
+        white-space: pre-line; /* 保留換行格式 */
     }
 
     .teams-lineup-grid {
@@ -239,11 +265,10 @@
     .icon-ball { 
         color: #0f172a; 
         font-size: 0.85rem; 
-    } /* 進球：經典足球 */
+    }
 
-    /* 💡 藍底白字的助攻標籤 (AST) */
     .badge-ast {
-        background-color: #0284c7; /* 英超藍色 */
+        background-color: #0284c7;
         color: #ffffff;
         font-size: 0.65rem;
         font-weight: 800;
@@ -255,7 +280,6 @@
         box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     }
 
-    /* 紅底黃字的烏龍球標籤 (OG) */
     .badge-og {
         background-color: #dc2626; 
         color: #facc15;           
@@ -327,15 +351,14 @@
 <script>
     let allMatchesData = [];
 
-    // 💡 回傳帶有特定顏色的球衣 ICON 樣式 (使用 FontAwesome 的 fa-shirt)
     function getTeamShirtStyle(colorName) {
         const c = (colorName || '').toLowerCase();
-        let colorHex = '#64748b'; // 預設灰色
+        let colorHex = '#64748b';
         if (c === 'red') colorHex = '#ef4444';
         else if (c === 'black') colorHex = '#18181b';
         else if (c === 'blue') colorHex = '#3b82f6';
         else if (c === 'yellow') colorHex = '#eab308';
-        else if (c === 'white') colorHex = '#cbd5e1'; // 白衣配淺灰邊框凸顯
+        else if (c === 'white') colorHex = '#cbd5e1';
         else if (c === 'green') colorHex = '#22c55e';
         else if (c === 'orange') colorHex = '#f97316';
         else if (c === 'purple') colorHex = '#a855f7';
@@ -346,17 +369,14 @@
     function renderStatIcons(goals, assists, ownGoals) {
         let html = '<div class="stat-icons-group">';
         
-        // 1) 進球：足球 ICON
         for (let i = 0; i < goals; i++) {
             html += `<i class="fa-solid fa-futbol icon-ball" title="Goal"></i>`;
         }
         
-        // 2) 助攻：改用肯定能顯示的雙箭頭向前傳球 ICON (fa-angles-right)
         for (let i = 0; i < assists; i++) {
             html += `<span class="badge-ast" title="Assist">A</span>`;
         }
         
-        // 3) 烏龍球：紅底黃字 OG 標籤
         for (let i = 0; i < ownGoals; i++) {
             html += `<span class="badge-og" title="Own Goal">OG</span>`;
         }
@@ -374,6 +394,14 @@
 
         const team1 = m.teams[0] || { team_color: 'Team A', goals: 0, players: [] };
         const team2 = m.teams[1] || { team_color: 'Team B', goals: 0, players: [] };
+
+        // 💡 判斷並組合 match_report 區塊的 HTML
+        const reportHtml = m.match_report ? `
+            <div class="match-report-box">
+                <div class="match-report-title"><i class="fa-solid fa-note-sticky"></i> Match Report</div>
+                <div class="match-report-content">${m.match_report}</div>
+            </div>
+        ` : '';
 
         container.innerHTML = `
             <div class="match-card">
@@ -403,6 +431,8 @@
                     </div>
                 </div>
 
+
+
                 <div class="teams-lineup-grid">
                     <div class="team-lineup-column">
                         <div class="team-column-title">
@@ -430,6 +460,9 @@
                         `).join('')}
                     </div>
                 </div>
+
+                <!-- 💡 顯示賽事戰報（如果有內容的話） -->
+                ${reportHtml}
             </div>
         `;
     }
