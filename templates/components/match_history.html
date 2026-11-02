@@ -28,8 +28,8 @@
         display: flex;
         flex-direction: column;
         gap: 5px;
-        flex: 1;
-        min-width: 170px;
+        flex: 0 1 130px;
+        min-width: 100px;
     }
 
     .search-group label {
@@ -326,7 +326,7 @@
                 </select>
             </div>
             <div style="display: flex; gap: 8px;">
-                <button class="search-btn" onclick="handleMatchSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search </button>
+                <button class="search-btn" onclick="handleMatchSearch()"><i class="fa-solid fa-magnifying-glass"></i>  </button>
                 <button class="reset-btn" onclick="resetMatchSearch()" title="Reset and show latest match"><i class="fa-solid fa-rotate-right"></i></button>
             </div>
         </div>
