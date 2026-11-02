@@ -1007,6 +1007,53 @@
         container.innerHTML = html;
     }
 
+    /* 💡 專為 Goal+Assist% (gapct) 打造的強固型渲染函式 */
+    function renderGAPctTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#d97706';
+            else if (rankNum === 2) rankColor = '#475569';
+            else if (rankNum === 3) rankColor = '#b45309';
+
+            let rawPct = row.ga_pct !== undefined ? row.ga_pct : (row.gapct !== undefined ? row.gapct : null);
+            
+            if (rawPct === null && row.ga !== undefined && row.appearances && row.appearances > 0) {
+                rawPct = (Number(row.ga) / Number(row.appearances)) * 100;
+            }
+
+            let valDisplay = rawPct !== null && !isNaN(rawPct) ? Number(rawPct).toFixed(2) + '%' : '0.00%';
+            let appsDisplay = row.appearances !== undefined ? row.appearances : (row.apps !== undefined ? row.apps : '-');
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: 800; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 105px; font-weight: 600;" title="${row.player_name || row.name}">
+                        ${row.player_name || row.name}
+                    </span>
+                    <span style="width: 50px; text-align: center; font-weight: 800; color: #0284c7;">
+                        ${valDisplay}
+                    </span>
+                    <span style="width: 40px; text-align: center; color: #64748b;">
+                        ${appsDisplay}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
     function fetchAllGoalRanks() {
         fetch('/api/rank-goals-all')
             .then(res => res.json())
@@ -1072,9 +1119,10 @@
         fetch('/api/rank-gapct-all')
             .then(res => res.json())
             .then(data => {
-                renderGenericRankTable('gapct-rank-overall', data.overall, 'ga_pct', '#0284c7');
-                renderGenericRankTable('gapct-rank-9side', data.nine_side, 'ga_pct', '#0284c7');
-                renderGenericRankTable('gapct-rank-7side', data.seven_side, 'gapct-rank-7side', '#0284c7');
+                /* 💡 統一改用 renderGAPctTable 進行渲染，完美支援所有欄位與防呆 */
+                renderGAPctTable('gapct-rank-overall', data.overall);
+                renderGAPctTable('gapct-rank-9side', data.nine_side);
+                renderGAPctTable('gapct-rank-7side', data.seven_side);
             });
     }
 
