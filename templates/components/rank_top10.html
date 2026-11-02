@@ -11,44 +11,56 @@
         .rank-custom-grid {
             display: flex !important;
             flex-wrap: nowrap !important; 
-            gap: 15px !important;
+            gap: 12px !important;
             justify-content: flex-start !important;
-            margin-top: 15px !important;
+            margin-top: 10px !important;
             overflow-x: auto !important;  
-            padding-bottom: 12px !important; 
+            padding-bottom: 8px !important; 
             -webkit-overflow-scrolling: touch; 
         }
 
+        /* 💡 白底英超官方風格卡片：乾淨白底、灰階層次、精緻卡片邊框 */
         .rank-card-box {
             width: 300px !important;      
             flex-shrink: 0 !important;     
-            background: #1e293b !important;
-            border-radius: 10px !important;
-            padding: 14px !important;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-top: 3px solid #0284c7 !important; /* 英超經典藍頂部條點綴 */
+            border-radius: 8px !important;
+            padding: 10px 12px !important; /* 💡 縮減內距 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
             box-sizing: border-box !important;
         }
 
         .rank-card-header {
-            border-bottom: 2px solid var(--accent-color, #38bdf8) !important;
-            padding-bottom: 6px !important;
-            margin-bottom: 10px !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            padding-bottom: 4px !important; /* 💡 縮減上下空間 */
+            margin-bottom: 6px !important;
         }
 
         .rank-card-header h3 {
             margin: 0 !important;
-            color: var(--accent-color, #38bdf8) !important;
-            font-size: 1rem !important;
+            color: #0f172a !important;
+            font-size: 0.9rem !important;
+            letter-spacing: 0.3px;
             display: flex !important;
             align-items: center !important;
-            gap: 8px !important;
+            gap: 6px !important;
+            font-weight: 800;
         }
 
+        .rank-card-header h3 i {
+            color: #0284c7;
+        }
+
+        /* 💡 子標題：極致緊湊 */
         .rank-sub-title {
-            font-size: 0.92rem !important;
-            color: #ff4800 !important;
-            margin-bottom: 8px !important;
-            font-weight: bold !important;
+            font-size: 0.8rem !important;
+            color: #0284c7 !important;
+            margin-bottom: 6px !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
             text-align: center !important;
         }
         
@@ -56,833 +68,759 @@
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
-            padding: 4px 8px !important;
-            font-size: 0.75rem !important;
-            color: #94a3b8 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            margin-bottom: 6px !important;
-            font-weight: bold !important;
+            padding: 3px 6px !important; /* 💡 縮減表頭上下空間 */
+            font-size: 0.68rem !important;
+            color: #64748b !important;
+            border-bottom: 1px solid #cbd5e1 !important;
+            margin-bottom: 4px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: #f8fafc;
+            border-radius: 4px;
         }
 
+        /* 💡 數據橫列：大幅壓縮上下空間 (padding 3px) */
         .rank-row-item {
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
-            background: rgba(255, 255, 255, 0.04) !important;
-            padding: 6px 8px !important;
-            border-radius: 6px !important;
-            font-size: 0.82rem !important;
-            margin-bottom: 6px !important;
-            color: #f8fafc !important;
+            background: #ffffff !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            padding: 3px 6px !important; /* 💡 壓縮垂直高度，確保一頁看完 10 名 */
+            font-size: 0.8rem !important;
+            margin-bottom: 2px !important;
+            color: #1e293b !important;
+            transition: background 0.15s ease;
+        }
+
+        .rank-row-item:hover {
+            background: #f0f9ff !important; /* 懸停淺藍色亮起 */
         }
 
         .rank-note {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: #64748b;
             margin-top: 10px;
             font-style: italic;
+            text-align: center;
         }
 
-        /* ================= 📱 手機「橫放」專用優化：讓 3 張卡片並排 ================= */
+        /* ================= 📱 手機「橫放」專用優化 ================= */
         @media screen and (max-width: 900px) and (orientation: landscape) {
             .rank-custom-grid {
                 display: grid !important;
-                grid-template-columns: repeat(3, 1fr) !important; /* 強制 3 欄並排 */
+                grid-template-columns: repeat(3, 1fr) !important;
                 gap: 8px !important;
-                overflow-x: visible !important; /* 橫放時不需要左右滑動 */
+                overflow-x: visible !important;
             }
 
             .rank-card-box {
-                width: 100% !important; /* 讓卡片自動適應網格寬度 */
-                padding: 8px !important;
+                width: 100% !important;
+                padding: 6px 8px !important;
                 font-size: 0.7rem !important;
             }
 
             .rank-row-item {
-                padding: 4px 6px !important;
+                padding: 2px 4px !important;
                 font-size: 0.72rem !important;
             }
         }
     </style>
 
-    <div class="section-header">
-        <h2><i class="fa-solid fa-trophy"></i> RANK TOP 10</h2>
+    <div class="section-header" style="border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 10px;">
+        <h2 style="color: #0f172a; font-weight: 900; letter-spacing: 0.5px; margin: 0; font-size: 1.2rem;">
+            <i class="fa-solid fa-trophy" style="color: #eab308;"></i> PLAYER RANKINGS
+        </h2>
     </div>
 
-
-    <!-- 獨立三欄流式佈局 (靠左對齊，寬度 320px) -->
+    <!-- 獨立三欄流式佈局 (靠左對齊，寬度 300px) -->
     <div class="rank-custom-grid">
         
-        <!-- ========================================== -->
-        <!-- 1. OVERALL                                 -->
-        <!-- ========================================== -->
+        <!-- 1. OVERALL WIN -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             
-            <div class="rank-sub-title">
-                Win
-            </div>
+            <div class="rank-sub-title">Win</div>
             
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Win</span>
-                <span style="width: 50px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Win</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
             </div>
 
             <div class="rank-list-body">
                 {% if rank_overall and rank_overall|length > 0 %}
                     {% for row in rank_overall %}
                     <div class="rank-row-item">
-                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                        <span style="font-weight: 800; width: 35px; text-align: center; color: {% if loop.index == 1 %}#d97706{% elif loop.index == 2 %}#475569{% elif loop.index == 3 %}#b45309{% else %}#94a3b8{% endif %};">
                             {{ row.rank }}
                         </span>
-                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" title="{{ row.player_name }}">
+                        <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; font-weight: 600;" title="{{ row.player_name }}">
                             {{ row.player_name }}
                         </span>
-                        <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
+                        <span style="width: 40px; text-align: center; font-weight: 800; color: #16a34a;">
                             {{ row.wins }}
                         </span>
-                        <span style="width: 50px; text-align: center; color: #94a3b8;">
+                        <span style="width: 45px; text-align: center; color: #64748b;">
                             {{ row.appearances }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據</div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 2. 9-A-SIDE                                -->
-        <!-- ========================================== -->
+        <!-- 2. 9-A-SIDE WIN -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             
-            <div class="rank-sub-title">
-                Win
-            </div>
+            <div class="rank-sub-title">Win</div>
 
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Win</span>
-                <span style="width: 50px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Win</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
             </div>
 
             <div class="rank-list-body">
                 {% if rank_9side and rank_9side|length > 0 %}
                     {% for row in rank_9side %}
                     <div class="rank-row-item">
-                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                        <span style="font-weight: 800; width: 35px; text-align: center; color: {% if loop.index == 1 %}#d97706{% elif loop.index == 2 %}#475569{% elif loop.index == 3 %}#b45309{% else %}#94a3b8{% endif %};">
                             {{ row.rank }}
                         </span>
-                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" title="{{ row.player_name }}">
+                        <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; font-weight: 600;" title="{{ row.player_name }}">
                             {{ row.player_name }}
                         </span>
-                        <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
+                        <span style="width: 40px; text-align: center; font-weight: 800; color: #16a34a;">
                             {{ row.wins }}
                         </span>
-                        <span style="width: 50px; text-align: center; color: #94a3b8;">
+                        <span style="width: 45px; text-align: center; color: #64748b;">
                             {{ row.appearances }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據</div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 3. 7-A-SIDE                                -->
-        <!-- ========================================== -->
+        <!-- 3. 7-A-SIDE WIN -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             
-            <div class="rank-sub-title">
-                Win
-            </div>
+            <div class="rank-sub-title">Win</div>
 
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Win</span>
-                <span style="width: 50px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Win</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
             </div>
 
             <div class="rank-list-body">
                 {% if rank_7side and rank_7side|length > 0 %}
                     {% for row in rank_7side %}
                     <div class="rank-row-item">
-                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                        <span style="font-weight: 800; width: 35px; text-align: center; color: {% if loop.index == 1 %}#d97706{% elif loop.index == 2 %}#475569{% elif loop.index == 3 %}#b45309{% else %}#94a3b8{% endif %};">
                             {{ row.rank }}
                         </span>
-                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px;" title="{{ row.player_name }}">
+                        <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; font-weight: 600;" title="{{ row.player_name }}">
                             {{ row.player_name }}
                         </span>
-                        <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
+                        <span style="width: 40px; text-align: center; font-weight: 800; color: #16a34a;">
                             {{ row.wins }}
                         </span>
-                        <span style="width: 50px; text-align: center; color: #94a3b8;">
+                        <span style="width: 45px; text-align: center; color: #64748b;">
                             {{ row.appearances }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據</div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- 下半部：2. WIN% 排行榜 (勝率排行榜, 最少6場 & Active)               -->
-    <!-- =================================================================== -->
-
-   
-    
-    <!-- WIN% 排行榜：三欄區域 -->
+    <!-- WIN% 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- 2.1 OVERALL WIN% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
-            <div class="rank-sub-title">
-                Win%
-            </div>
+            <div class="rank-sub-title">Win%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">RANK</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Win%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 55px; text-align: center;">Win%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body">
                 {% if winpct_overall and winpct_overall|length > 0 %}
                     {% for row in winpct_overall %}
                     <div class="rank-row-item">
-                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                        <span style="font-weight: 800; width: 35px; text-align: center; color: {% if loop.index == 1 %}#d97706{% elif loop.index == 2 %}#475569{% elif loop.index == 3 %}#b45309{% else %}#94a3b8{% endif %};">
                             {{ row.rank }}
                         </span>
-                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="{{ row.player_name }}">
+                        <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; font-weight: 600;" title="{{ row.player_name }}">
                             {{ row.player_name }}
                         </span>
-                        <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        <span style="width: 55px; text-align: center; font-weight: 800; color: #0284c7;">
                             {{ "%.2f"|format(row.win_pct) }}%
                         </span>
-                        <span style="width: 45px; text-align: center; color: #94a3b8;">
+                        <span style="width: 40px; text-align: center; color: #64748b;">
                             {{ row.appearances }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (需至少參與6場)</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (需至少參與6場)</div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- 2.2 9-A-SIDE WIN% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
-            <div class="rank-sub-title">
-                Win%
-            </div>
+            <div class="rank-sub-title">Win%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">RANK</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Win%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 55px; text-align: center;">Win%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body">
                 {% if winpct_9side and winpct_9side|length > 0 %}
                     {% for row in winpct_9side %}
                     <div class="rank-row-item">
-                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                        <span style="font-weight: 800; width: 35px; text-align: center; color: {% if loop.index == 1 %}#d97706{% elif loop.index == 2 %}#475569{% elif loop.index == 3 %}#b45309{% else %}#94a3b8{% endif %};">
                             {{ row.rank }}
                         </span>
-                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="{{ row.player_name }}">
+                        <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; font-weight: 600;" title="{{ row.player_name }}">
                             {{ row.player_name }}
                         </span>
-                        <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        <span style="width: 55px; text-align: center; font-weight: 800; color: #0284c7;">
                             {{ "%.2f"|format(row.win_pct) }}%
                         </span>
-                        <span style="width: 45px; text-align: center; color: #94a3b8;">
+                        <span style="width: 40px; text-align: center; color: #64748b;">
                             {{ row.appearances }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (需至少參與6場)</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (需至少參與6場)</div>
                 {% endif %}
             </div>
         </div>
 
-        <!-- 2.3 7-A-SIDE WIN% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
-
-            <div class="rank-sub-title">
-                Win%
-            </div>
+            <div class="rank-sub-title">Win%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">RANK</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Win%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 55px; text-align: center;">Win%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body">
                 {% if winpct_7side and winpct_7side|length > 0 %}
                     {% for row in winpct_7side %}
                     <div class="rank-row-item">
-                        <span style="font-weight: bold; width: 35px; text-align: center; color: {% if loop.index == 1 %}#ffd700{% elif loop.index == 2 %}#c0c0c0{% elif loop.index == 3 %}#cd7f32{% else %}#94a3b8{% endif %};">
+                        <span style="font-weight: 800; width: 35px; text-align: center; color: {% if loop.index == 1 %}#d97706{% elif loop.index == 2 %}#475569{% elif loop.index == 3 %}#b45309{% else %}#94a3b8{% endif %};">
                             {{ row.rank }}
                         </span>
-                        <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="{{ row.player_name }}">
+                        <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; font-weight: 600;" title="{{ row.player_name }}">
                             {{ row.player_name }}
                         </span>
-                        <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
+                        <span style="width: 55px; text-align: center; font-weight: 800; color: #0284c7;">
                             {{ "%.2f"|format(row.win_pct) }}%
                         </span>
-                        <span style="width: 45px; text-align: center; color: #94a3b8;">
+                        <span style="width: 40px; text-align: center; color: #64748b;">
                             {{ row.appearances }}
                         </span>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (需至少參與6場)</div>
+                    <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (需至少參與6場)</div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-<!-- =================================================================== -->
-    <!-- 3. GOAL 排行榜 (入球排行榜)                                         -->
-    <!-- =================================================================== -->
+    <!-- GOAL 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- 3.1 OVERALL GOAL -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
-            <div class="rank-sub-title">
-                Goal
-            </div>
+            <div class="rank-sub-title">Goal</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Goal</span>
-                <span style="width: 50px; text-align: center;">Goal%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Goal</span>
+                <span style="width: 45px; text-align: center;">Goal%</span>
             </div>
             <div class="rank-list-body" id="goal-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 3.2 9-A-SIDE GOAL -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
-            <div class="rank-sub-title">
-                Goal
-            </div>
+            <div class="rank-sub-title">Goal</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Goal</span>
-                <span style="width: 50px; text-align: center;">Goal%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Goal</span>
+                <span style="width: 45px; text-align: center;">Goal%</span>
             </div>
             <div class="rank-list-body" id="goal-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 3.3 7-A-SIDE GOAL -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
-            <div class="rank-sub-title">
-                Goal
-            </div>
+            <div class="rank-sub-title">Goal</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Goal</span>
-                <span style="width: 50px; text-align: center;">Goal%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Goal</span>
+                <span style="width: 45px; text-align: center;">Goal%</span>
             </div>
             <div class="rank-list-body" id="goal-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-
-
-
-<!-- =================================================================== -->
-    <!-- GOAL% 排行榜 (場均入球率)                                            -->
-    <!-- =================================================================== -->
+    <!-- GOAL% 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL GOAL% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Goal%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Goal%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">Goal%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="goalpct-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE GOAL% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goal%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Goal%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">Goal%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="goalpct-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE GOAL% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goal%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Goal%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">Goal%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="goalpct-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-
-    <!-- =================================================================== -->
-    <!-- UNBEATEN% 排行榜 (不敗率排行榜)                                     -->
-    <!-- =================================================================== -->
+    <!-- UNBEATEN% 排行榜 (💡 5 欄位：Rank, Player, UnB%, W, D) -->
     <div class="rank-custom-grid">
-        <!-- OVERALL UNBEATEN% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Unbeaten%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Unbeaten%</span>
-                <span style="width: 35px; text-align: center;">Win</span>
-                <span style="width: 35px; text-align: center;">Draw</span>
+                <span style="width: 22px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 3px;">Player</span>
+                <span style="width: 60px; text-align: Left;">UnB%</span>
+                <span style="width: 30px; text-align: Left;">W</span>
+                <span style="width: 25px; text-align: center;">D</span>
             </div>
             <div class="rank-list-body" id="unbeatenpct-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE UNBEATEN% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Unbeaten%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Unbeaten%</span>
-                <span style="width: 35px; text-align: center;">Win</span>
-                <span style="width: 35px; text-align: center;">Draw</span>
+                <span style="width: 22px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 3px;">Player</span>
+                <span style="width: 60px; text-align: Left;">UnB%</span>
+                <span style="width: 30px; text-align: Left;">W</span>
+                <span style="width: 25px; text-align: center;">D</span>
             </div>
             <div class="rank-list-body" id="unbeatenpct-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE UNBEATEN% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Unbeaten%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 60px; text-align: center;">Unbeaten%</span>
-                <span style="width: 35px; text-align: center;">Win</span>
-                <span style="width: 35px; text-align: center;">Draw</span>
+                <span style="width: 22px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 3px;">Player</span>
+                <span style="width: 60px; text-align: Left;">UnB%</span>
+                <span style="width: 30px; text-align: Left;">W</span>
+                <span style="width: 25px; text-align: center;">D</span>
             </div>
             <div class="rank-list-body" id="unbeatenpct-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-
-    <!-- =================================================================== -->
-    <!-- ASSIST 排行榜 (總助攻數排行榜)                                      -->
-    <!-- =================================================================== -->
+    <!-- ASSIST 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL ASSIST -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Assist</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Assist</span>
-                <span style="width: 50px; text-align: center;">Assist%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Ast</span>
+                <span style="width: 45px; text-align: center;">Ast%</span>
             </div>
             <div class="rank-list-body" id="assist-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE ASSIST -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Assist</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Assist</span>
-                <span style="width: 50px; text-align: center;">Assist%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Ast</span>
+                <span style="width: 45px; text-align: center;">Ast%</span>
             </div>
             <div class="rank-list-body" id="assist-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE ASSIST -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Assist</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Assist</span>
-                <span style="width: 50px; text-align: center;">Assist%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Ast</span>
+                <span style="width: 45px; text-align: center;">Ast%</span>
             </div>
             <div class="rank-list-body" id="assist-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- ASSIST% 排行榜 (場均助攻率排行榜)                                    -->
-    <!-- =================================================================== -->
+    <!-- ASSIST% 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL ASSIST% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Assist%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">Assist%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">Ast%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="assistpct-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE ASSIST% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Assist%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">Assist%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">Ast%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="assistpct-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        
-        <!-- 7-A-SIDE ASSIST% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Assist%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">Assist%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">Ast%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="assistpct-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- G+A 排行榜 (GOAL + ASSIST 總和)                                      -->
-    <!-- =================================================================== -->
+    <!-- G+A 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL G+A -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Goal+Assist</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">G+A</span>
-                <span style="width: 50px; text-align: center;">G+A%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">G+A</span>
+                <span style="width: 45px; text-align: center;">G+A%</span>
             </div>
             <div class="rank-list-body" id="ga-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE G+A -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goal+Assist</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">G+A</span>
-                <span style="width: 50px; text-align: center;">G+A%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">G+A</span>
+                <span style="width: 45px; text-align: center;">G+A%</span>
             </div>
             <div class="rank-list-body" id="ga-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE G+A -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goal+Assist</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">G+A</span>
-                <span style="width: 50px; text-align: center;">G+A%</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">G+A</span>
+                <span style="width: 45px; text-align: center;">G+A%</span>
             </div>
             <div class="rank-list-body" id="ga-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-
-<!-- =================================================================== -->
-    <!-- G+A% 排行榜 (場均 Goal+Assist 排行榜)                                 -->
-    <!-- =================================================================== -->
+    <!-- G+A% 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL G+A% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Goal+Assist%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">G+A%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">G+A%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="gapct-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE G+A% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goal+Assist%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">G+A%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">G+A%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="gapct-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE G+A% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goal+Assist%</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">G+A%</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">G+A%</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
             </div>
             <div class="rank-list-body" id="gapct-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-<!-- =================================================================== -->
-    <!-- GC% 排行榜 (場均失球率排行榜)                                        -->
-    <!-- =================================================================== -->
+    <!-- GC% 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL GC% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Goals Conceded %</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">GC%</span>
-                <span style="width: 45px; text-align: center;">GC</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">GC%</span>
+                <span style="width: 40px; text-align: center;">GC</span>
             </div>
             <div class="rank-list-body" id="gcpct-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE GC% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goals Conceded %</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">GC%</span>
-                <span style="width: 45px; text-align: center;">GC</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">GC%</span>
+                <span style="width: 40px; text-align: center;">GC</span>
             </div>
             <div class="rank-list-body" id="gcpct-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE GC% -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Goals Conceded %</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 55px; text-align: center;">GC%</span>
-                <span style="width: 45px; text-align: center;">GC</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 50px; text-align: center;">GC%</span>
+                <span style="width: 40px; text-align: center;">GC</span>
             </div>
             <div class="rank-list-body" id="gcpct-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- APPEARANCES 排行榜 (總出場與勝場排行榜)                                -->
-    <!-- =================================================================== -->
+    <!-- APPEARANCES 排行榜 -->
     <div class="rank-custom-grid">
-        <!-- OVERALL APPEARANCES -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
             </div>
             <div class="rank-sub-title">Appearances</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
-                <span style="width: 45px; text-align: center;">Win</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
+                <span style="width: 40px; text-align: center;">Win</span>
             </div>
             <div class="rank-list-body" id="app-rank-overall">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 9-A-SIDE APPEARANCES -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Appearances</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
-                <span style="width: 45px; text-align: center;">Win</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
+                <span style="width: 40px; text-align: center;">Win</span>
             </div>
             <div class="rank-list-body" id="app-rank-9side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
 
-        <!-- 7-A-SIDE APPEARANCES -->
         <div class="rank-card-box">
             <div class="rank-card-header">
                 <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
             </div>
             <div class="rank-sub-title">Appearances</div>
             <div class="rank-table-header">
-                <span style="width: 35px; text-align: center;">Rank</span>
-                <span style="flex-grow: 1; padding-left: 8px;">Player</span>
-                <span style="width: 45px; text-align: center;">Apps</span>
-                <span style="width: 45px; text-align: center;">Win</span>
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
+                <span style="width: 40px; text-align: center;">Win</span>
             </div>
             <div class="rank-list-body" id="app-rank-7side">
-                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">載入中...</div>
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
             </div>
         </div>
     </div>
@@ -891,14 +829,13 @@
         <i class="fa-solid fa-circle-info"></i> Threshold for 7-a-side is 3; Overall & 9-a-side are 6.
     </div>
 
-
     <script>
-    function renderGoalTable(elementId, rows) {
+    function renderGenericRankTable(elementId, rows, valueKey, valueColor = '#0284c7', isPct = false) {
         const container = document.getElementById(elementId);
         if (!container) return;
 
         if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據</div>`;
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (未達門檻)</div>`;
             return;
         }
 
@@ -906,23 +843,72 @@
         rows.forEach((row, index) => {
             const rankNum = index + 1;
             let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
+            if (rankNum === 1) rankColor = '#d97706';      /* 金色 */
+            else if (rankNum === 2) rankColor = '#475569'; /* 銀色 */
+            else if (rankNum === 3) rankColor = '#b45309'; /* 銅色 */
+
+            let valDisplay = row[valueKey];
+            if (isPct) valDisplay = Number(valDisplay).toFixed(2) + '%';
+            else if (typeof valDisplay === 'number' && !Number.isInteger(valDisplay)) valDisplay = Number(valDisplay).toFixed(2);
+
+            let subValDisplay = row.appearances || row.goal_pct || row.assist_pct || row.ga_pct || row.wins || row.gc || '';
 
             html += `
                 <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
+                    <span style="font-weight: 800; width: 35px; text-align: center; color: ${rankColor};">
                         ${row.rank}
                     </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="${row.player_name}">
+                    <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 105px; font-weight: 600;" title="${row.player_name}">
                         ${row.player_name}
                     </span>
-                    <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
-                        ${row.goal}
+                    <span style="width: 50px; text-align: center; font-weight: 800; color: ${valueColor};">
+                        ${valDisplay}
                     </span>
-                    <span style="width: 50px; text-align: center; color: #38bdf8;">
-                        ${row.goal_pct}
+                    <span style="width: 40px; text-align: center; color: #64748b;">
+                        ${subValDisplay}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    /* 💡 專為 Unbeaten% 打造的 5 欄位專屬渲染函式（正確對應 row.wins 與 row.draws） */
+    function renderUnbeatenTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#d97706';      /* 金色 */
+            else if (rankNum === 2) rankColor = '#475569'; /* 銀色 */
+            else if (rankNum === 3) rankColor = '#b45309'; /* 銅色 */
+
+            let valDisplay = Number(row.unbeaten_pct).toFixed(2) + '%';
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: 800; width: 22px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; font-weight: 600;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 40px; text-align: center; font-weight: 800; color: #0284c7;">
+                        ${valDisplay}
+                    </span>
+                    <span style="width: 25px; text-align: center; color: #16a34a; font-weight: 700;">
+                        ${row.wins}
+                    </span>
+                    <span style="width: 25px; text-align: center; color: #d97706; font-weight: 700;">
+                        ${row.draws}
                     </span>
                 </div>
             `;
@@ -934,522 +920,102 @@
         fetch('/api/rank-goals-all')
             .then(res => res.json())
             .then(data => {
-                renderGoalTable('goal-rank-overall', data.overall);
-                renderGoalTable('goal-rank-9side', data.nine_side);
-                renderGoalTable('goal-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All Goal Ranks Error:', err));
+                renderGenericRankTable('goal-rank-overall', data.overall, 'goal', '#16a34a');
+                renderGenericRankTable('goal-rank-9side', data.nine_side, 'goal', '#16a34a');
+                renderGenericRankTable('goal-rank-7side', data.seven_side, 'goal', '#16a34a');
+            });
     }
 
-    //document.addEventListener('DOMContentLoaded', fetchAllGoalRanks);
-    // 💡 修正這裡：同時觸發 Goal 與 Win% 的 API 抓取
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchAllGoalRanks();
-        fetchAllWinPctRanks();  // <-- 加上這行，才會去載入 Win% 資料！
-    });
-
-
-    /* =================================================================== */
-    /* 2. WIN% 排行榜相關函式                                              */
-    /* =================================================================== */
-    function renderWinPctTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${Number(row.win_pct).toFixed(2)}%
-                    </span>
-                    <span style="width: 45px; text-align: center; color: #94a3b8;">
-                        ${row.appearances}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function fetchAllWinPctRanks() {
-        fetch('/api/rank-winpct-all')
-            .then(res => res.json())
-            .then(data => {
-                renderWinPctTable('winpct-rank-overall', data.overall);
-                renderWinPctTable('winpct-rank-9side', data.nine_side);
-                renderWinPctTable('winpct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All WinPct Ranks Error:', err));
-    }
-
-    function renderGoalPctTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${Number(row.goal_pct).toFixed(2)}
-                    </span>
-                    <span style="width: 45px; text-align: center; color: #94a3b8;">
-                        ${row.appearances}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 發送 API 請求抓取 Goal% 資料
     function fetchAllGoalPctRanks() {
         fetch('/api/rank-goalpct-all')
             .then(res => res.json())
             .then(data => {
-                renderGoalPctTable('goalpct-rank-overall', data.overall);
-                renderGoalPctTable('goalpct-rank-9side', data.nine_side);
-                renderGoalPctTable('goalpct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All GoalPct Ranks Error:', err));
+                renderGenericRankTable('goalpct-rank-overall', data.overall, 'goal_pct', '#0284c7');
+                renderGenericRankTable('goalpct-rank-9side', data.nine_side, 'goal_pct', '#0284c7');
+                renderGenericRankTable('goalpct-rank-7side', data.seven_side, 'goal_pct', '#0284c7');
+            });
     }
 
-    // 頁面載入時觸發
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchAllGoalRanks();
-        fetchAllGoalPctRanks(); // 觸發 Goal% 排行榜
-    });
-    
-    // 渲染 Unbeaten% 表格
-    function renderUnbeatenPctTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 60px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${Number(row.unbeaten_pct).toFixed(2)}%
-                    </span>
-                    <span style="width: 35px; text-align: center; color: #4ade80;">
-                        ${row.wins}
-                    </span>
-                    <span style="width: 35px; text-align: center; color: #facc15;">
-                        ${row.draws}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 發送 API 請求抓取 Unbeaten% 資料
     function fetchAllUnbeatenPctRanks() {
         fetch('/api/rank-unbeatenpct-all')
             .then(res => res.json())
             .then(data => {
-                renderUnbeatenPctTable('unbeatenpct-rank-overall', data.overall);
-                renderUnbeatenPctTable('unbeatenpct-rank-9side', data.nine_side);
-                renderUnbeatenPctTable('unbeatenpct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All UnbeatenPct Ranks Error:', err));
+                renderUnbeatenTable('unbeatenpct-rank-overall', data.overall);
+                renderUnbeatenTable('unbeatenpct-rank-9side', data.nine_side);
+                renderUnbeatenTable('unbeatenpct-rank-7side', data.seven_side);
+            });
     }
 
-    // 確保 DOM 載入後同時執行
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof fetchAllGoalRanks === 'function') fetchAllGoalRanks();
-        if (typeof fetchAllWinPctRanks === 'function') fetchAllWinPctRanks();
-        if (typeof fetchAllGoalPctRanks === 'function') fetchAllGoalPctRanks();
-        fetchAllUnbeatenPctRanks(); // 觸發 Unbeaten% 排行榜
-    });
-
-// 渲染 Assist 表格
-    function renderAssistTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
-                        ${row.assists}
-                    </span>
-                    <span style="width: 50px; text-align: center; color: #38bdf8;">
-                        ${Number(row.assist_pct).toFixed(2)}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 發送 API 請求抓取 Assist 資料
     function fetchAllAssistRanks() {
         fetch('/api/rank-assists-all')
             .then(res => res.json())
             .then(data => {
-                renderAssistTable('assist-rank-overall', data.overall);
-                renderAssistTable('assist-rank-9side', data.nine_side);
-                renderAssistTable('assist-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All Assist Ranks Error:', err));
+                renderGenericRankTable('assist-rank-overall', data.overall, 'assists', '#16a34a');
+                renderGenericRankTable('assist-rank-9side', data.nine_side, 'assists', '#16a34a');
+                renderGenericRankTable('assist-rank-7side', data.seven_side, 'assists', '#16a34a');
+            });
     }
 
-
-    // 渲染 Assist% 表格
-    function renderAssistPctTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 55px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${Number(row.assist_pct).toFixed(2)}
-                    </span>
-                    <span style="width: 45px; text-align: center; color: #94a3b8;">
-                        ${row.appearances}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 💡 補上：發送 API 請求抓取 Assist% 資料的函式
     function fetchAllAssistPctRanks() {
         fetch('/api/rank-assistpct-all')
             .then(res => res.json())
             .then(data => {
-                renderAssistPctTable('assistpct-rank-overall', data.overall);
-                renderAssistPctTable('assistpct-rank-9side', data.nine_side);
-                renderAssistPctTable('assistpct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All AssistPct Ranks Error:', err));
+                renderGenericRankTable('assistpct-rank-overall', data.overall, 'assist_pct', '#0284c7');
+                renderGenericRankTable('assistpct-rank-9side', data.nine_side, 'assist_pct', '#0284c7');
+                renderGenericRankTable('assistpct-rank-7side', data.seven_side, 'assist_pct', '#0284c7');
+            });
     }
 
-
-    // 渲染 G+A 表格
-    function renderGATable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 45px; text-align: center; font-weight: bold; color: #4ade80;">
-                        ${row.ga}
-                    </span>
-                    <span style="width: 50px; text-align: center; color: #38bdf8;">
-                        ${Number(row.ga_pct).toFixed(2)}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-
-    // 渲染 G+A% 表格
-    function renderGAPctTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 55px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${Number(row.ga_pct).toFixed(2)}
-                    </span>
-                    <span style="width: 45px; text-align: center; color: #94a3b8;">
-                        ${row.appearances}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 發送 API 請求抓取 G+A% 資料
-    function fetchAllGAPctRanks() {
-        fetch('/api/rank-gapct-all')
-            .then(res => res.json())
-            .then(data => {
-                renderGAPctTable('gapct-rank-overall', data.overall);
-                renderGAPctTable('gapct-rank-9side', data.nine_side);
-                renderGAPctTable('gapct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All G+A% Ranks Error:', err));
-    }
-
-    // 發送 API 請求抓取 G+A 資料
     function fetchAllGARanks() {
         fetch('/api/rank-ga-all')
             .then(res => res.json())
             .then(data => {
-                renderGATable('ga-rank-overall', data.overall);
-                renderGATable('ga-rank-9side', data.nine_side);
-                renderGATable('ga-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All G+A Ranks Error:', err));
+                renderGenericRankTable('ga-rank-overall', data.overall, 'ga', '#16a34a');
+                renderGenericRankTable('ga-rank-9side', data.nine_side, 'ga', '#16a34a');
+                renderGenericRankTable('ga-rank-7side', data.seven_side, 'ga', '#16a34a');
+            });
     }
 
-    // 發送 API 請求抓取 G+A% 資料
     function fetchAllGAPctRanks() {
         fetch('/api/rank-gapct-all')
             .then(res => res.json())
             .then(data => {
-                renderGAPctTable('gapct-rank-overall', data.overall);
-                renderGAPctTable('gapct-rank-9side', data.nine_side);
-                renderGAPctTable('gapct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All G+A% Ranks Error:', err));
+                renderGenericRankTable('gapct-rank-overall', data.overall, 'ga_pct', '#0284c7');
+                renderGenericRankTable('gapct-rank-9side', data.nine_side, 'ga_pct', '#0284c7');
+                renderGenericRankTable('gapct-rank-7side', data.seven_side, 'ga_pct', '#0284c7');
+            });
     }
 
-
-// 渲染 GC% 表格
-    function renderGCPctTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 55px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${Number(row.gc_pct).toFixed(2)}
-                    </span>
-                    <span style="width: 45px; text-align: center; color: #f87171;">
-                        ${row.gc}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 發送 API 請求抓取 GC% 資料
     function fetchAllGCPctRanks() {
         fetch('/api/rank-gcpct-all')
             .then(res => res.json())
             .then(data => {
-                renderGCPctTable('gcpct-rank-overall', data.overall);
-                renderGCPctTable('gcpct-rank-9side', data.nine_side);
-                renderGCPctTable('gcpct-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All GC% Ranks Error:', err));
+                renderGenericRankTable('gcpct-rank-overall', data.overall, 'gc_pct', '#dc2626');
+                renderGenericRankTable('gcpct-rank-9side', data.nine_side, 'gc_pct', '#dc2626');
+                renderGenericRankTable('gcpct-rank-7side', data.seven_side, 'gc_pct', '#dc2626');
+            });
     }
 
-
-
-    // 渲染 Appearances 表格
-    function renderAppearancesTable(elementId, rows) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-
-        if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 12px;">尚無數據 (未達門檻)</div>`;
-            return;
-        }
-
-        let html = '';
-        rows.forEach((row, index) => {
-            const rankNum = index + 1;
-            let rankColor = '#94a3b8';
-            if (rankNum === 1) rankColor = '#ffd700';
-            else if (rankNum === 2) rankColor = '#c0c0c0';
-            else if (rankNum === 3) rankColor = '#cd7f32';
-
-            html += `
-                <div class="rank-row-item">
-                    <span style="font-weight: bold; width: 35px; text-align: center; color: ${rankColor};">
-                        ${row.rank}
-                    </span>
-                    <span style="flex-grow: 1; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 95px;" title="${row.player_name}">
-                        ${row.player_name}
-                    </span>
-                    <span style="width: 45px; text-align: center; font-weight: bold; color: #38bdf8;">
-                        ${row.appearances}
-                    </span>
-                    <span style="width: 45px; text-align: center; color: #4ade80;">
-                        ${row.wins}
-                    </span>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    // 發送 API 請求抓取 Appearances 資料
     function fetchAllAppearancesRanks() {
         fetch('/api/rank-appearances-all')
             .then(res => res.json())
             .then(data => {
-                renderAppearancesTable('app-rank-overall', data.overall);
-                renderAppearancesTable('app-rank-9side', data.nine_side);
-                renderAppearancesTable('app-rank-7side', data.seven_side);
-            })
-            .catch(err => console.error('Fetch All Appearances Ranks Error:', err));
+                renderGenericRankTable('app-rank-overall', data.overall, 'appearances', '#0284c7');
+                renderGenericRankTable('app-rank-9side', data.nine_side, 'appearances', '#0284c7');
+                renderGenericRankTable('app-rank-7side', data.seven_side, 'appearances', '#0284c7');
+            });
     }
 
-    
-
-    // 在 DOMContentLoaded 中加入觸發
     document.addEventListener('DOMContentLoaded', () => {
-        if (typeof fetchAllGoalRanks === 'function') fetchAllGoalRanks();
-        if (typeof fetchAllWinPctRanks === 'function') fetchAllWinPctRanks();
-        if (typeof fetchAllGoalPctRanks === 'function') fetchAllGoalPctRanks();
-        if (typeof fetchAllUnbeatenPctRanks === 'function') fetchAllUnbeatenPctRanks();
-        if (typeof fetchAllAssistPctRanks === 'function') fetchAllAssistPctRanks();
-        if (typeof fetchAllAssistRanks === 'function') fetchAllAssistRanks();
-        if (typeof fetchAllGARanks === 'function') fetchAllGARanks();
-        if (typeof fetchAllGAPctRanks === 'function') fetchAllGAPctRanks();
-        if (typeof fetchAllAppearancesRanks === 'function') fetchAllAppearancesRanks();
-        fetchAllGCPctRanks(); // 觸發 GC% 排行榜
+        fetchAllGoalRanks();
+        fetchAllGoalPctRanks();
+        fetchAllUnbeatenPctRanks();
+        fetchAllAssistRanks();
+        fetchAllAssistPctRanks();
+        fetchAllGARanks();
+        fetchAllGAPctRanks();
+        fetchAllGCPctRanks();
+        fetchAllAppearancesRanks();
     });
-
     </script>
-
 </section>
