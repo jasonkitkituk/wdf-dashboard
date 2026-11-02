@@ -916,6 +916,97 @@
         container.innerHTML = html;
     }
 
+    /* 💡 專為 Assist 排行榜打造的專屬渲染函式：第四欄顯示場均 Ast% */
+    function renderAssistRankTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#d97706';
+            else if (rankNum === 2) rankColor = '#475569';
+            else if (rankNum === 3) rankColor = '#b45309';
+
+            /* 第三欄：Assist 總數量 (專用欄位名稱以 row.assists 或 row.ast 為主) */
+            let astTotal = row.assists !== undefined ? row.assists : (row.ast !== undefined ? row.ast : 0);
+
+            /* 第四欄：場均 Ast% (優先取 SQL 回傳的 assist_pct / ast_pct，若無則用 astTotal / appearances 計算) */
+            let astPct = row.assist_pct !== undefined ? row.assist_pct : row.ast_pct;
+            let astPctDisplay = astPct !== undefined 
+                ? Number(astPct).toFixed(2) + '%' 
+                : (row.appearances ? (Number(astTotal) / row.appearances).toFixed(2) + '%' : '0.00%');
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: 800; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 105px; font-weight: 600;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 40px; text-align: center; font-weight: 800; color: #16a34a;">
+                        ${astTotal}
+                    </span>
+                    <span style="width: 50px; text-align: center; color: #0284c7; font-weight: 700;">
+                        ${astPctDisplay}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    /* 💡 專為 Goal+Assist (G+A) 排行榜打造的專屬渲染函式：第四欄顯示場均 G+A% */
+    function renderGARankTable(elementId, rows) {
+        const container = document.getElementById(elementId);
+        if (!container) return;
+
+        if (!rows || rows.length === 0) {
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (未達門檻)</div>`;
+            return;
+        }
+
+        let html = '';
+        rows.forEach((row, index) => {
+            const rankNum = index + 1;
+            let rankColor = '#94a3b8';
+            if (rankNum === 1) rankColor = '#d97706';
+            else if (rankNum === 2) rankColor = '#475569';
+            else if (rankNum === 3) rankColor = '#b45309';
+
+            /* 第三欄：G+A 總數量 */
+            let gaTotal = row.ga;
+
+            /* 第四欄：場均 G+A% */
+            let gaPctDisplay = row.ga_pct !== undefined ? Number(row.ga_pct).toFixed(2) + '%' : (row.appearances ? (Number(gaTotal) / row.appearances).toFixed(2) + '%' : '0.00%');
+
+            html += `
+                <div class="rank-row-item">
+                    <span style="font-weight: 800; width: 35px; text-align: center; color: ${rankColor};">
+                        ${row.rank}
+                    </span>
+                    <span style="flex-grow: 1; padding-left: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 105px; font-weight: 600;" title="${row.player_name}">
+                        ${row.player_name}
+                    </span>
+                    <span style="width: 40px; text-align: center; font-weight: 800; color: #16a34a;">
+                        ${gaTotal}
+                    </span>
+                    <span style="width: 50px; text-align: center; color: #0284c7; font-weight: 700;">
+                        ${gaPctDisplay}
+                    </span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
     function fetchAllGoalRanks() {
         fetch('/api/rank-goals-all')
             .then(res => res.json())
@@ -950,9 +1041,10 @@
         fetch('/api/rank-assists-all')
             .then(res => res.json())
             .then(data => {
-                renderGenericRankTable('assist-rank-overall', data.overall, 'assists', '#16a34a');
-                renderGenericRankTable('assist-rank-9side', data.nine_side, 'assists', '#16a34a');
-                renderGenericRankTable('assist-rank-7side', data.seven_side, 'assists', '#16a34a');
+                /* 💡 改用專屬的 renderAssistRankTable 來正確呈現 Assist 總量與 Ast% (場均助攻%) */
+                renderAssistRankTable('assist-rank-overall', data.overall);
+                renderAssistRankTable('assist-rank-9side', data.nine_side);
+                renderAssistRankTable('assist-rank-7side', data.seven_side);
             });
     }
 
@@ -970,9 +1062,9 @@
         fetch('/api/rank-ga-all')
             .then(res => res.json())
             .then(data => {
-                renderGenericRankTable('ga-rank-overall', data.overall, 'ga', '#16a34a');
-                renderGenericRankTable('ga-rank-9side', data.nine_side, 'ga', '#16a34a');
-                renderGenericRankTable('ga-rank-7side', data.seven_side, 'ga', '#16a34a');
+                renderGARankTable('ga-rank-overall', data.overall);
+                renderGARankTable('ga-rank-9side', data.nine_side);
+                renderGARankTable('ga-rank-7side', data.seven_side);
             });
     }
 
@@ -982,7 +1074,7 @@
             .then(data => {
                 renderGenericRankTable('gapct-rank-overall', data.overall, 'ga_pct', '#0284c7');
                 renderGenericRankTable('gapct-rank-9side', data.nine_side, 'ga_pct', '#0284c7');
-                renderGenericRankTable('gapct-rank-7side', data.seven_side, 'ga_pct', '#0284c7');
+                renderGenericRankTable('gapct-rank-7side', data.seven_side, 'gapct-rank-7side', '#0284c7');
             });
     }
 
