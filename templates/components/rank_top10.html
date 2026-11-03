@@ -825,6 +825,108 @@
         </div>
     </div>
 
+    <!-- CLEAN SHEET 排行榜 -->
+    <div class="rank-custom-grid">
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">Clean Sheet</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">CS</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="cleansheet-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Clean Sheet</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">CS</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="cleansheet-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Clean Sheet</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">CS</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="cleansheet-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OWN GOAL 排行榜 -->
+    <div class="rank-custom-grid">
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">Own Goal</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">OG</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="owngoal-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Own Goal</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">OG</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="owngoal-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Own Goal</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 40px; text-align: center;">OG</span>
+                <span style="width: 45px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="owngoal-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+    </div>
+
     <div class="rank-note">
         <i class="fa-solid fa-circle-info"></i> Threshold for 7-a-side is 3; Overall & 9-a-side are 6.
     </div>
@@ -835,7 +937,7 @@
         if (!container) return;
 
         if (!rows || rows.length === 0) {
-            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 (未達門檻)</div>`;
+            container.innerHTML = `<div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">尚無數據 </div>`;
             return;
         }
 
@@ -1146,6 +1248,28 @@
             });
     }
 
+    function fetchAllCleanSheetRanks() {
+        fetch('/api/rank-cleansheet-all')
+            .then(res => res.json())
+            .then(data => {
+                // 使用共用的 renderGenericRankTable，數值欄位為 'clean_sheets'，顏色用象徵防守零封的經典藍綠色 (#0d9488)
+                renderGenericRankTable('cleansheet-rank-overall', data.overall, 'clean_sheets', '#0d9488');
+                renderGenericRankTable('cleansheet-rank-9side', data.nine_side, 'clean_sheets', '#0d9488');
+                renderGenericRankTable('cleansheet-rank-7side', data.seven_side, 'clean_sheets', '#0d9488');
+            });
+    }
+
+    function fetchAllOwnGoalRanks() {
+        fetch('/api/rank-owngoals-all')
+            .then(res => res.json())
+            .then(data => {
+                // 使用共用的 renderGenericRankTable，數值取 'own_goals'，顏色用醒目的紅色 '#dc2626'
+                renderGenericRankTable('owngoal-rank-overall', data.overall, 'own_goals', '#dc2626');
+                renderGenericRankTable('owngoal-rank-9side', data.nine_side, 'own_goals', '#dc2626');
+                renderGenericRankTable('owngoal-rank-7side', data.seven_side, 'own_goals', '#dc2626');
+            });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         fetchAllGoalRanks();
         fetchAllGoalPctRanks();
@@ -1156,6 +1280,10 @@
         fetchAllGAPctRanks();
         fetchAllGCPctRanks();
         fetchAllAppearancesRanks();
+        fetchAllOwnGoalRanks();
+        fetchAllCleanSheetRanks(); // 💡 加上這一行
     });
+
+
     </script>
 </section>

@@ -329,3 +329,68 @@ def api_rank_gcpct_all():
     except Exception as e:
         print(f"Error in /api/rank-gcpct-all: {e}")
         return jsonify({"error": str(e)}), 500
+
+@rank_bp.route('/api/rank-cleansheet-all')
+def api_rank_cleansheet_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_clean_sheet.sql')
+
+        # 1. Overall (無門檻 0 場)
+        cursor.execute(sql_query, (None, None))
+        cs_overall = cursor.fetchall()
+
+        # 2. 9-a-side (無門檻 0 場)
+        cursor.execute(sql_query, (9, 9))
+        cs_9side = cursor.fetchall()
+
+        # 3. 7-a-side (無門檻 0 場)
+        cursor.execute(sql_query, (7, 7))
+        cs_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": cs_overall,
+            "nine_side": cs_9side,
+            "seven_side": cs_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-cleansheet-all: {e}")
+        return jsonify({"error": str(e)}), 500
+
+    
+
+@rank_bp.route('/api/rank-owngoals-all')
+def api_rank_owngoals_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_own_goal.sql')
+
+        # 💡 只傳 2 個參數對應 (pitch_aside, pitch_aside)
+        # 1. Overall
+        cursor.execute(sql_query, (None, None))
+        owngoal_overall = cursor.fetchall()
+
+        # 2. 9-a-side
+        cursor.execute(sql_query, (9, 9))
+        owngoal_9side = cursor.fetchall()
+
+        # 3. 7-a-side
+        cursor.execute(sql_query, (7, 7))
+        owngoal_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": owngoal_overall,
+            "nine_side": owngoal_9side,
+            "seven_side": owngoal_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-owngoals-all: {e}")
+        return jsonify({"error": str(e)}), 500
