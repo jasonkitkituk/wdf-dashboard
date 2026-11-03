@@ -9,19 +9,41 @@ part_bp = Blueprint('part_bp', __name__)
 
 
 
+from flask import Blueprint, jsonify, request
+from itertools import combinations
+import psycopg2
+import psycopg2.extras
+import os
+from routes.db import get_db_connection
+
+part_bp = Blueprint('part_bp', __name__)
+
 @part_bp.route('/api/player-partnership')
 def api_player_partnership():
-    # ... 原本 api_player_partnership 的程式碼 ...
     aside = request.args.get('aside', 'all')
     group_size = int(request.args.get('size', 2))
     target_player = request.args.get('player', '')
-    sort_by = request.args.get('sort', 'win_pct')  # 💡 接收排序欄位，預設為 win_pct
+    sort_by = request.args.get('sort', 'win_pct')
     
-    min_games = 3 if aside == '7' else 6
-    aside_cond = f"AND m.pitch_aside = {int(aside)}" if aside in ['7', '9'] else ""
-
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    # 💡 1. 動態從 DB 查詢當前 group_size 對應的 Threshold (min_games)
+    cursor.execute("SELECT min_games FROM combo_thresholds WHERE group_size = %s;", (group_size,))
+    threshold_row = cursor.fetchone()
+    
+    #print(f"DEBUG: group_size = {group_size}, threshold_row from DB = {threshold_row}")  # 👈 加上這行看終端機輸出
+
+    if threshold_row:
+        # 支援 fetchall/fetchone 返回 dict 或 tuple 的處理
+        min_games = threshold_row['min_games'] if isinstance(threshold_row, dict) else threshold_row[0]
+    else:
+        # Fallback 預設備用機制
+        default_thresholds = {2: 6, 3: 5, 4: 4, 5: 3, 6: 3, 7: 3}
+        min_games = default_thresholds.get(group_size, 6)
+
+    # 💡 如果選擇的是 7-a-side，可視需求保持減半或使用獨立邏輯 (此處為原生 aside 條件)
+    aside_cond = f"AND m.pitch_aside = {int(aside)}" if aside in ['7', '9'] else ""
 
     sql = f"""
         SELECT 
@@ -86,6 +108,8 @@ def api_player_partnership():
     results = []
     for part_name, data in stats.items():
         games = data['games']
+        
+        # 💡 使用從 DB 動態讀取的 min_games 過濾
         if games < min_games:
             continue
 
@@ -106,12 +130,6 @@ def api_player_partnership():
             'unbeaten_pct': round(unbeaten_pct, 2)
         })
 
-    # 💡 根據 User 選擇的欄位與邏輯進行精準排序
-    # 針對不同的欄位設定正確的升冪(False)或降冪(True)
-    reverse_flag = True  # 預設由大到小 (High -> Low)
-    
-    # 💡 確保完全只依照使用者選定的單一欄位由大到小 (DESC) 排序
-    # 當數值日時，不再有多餘的次要條件去干擾順序
     sort_key_map = {
         'win_pct': 'win_pct',
         'unbeaten_pct': 'unbeaten_pct',
@@ -122,8 +140,6 @@ def api_player_partnership():
     }
     
     target_sort_field = sort_key_map.get(sort_by, 'win_pct')
-    
-    # 單純以選定的欄位數值進行降冪排序 (High -> Low)
     results.sort(key=lambda x: x.get(target_sort_field, 0), reverse=True)
 
     return jsonify(results)
@@ -147,4 +163,28 @@ def api_active_players():
     except Exception as e:
         print(f"Error in /api/active-players: {e}")
         return jsonify({"error": str(e)}), 500
-    
+
+
+@part_bp.route('/api/combo-thresholds')
+def api_combo_thresholds():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        # 按照 group_size 順序排好
+        cursor.execute("SELECT group_size, min_games FROM combo_thresholds ORDER BY group_size ASC;")
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        # 整理成方便前端讀取的格式
+        thresholds = []
+        for row in rows:
+            if isinstance(row, dict):
+                thresholds.append({"size": row.get("group_size"), "threshold": row.get("min_games")})
+            else:
+                thresholds.append({"size": row[0], "threshold": row[1]})
+
+        return jsonify(thresholds)
+    except Exception as e:
+        print(f"Error in /api/combo-thresholds: {e}")
+        return jsonify({"error": str(e)}), 500

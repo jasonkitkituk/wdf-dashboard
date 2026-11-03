@@ -127,10 +127,9 @@
         </table>
     </div>
 
-    <div class="part-note">
-        <i class="fa-solid fa-circle-info"></i> Threshold for 7-a-side is 3; Overall & 9-a-side are 6.
+    <div class="part-note" id="part-dynamic-note">
+        <i class="fa-solid fa-circle-info"></i> Loading threshold rules from database...
     </div>
-</div>
 
 <script>
     function loadActivePlayers() {
@@ -147,6 +146,27 @@
             })
             .catch(err => console.error('Load active players error:', err));
     }
+
+    function loadComboThresholds() {
+        fetch('/api/combo-thresholds')
+            .then(res => res.json())
+            .then(data => {
+                if (!data || data.length === 0) return;
+                
+                // 動態組裝文字：例如 "Best 2: 6 games, Best 3: 5 games, ..."
+                let parts = data.map(item => `Best ${item.size}: ${item.threshold} games`);
+                let noteText = `<i class="fa-solid fa-circle-info"></i> Minimum games threshold varies dynamically by selected combo size (${parts.join(', ')}).`;
+                
+                document.getElementById('part-dynamic-note').innerHTML = noteText;
+            })
+            .catch(err => console.error('Load thresholds error:', err));
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadActivePlayers();
+        loadComboThresholds(); // 💡 網頁載入時順便抓取動態門檻說明
+        fetchPartnershipData();
+    });
 
     function fetchPartnershipData() {
         const aside = document.getElementById('part-aside').value;
