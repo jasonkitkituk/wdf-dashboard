@@ -394,3 +394,34 @@ def api_rank_owngoals_all():
     except Exception as e:
         print(f"Error in /api/rank-owngoals-all: {e}")
         return jsonify({"error": str(e)}), 500
+
+@rank_bp.route('/api/rank-avgpoint-all')
+def api_rank_avgpoint_all():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        sql_query = load_sql_query('rank_avg_point.sql')
+
+        # 1. Overall Avg Point (pitch_aside = None, 最少 6 場)
+        cursor.execute(sql_query, (None, None, 6))
+        avgpoint_overall = cursor.fetchall()
+
+        # 2. 9-a-side Avg Point (pitch_aside = 9, 最少 6 場)
+        cursor.execute(sql_query, (9, 9, 6))
+        avgpoint_9side = cursor.fetchall()
+
+        # 3. 7-a-side Avg Point (pitch_aside = 7, 最少 3 場)
+        cursor.execute(sql_query, (7, 7, 3))
+        avgpoint_7side = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({
+            "overall": avgpoint_overall,
+            "nine_side": avgpoint_9side,
+            "seven_side": avgpoint_7side
+        })
+    except Exception as e:
+        print(f"Error in /api/rank-avgpoint-all: {e}")
+        return jsonify({"error": str(e)}), 500

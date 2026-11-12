@@ -134,9 +134,60 @@
         </h2>
     </div>
 
+    <!-- AVERAGE POINT 排行榜 -->
+    <div class="rank-custom-grid">
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-globe"></i> OVERALL</h3>
+            </div>
+            <div class="rank-sub-title">Average Point</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 55px; text-align: center;">Avg Pts</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="avgpoint-rank-overall">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-users"></i> 9-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Average Point</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 55px; text-align: center;">Avg Pts</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="avgpoint-rank-9side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+
+        <div class="rank-card-box">
+            <div class="rank-card-header">
+                <h3><i class="fa-solid fa-user-group"></i> 7-A-SIDE</h3>
+            </div>
+            <div class="rank-sub-title">Average Point</div>
+            <div class="rank-table-header">
+                <span style="width: 35px; text-align: center;">#</span>
+                <span style="flex-grow: 1; padding-left: 6px;">Player</span>
+                <span style="width: 55px; text-align: center;">Avg Pts</span>
+                <span style="width: 40px; text-align: center;">Apps</span>
+            </div>
+            <div class="rank-list-body" id="avgpoint-rank-7side">
+                <div style="font-size: 0.8rem; color: #94a3b8; text-align: center; padding: 8px;">載入中...</div>
+            </div>
+        </div>
+    </div>
+
     <!-- 獨立三欄流式佈局 (靠左對齊，寬度 300px) -->
     <div class="rank-custom-grid">
-        
+
         <!-- 1. OVERALL WIN -->
         <div class="rank-card-box">
             <div class="rank-card-header">
@@ -1270,6 +1321,16 @@
             });
     }
 
+    function fetchAllAvgPointRanks() {
+        fetch('/api/rank-avgpoint-all')
+            .then(res => res.json())
+            .then(data => {
+                renderGenericRankTable('avgpoint-rank-overall', data.overall, 'avg_point', '#0284c7');
+                renderGenericRankTable('avgpoint-rank-9side', data.nine_side, 'avg_point', '#0284c7');
+                renderGenericRankTable('avgpoint-rank-7side', data.seven_side, 'avg_point', '#0284c7');
+            });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         fetchAllGoalRanks();
         fetchAllGoalPctRanks();
@@ -1282,6 +1343,7 @@
         fetchAllAppearancesRanks();
         fetchAllOwnGoalRanks();
         fetchAllCleanSheetRanks(); // 💡 加上這一行
+        fetchAllAvgPointRanks();
     });
 
 
